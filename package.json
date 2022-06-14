@@ -2,9 +2,16 @@
   "name": "final-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "nodemon -q bin/www",
+    "db:create": "./node_modules/.bin/sequelize-cli db:create",
+    "db:drop": "./node_modules/.bin/sequelize-cli db:drop",
+    "db:migrate": "./node_modules/.bin/sequelize-cli db:migrate",
+    "db:rollback": "./node_modules/.bin/sequelize-cli db:migrate:undo",
+    "db:seed": "./node_modules/.bin/sequelize-cli db:seed:all"
   },
   "keywords": [],
   "author": "",
