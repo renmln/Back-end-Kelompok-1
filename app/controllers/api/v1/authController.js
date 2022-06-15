@@ -1,13 +1,21 @@
-const { User } = require("../models");
+const bcrypt = require("bcryptjs");
+const { resolveMx } = require("dns/promises");
+const jwt = require("jsonwebtoken");
+const { User } = require("../../../models");
+const SALT = 10;
+const userService = require("../../../services/authService");
 
-module.exports = {
-  findByEmail(email) {
-    return User.findOne({
-      where: { email },
+function encryptPassword(password) {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, SALT, (err, encryptPassword) => {
+      if (!!err) {
+        reject(err);
+        return;
+      }
+
+      resolve(encryptPassword);
     });
-  },
+  });
+}
 
-  findByPk(id) {
-    return User.findByPk(id);
-  },
-};
+function checkPassword(encryptPassword, password) {}
