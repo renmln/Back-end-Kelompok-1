@@ -4,22 +4,22 @@ const apiRouter = express.Router();
 
 //API
 
-//get item list
-apiRouter.get("/api/v1/items",);
+//get product list
+apiRouter.get("/api/v1/products",);
 
-//get filtered item list
+//get filtered product list
 apiRouter.get(
-  "/api/v1/items/filter/:category",
+  "/api/v1/products/filter/:category",
 );
 
-//get offered item list
+//get offered product list
 apiRouter.get(
-  "/api/v1/items/offered/:id",
+  "/api/v1/products/offered/:id",
 );
 
 //get transaction list
 apiRouter.get(
-  "/api/v1/items/transaction/:id",
+  "/api/v1/products/transaction/:id",
 );
 
 //login
@@ -37,10 +37,10 @@ apiRouter.get("/api/v1/whoami",);
 //logout
 apiRouter.get("/api/v1/logout",);
 
-//add item
-apiRouter.post("/api/v1/items/add",);
+//add product
+apiRouter.post("/api/v1/products/add",);
 
-//update item description
+//update product description
 apiRouter.post("/api/v1/items/update/:id",);
 
 //update user profile
