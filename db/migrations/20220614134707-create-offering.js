@@ -9,10 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       id_product: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Products",
+          key: "id",
+        }
       },
       id_buyer: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        }
       },
       offering_price: {
         type: Sequelize.INTEGER
