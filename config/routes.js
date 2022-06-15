@@ -1,13 +1,41 @@
-const { User } = require("../models");
+const express = require("express");
+// const controllers = require("../app/controllers");
+const apiRouter = express.Router();
 
-module.exports = {
-  findByEmail(email) {
-    return User.findOne({
-      where: { email },
-    });
-  },
+//API
 
-  findByPk(id) {
-    return User.findByPk(id);
-  },
-};
+//get item list
+apiRouter.get("/api/v1/items",);
+
+//get filtered item list
+apiRouter.get(
+  "/api/v1/items/filter/:category",
+);
+
+//get offered item list
+apiRouter.get(
+  "/api/v1/items/offered/:id",
+);
+
+//get transaction list
+apiRouter.get(
+  "/api/v1/items/transaction/:id",
+);
+
+//login
+apiRouter.post("/api/v1/login",);
+
+//register
+apiRouter.post("/api/v1/register",);
+
+//login or register using Google account
+apiRouter.post("/api/v1/auth/google",);
+
+//authenticate user
+apiRouter.get("/api/v1/whoami",);
+
+//route not found
+apiRouter.use();
+apiRouter.use();
+
+module.exports = apiRouter;
