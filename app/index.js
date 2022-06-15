@@ -1,6 +1,8 @@
+const express = require("express");
 const app = express();
 const router = require("../config/routes");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 
 // Set format request
 app.use(express.json());

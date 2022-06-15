@@ -14,9 +14,12 @@ module.exports = {
     "Products",
       [
         {
-          email_user: "superadmin@gmail.com",
-          password_user: await encryptPassword("super123"),
-          id_type: 1,
+          id_seller: 1,
+          product_name: "Jam Tangan Casio",
+          price: 250000,
+          category:"Aksesoris",
+          description:"lorem ipsum dolor sit amet, consectetur adip",
+          image_1: "",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

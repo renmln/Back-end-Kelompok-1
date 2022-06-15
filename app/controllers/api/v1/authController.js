@@ -3,7 +3,7 @@ const { resolveMx } = require("dns/promises");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../../models");
 const SALT = 10;
-const userService = require("../../../services/authService");
+const userService = require("../../../services/userService");
 
 function encryptPassword(password) {
   return new Promise((resolve, reject) => {
@@ -61,7 +61,11 @@ module.exports = {
     userService
       .create({ email, password, role })
       .then((post) => {
-        res.redirect("/");
+        // res.redirect("/api/v1/items");
+        res.status(200).json({
+          status: "OK",
+          message: "Berhasil!",
+        });
       })
       .catch((err) => {
         res.status(422).json({
