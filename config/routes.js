@@ -40,6 +40,12 @@ apiRouter.get("/api/v1/logout",);
 //add product
 apiRouter.post("/api/v1/products/add",);
 
+//Offering a product
+apiRouter.post("/api/v1/products/offer",);
+
+//create a transaction
+apiRouter.post("/api/v1/products/transaction",);
+
 //update product description
 apiRouter.post("/api/v1/items/update/:id",);
 
