@@ -52,7 +52,7 @@ module.exports = {
     userService
       .create({ email, password })
       .then((post) => {
-        // res.redirect("/api/v1/items");
+        // res.redirect("/");
         res.status(201).json({
           status: "OK",
           data: post,
