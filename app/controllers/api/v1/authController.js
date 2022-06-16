@@ -34,22 +34,13 @@ function createToken(data) {
   return jwt.sign(data, process.env.JWT_SECRET || "Rahasia");
 }
 
-module.exports = {
-  encryptPassword(password) {
-    return new Promise((resolve, reject) => {
-      bcrypt.hash(password, SALT, (err, encryptedPassword) => {
-        if (!!err) {
-          reject(err);
-          return;
-        }
-        resolve(encryptedPassword);
-      });
-    });
-  },
+function verifyToken(token) {
+  return jwt.verify(token, process.env.JWT_SECRET || "Rahasia");
+}
 
+module.exports = {
   async register(req, res) {
     const email = req.body.email;
-    const role = req.body.role;
     const password = await encryptPassword(req.body.password);
     if (req.body.password === "") {
       res.status(422).json({
@@ -59,12 +50,12 @@ module.exports = {
       return;
     }
     userService
-      .create({ email, password, role })
+      .create({ email, password })
       .then((post) => {
         // res.redirect("/api/v1/items");
-        res.status(200).json({
+        res.status(201).json({
           status: "OK",
-          message: "Berhasil!",
+          data: post,
         });
       })
       .catch((err) => {
@@ -76,7 +67,7 @@ module.exports = {
   },
 
   async login(req, res) {
-    const email = req.body.email; // Biar case insensitive
+    const email = req.body.email.toLowerCase(); // Biar case insensitive
     const password = req.body.password;
 
     const user = await User.findOne({
@@ -93,7 +84,6 @@ module.exports = {
     //create token
     const token = createToken({
       id: user.id,
-      role: user.role,
       email: user.email,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
@@ -111,14 +101,32 @@ module.exports = {
         (err, decodedToken) => {
           if (err) {
             console.log(err, message);
-            res.redirect("/");
+            // res.redirect("/");
+            res.status(422).json({
+              status: "FAIL",
+              message: err.message,
+            });
           } else {
             console.log(decodedToken);
             const role = decodedToken.role;
             if (role == "seller") {
-              res.redirect("/api/v1/items");
+              // res.redirect("/");
+              res.status(201).json({
+                id: user.id,
+                email: user.email,
+                token,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+              });
             } else {
-              res.redirect("/home");
+              // res.redirect("/");
+              res.status(201).json({
+                id: user.id,
+                email: user.email,
+                token,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+              });
             }
           }
         }
