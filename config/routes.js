@@ -40,7 +40,7 @@ apiRouter.get("/api/v1/logout",);
 //add product
 apiRouter.post("/api/v1/products/add",);
 
-//Offering a product
+//offering a product
 apiRouter.post("/api/v1/products/offer",);
 
 //create a transaction
