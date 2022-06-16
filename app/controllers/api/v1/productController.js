@@ -16,7 +16,7 @@ module.exports = {
         })
         .then((Car) => {
             res.status(201).json({
-                status: "Product successfully added",
+                status: "Product has successfully added",
             })
           })
         .catch((err) => {
