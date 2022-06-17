@@ -1,5 +1,5 @@
 const express = require("express");
-// const controllers = require("../app/controllers");
+const controllers = require("../app/controllers");
 const apiRouter = express.Router();
 
 //API
@@ -38,7 +38,7 @@ apiRouter.get("/api/v1/whoami",);
 apiRouter.get("/api/v1/logout",);
 
 //add product
-apiRouter.post("/api/v1/products/add",);
+apiRouter.post("/api/v1/products/add", controllers.api.v1.productController.addProduct);
 
 //offering a product
 apiRouter.post("/api/v1/products/offer",);
@@ -47,7 +47,7 @@ apiRouter.post("/api/v1/products/offer",);
 apiRouter.post("/api/v1/products/transaction",);
 
 //update product description
-apiRouter.post("/api/v1/items/update/:id",);
+apiRouter.post("/api/v1/items/update/:id", controllers.api.v1.productController.updateProduct);
 
 //update user profile
 apiRouter.post("/api/v1/profile/update/:id",);

@@ -1,22 +1,13 @@
 const productService = require('../../../services/productService');
 
 module.exports = {
-    addProduct(req, res){
+    addProduct(req, res) {
         productService
-        .create({
-            id_seller: req.body.id_seller,
-            product_name: req.body.product_name,
-            price: req.body.price,
-            category: req.body.category,
-            description: req.body.description,
-            image_1: req.body.image_1,
-            image_2: req.body.image_2,
-            image_3: req.body.image_3,
-            image_4: req.body.image_4
-        })
-        .then((Car) => {
+        .create(req.body)
+        .then((productService) => {
             res.status(201).json({
-                status: "Product has successfully added",
+                status: "Created",
+                message: "Product has successfully added"
             })
           })
         .catch((err) => {
@@ -25,5 +16,17 @@ module.exports = {
                 message: err.message,
             });
         });
+    },
+
+    updateProduct(req, res) {
+        productService
+        .update(req.params.id, req.body)
+        .then((productService) => {
+            res.status(201).json({
+                status: "Updated",
+                message: "Product has successfully updated"
+            })
+        })
+
     }
 };
