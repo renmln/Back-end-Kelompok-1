@@ -13,5 +13,12 @@ module.exports = {
     },
     findAll() {
         return Product.findAll()
+    },
+    findOne(id) {
+        return Product.findOne({
+            where: {
+                id_seller : id
+            }
+        })
     }
 };

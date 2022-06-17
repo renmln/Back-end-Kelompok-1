@@ -7,6 +7,9 @@ const apiRouter = express.Router();
 //get product list
 apiRouter.get("/api/v1/products", controllers.api.v1.productController.findAllProduct);
 
+//get the seller products
+apiRouter.get("/api/v1/products/:id", controllers.api.v1.productController.findMyProduct);
+
 //get filtered product list
 apiRouter.get(
   "/api/v1/products/filter/:category",

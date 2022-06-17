@@ -9,5 +9,8 @@ module.exports = {
     },
     findAll() {
         return productRepository.findAll();
+    },
+    findOne(id) {
+        return productRepository.findOne(id);
     }
 };

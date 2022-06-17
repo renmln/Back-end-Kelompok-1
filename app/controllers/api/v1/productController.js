@@ -42,7 +42,24 @@ module.exports = {
         .then((productService) => {
             res.status(200).json({
                 status: "OK",
-                message: "Products has successfully listed"
+                message: "Products has successfully loaded"
+            })
+        })
+        .catch((err) => {
+            res.status(422).json({
+                status: "FAIL",
+                message: err.message,
+            });
+        });
+    },
+
+    findMyProduct(req, res) {
+        productService
+        .findOne(req.params.id)
+        .then((productService) => {
+            res.status(200).json({
+                status: "OK",
+                message: "Products has successfully loaded"
             })
         })
         .catch((err) => {
