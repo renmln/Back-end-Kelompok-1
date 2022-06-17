@@ -5,7 +5,7 @@ const apiRouter = express.Router();
 //API
 
 //get product list
-apiRouter.get("/api/v1/products",);
+apiRouter.get("/api/v1/products", controllers.api.v1.productController.findAllProduct);
 
 //get filtered product list
 apiRouter.get(
@@ -47,13 +47,13 @@ apiRouter.post("/api/v1/products/offer",);
 apiRouter.post("/api/v1/products/transaction",);
 
 //update product description
-apiRouter.post("/api/v1/items/update/:id", controllers.api.v1.productController.updateProduct);
+apiRouter.put("/api/v1/products/update/:id", controllers.api.v1.productController.updateProduct);
 
 //update user profile
-apiRouter.post("/api/v1/profile/update/:id",);
+apiRouter.put("/api/v1/profile/update/:id",);
 
 //route not found
-apiRouter.use();
-apiRouter.use();
+// apiRouter.use();
+// apiRouter.use();
 
 module.exports = apiRouter;

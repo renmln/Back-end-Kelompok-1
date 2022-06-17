@@ -5,10 +5,9 @@ module.exports = {
         return productRepository.create(requestBody);
     },
     update(id, requestBody) {
-        return productRepository.update(requestBody, {
-            where: {
-                id
-            }
-        })
+        return productRepository.update(id, requestBody);
+    },
+    findAll() {
+        return productRepository.findAll();
     }
 };

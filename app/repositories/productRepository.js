@@ -10,5 +10,8 @@ module.exports = {
                 id
             }
         })
+    },
+    findAll() {
+        return Product.findAll()
     }
 };
