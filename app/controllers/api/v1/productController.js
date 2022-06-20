@@ -1,14 +1,11 @@
 const productService = require('../../../services/productService');
 
 module.exports = {
-    addProduct(req, res) {
-        productService
+    async addProduct(req, res) {
+        const products = await productService
         .create(req.body)
-        .then((productService) => {
-            res.status(201).json({
-                status: "OK",
-                message: "Product has successfully added"
-            })
+        .then((products) => {
+            res.status(201).json(products)
           })
         .catch((err) => {
             res.status(422).json({
@@ -18,14 +15,11 @@ module.exports = {
         });
     },
 
-    updateProduct(req, res) {
-        productService
+    async updateProduct(req, res) {
+        const products = await productService
         .update(req.params.id, req.body)
-        .then((productService) => {
-            res.status(200).json({
-                status: "OK",
-                message: "Product has successfully updated"
-            })
+        .then((products) => {
+            res.status(200).json(products)
         })
         .catch((err) => {
             res.status(422).json({
@@ -36,14 +30,11 @@ module.exports = {
 
     },
 
-    findAllProduct(req, res) {
-        productService
+    async findAllProduct(req, res) {
+        const products = await productService
         .findAll()
-        .then((productService) => {
-            res.status(200).json({
-                status: "OK",
-                message: "Products has successfully loaded"
-            })
+        .then((products) => {
+            res.status(200).json(products)
         })
         .catch((err) => {
             res.status(422).json({
@@ -53,14 +44,11 @@ module.exports = {
         });
     },
 
-    findMyProduct(req, res) {
-        productService
+    async findMyProduct(req, res) {
+        const products = await productService
         .findOne(req.params.id)
-        .then((productService) => {
-            res.status(200).json({
-                status: "OK",
-                message: "Products has successfully loaded"
-            })
+        .then((products) => {
+            res.status(200).json(products)
         })
         .catch((err) => {
             res.status(422).json({
