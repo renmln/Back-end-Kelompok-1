@@ -1,4 +1,5 @@
 const { Product } = require("../models");
+const { Offering } = require("../models");
 
 module.exports = {
     create(createArgs) {
@@ -12,12 +13,23 @@ module.exports = {
         })
     },
     findAll() {
-        return Product.findAll()
+        return Product.findAll({
+            where: {
+                status : null 
+            }
+        })
     },
     findOne(id) {
         return Product.findOne({
             where: {
                 id_seller : id
+            }
+        })
+    },
+    findByPk(id) {
+        return Offering.findByPk({
+            where: {
+                id
             }
         })
     }
