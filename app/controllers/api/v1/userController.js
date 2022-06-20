@@ -1,4 +1,4 @@
-const userService = require('../../../repositories');
+const userService = require('../../../services/userService');
 
 module.exports = {
     async updateProfile(req, res) {
