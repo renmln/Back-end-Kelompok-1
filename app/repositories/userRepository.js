@@ -5,6 +5,14 @@ module.exports = {
     return User.create(createArgs);
   },
 
+  update(id, updateArgs) {
+    return User.update(updateArgs, {
+      where: {
+        id,
+      },
+    });
+  },
+
   //   update(id, updateArgs) {
   //     return User.update(updateArgs, {
   //       where: {

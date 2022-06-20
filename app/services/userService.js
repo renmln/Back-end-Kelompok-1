@@ -5,6 +5,10 @@ module.exports = {
     return userRepository.create(requestBody);
   },
 
+  update(id, updateArgs) {
+    return userRepository.update(id, updateArgs);
+  },
+
   //   async update(id, requestBody) {
   //     return userRepository.update(id, requestBody);
   //   },
