@@ -51,7 +51,7 @@ apiRouter.post("/api/v1/products/transaction",);
 apiRouter.put("/api/v1/products/update/:id", controllers.api.v1.productController.updateProduct);
 
 //update user profile
-apiRouter.put("/api/v1/profile/update/:id",);
+apiRouter.put("/api/v1/profile/update/:id", controllers.api.v1.userController.updateProfile);
 
 //route not found
 // apiRouter.use();
