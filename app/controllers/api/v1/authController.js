@@ -31,7 +31,9 @@ function checkPassword(encryptedPassword, password) {
 }
 
 function createToken(data) {
-  return jwt.sign(data, process.env.JWT_SECRET || "Rahasia");
+  return jwt.sign(data, process.env.JWT_SECRET || "Rahasia", {
+    expiresIn: 10 * 60,
+  });
 }
 
 function verifyToken(token) {
@@ -40,7 +42,9 @@ function verifyToken(token) {
 
 module.exports = {
   async register(req, res) {
+    const name = req.body.name;
     const email = req.body.email;
+    const role = "buyer";
     const password = await encryptPassword(req.body.password);
     if (req.body.password === "") {
       res.status(422).json({
@@ -50,9 +54,8 @@ module.exports = {
       return;
     }
     userService
-      .create({ email, password })
+      .create({ name, email, password, role })
       .then((post) => {
-        // res.redirect("/");
         res.status(201).json({
           status: "OK",
           data: post,
@@ -101,33 +104,20 @@ module.exports = {
         (err, decodedToken) => {
           if (err) {
             console.log(err, message);
-            // res.redirect("/");
             res.status(422).json({
               status: "FAIL",
               message: err.message,
             });
           } else {
             console.log(decodedToken);
-            const role = decodedToken.role;
-            if (role == "seller") {
-              // res.redirect("/");
-              res.status(201).json({
-                id: user.id,
-                email: user.email,
-                token,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
-              });
-            } else {
-              // res.redirect("/");
-              res.status(201).json({
-                id: user.id,
-                email: user.email,
-                token,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
-              });
-            }
+            // const role = decodedToken.role;
+            res.status(201).json({
+              id: user.id,
+              email: user.email,
+              token,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt,
+            });
           }
         }
       );
@@ -137,10 +127,5 @@ module.exports = {
         message: err.message,
       });
     }
-  },
-
-  async logout(req, res) {
-    res.cookie("jwt", "", { maxAge: 1 });
-    res.redirect("/");
   },
 };

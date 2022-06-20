@@ -1,6 +1,9 @@
 const express = require("express");
+const cors = require("cors");
+
 // const controllers = require("../app/controllers");
 const apiRouter = express.Router();
+apiRouter.use(cors());
 const controllers = require("../app/controllers");
 //API
 
