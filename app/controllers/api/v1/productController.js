@@ -2,10 +2,10 @@ const productService = require('../../../services/productService');
 
 module.exports = {
     async addProduct(req, res) {
-        const products = await productService
+        const product = await productService
         .create(req.body)
-        .then((products) => {
-            res.status(201).json(products)
+        .then((product) => {
+            res.status(201).json(product)
           })
         .catch((err) => {
             res.status(422).json({
@@ -16,10 +16,10 @@ module.exports = {
     },
 
     async updateProduct(req, res) {
-        const products = await productService
+        const product = await productService
         .update(req.params.id, req.body)
-        .then((products) => {
-            res.status(200).json(products)
+        .then((product) => {
+            res.status(200).json(product)
         })
         .catch((err) => {
             res.status(422).json({
@@ -56,5 +56,19 @@ module.exports = {
                 message: err.message,
             });
         });
+    },
+
+    async findProductsByCategory(req, res) {
+        const products = await productService
+        .findByCategory(req.params.id)
+        .then((products) => {
+            res.status(200).json(products)
+        })
+        .catch((err) => {
+            res.status(422).json({
+                status: "FAIL",
+                message: err.message,
+            })
+        })
     }
 };

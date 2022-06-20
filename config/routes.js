@@ -11,7 +11,9 @@ apiRouter.get("/api/v1/products", controllers.api.v1.productController.findAllPr
 apiRouter.get("/api/v1/products/:id", controllers.api.v1.productController.findMyProduct);
 
 //get filtered product list
-apiRouter.get("/api/v1/products/filter/:category",);
+apiRouter.get("/api/v1/products/filter/:category",
+ controllers.api.v1.productController.findProductsByCategory
+);
 
 //get offered product list
 apiRouter.get(

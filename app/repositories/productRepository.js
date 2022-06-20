@@ -1,5 +1,6 @@
 const { Product } = require("../models");
 const { Offering } = require("../models");
+const { Category } = require("../models");
 
 module.exports = {
     create(createArgs) {
@@ -14,6 +15,10 @@ module.exports = {
     },
     findAll() {
         return Product.findAll({
+            include: [{
+                model : Category
+            }]
+        },{
             where: {
                 status : null 
             }
@@ -26,10 +31,14 @@ module.exports = {
             }
         })
     },
-    findByPk(id) {
-        return Offering.findByPk({
+    findByCategory(id) {
+        return Product.findOne({
+            include: [{
+                model : Category
+            }]
+        },{
             where: {
-                id
+                id_category : id
             }
         })
     }

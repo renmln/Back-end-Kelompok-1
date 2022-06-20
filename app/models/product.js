@@ -14,13 +14,16 @@ module.exports = (sequelize, DataTypes) => {
       models.Product.belongsTo(models.User, {
         foreignKey: "id_seller",
       });
+      models.Product.belongsTo(models.Category, {
+        foreignKey: "id_category",
+      });
     }
   }
   Product.init({
     id_seller: DataTypes.INTEGER,
     product_name: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    category: DataTypes.STRING,
+    id_category: DataTypes.STRING,
     description: DataTypes.STRING,
     image_1: DataTypes.STRING,
     image_2: DataTypes.STRING,
