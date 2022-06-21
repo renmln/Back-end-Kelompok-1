@@ -61,9 +61,6 @@ apiRouter.post("/api/v1/items/update/:id");
 //update user profile
 apiRouter.post("/api/v1/profile/update/:id");
 
-//route not found
-apiRouter.use(controllers.api.main.onLost);
-apiRouter.use(controllers.api.main.onError);
 //add product
 apiRouter.post(
   "/api/v1/products/add",
@@ -89,7 +86,7 @@ apiRouter.put(
 );
 
 //route not found
-// apiRouter.use();
-// apiRouter.use();
+apiRouter.use(controllers.api.main.onLost);
+apiRouter.use(controllers.api.main.onError);
 
 module.exports = apiRouter;
