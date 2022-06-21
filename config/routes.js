@@ -5,10 +5,14 @@ const apiRouter = express.Router();
 //API
 
 //get product list
-apiRouter.get("/api/v1/products", controllers.api.v1.productController.findAllProduct);
+apiRouter.get("/api/v1/products",
+ controllers.api.v1.productController.findAllProduct
+ );
 
 //get the seller products
-apiRouter.get("/api/v1/products/:id", controllers.api.v1.productController.findMyProduct);
+apiRouter.get("/api/v1/products/:id",
+ controllers.api.v1.productController.findMyProduct
+ );
 
 //get filtered product list
 apiRouter.get("/api/v1/products/filter/:category",
@@ -41,7 +45,9 @@ apiRouter.get("/api/v1/whoami",);
 apiRouter.get("/api/v1/logout",);
 
 //add product
-apiRouter.post("/api/v1/products/add", controllers.api.v1.productController.addProduct);
+apiRouter.post("/api/v1/products/add",
+ controllers.api.v1.productController.addProduct
+ );
 
 //offering a product
 apiRouter.post("/api/v1/products/offer",);
@@ -50,10 +56,14 @@ apiRouter.post("/api/v1/products/offer",);
 apiRouter.post("/api/v1/products/transaction",);
 
 //update product description
-apiRouter.put("/api/v1/products/update/:id", controllers.api.v1.productController.updateProduct);
+apiRouter.put("/api/v1/products/update/:id",
+ controllers.api.v1.productController.updateProduct
+ );
 
 //update user profile
-apiRouter.put("/api/v1/profile/update/:id", controllers.api.v1.userController.updateProfile);
+apiRouter.put("/api/v1/profile/update/:id",
+ controllers.api.v1.userController.updateProfile
+ );
 
 //route not found
 // apiRouter.use();
