@@ -10,12 +10,6 @@ apiRouter.use(cors());
 
 apiRouter.get("/");
 
-//get item list
-apiRouter.get("/api/v1/items");
-
-//get filtered item list
-apiRouter.get("/api/v1/items/filter/:category");
-
 //get product list
 apiRouter.get(
   "/api/v1/products",
@@ -54,9 +48,6 @@ apiRouter.get("/api/v1/logout");
 
 //add item
 apiRouter.post("/api/v1/items/add");
-
-//update item description
-apiRouter.post("/api/v1/items/update/:id");
 
 //update user profile
 apiRouter.post("/api/v1/profile/update/:id");
