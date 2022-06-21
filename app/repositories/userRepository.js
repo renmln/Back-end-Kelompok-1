@@ -13,6 +13,14 @@ module.exports = {
     });
   },
 
+  findId(id) {
+    return User.findOne({
+      where: {
+        id
+      }
+    })
+  }
+
   //   update(id, updateArgs) {
   //     return User.update(updateArgs, {
   //       where: {

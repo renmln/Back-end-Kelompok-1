@@ -9,6 +9,10 @@ module.exports = {
     return userRepository.update(id, updateArgs);
   },
 
+  findId(id) {
+    return userRepository.findId(id);
+  }
+
   //   async update(id, requestBody) {
   //     return userRepository.update(id, requestBody);
   //   },

@@ -10,6 +10,10 @@ apiRouter.use(cors());
 
 apiRouter.get("/");
 
+//get user id
+apiRouter.get(
+  "/api/v1/users/:id", controllers.api.v1.userController.findUserById);
+
 //get product list
 apiRouter.get(
   "/api/v1/products",

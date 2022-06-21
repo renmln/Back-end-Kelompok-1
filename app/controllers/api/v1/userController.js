@@ -14,4 +14,18 @@ module.exports = {
         });
       });
   },
+
+  async findUserById(req, res) {
+    const user = await userService
+    .findId(req.params.id)
+    .then((user) => {
+      res.status(200).json(user)
+    })
+    .catch((err) => {
+      res.status(422).json({
+        status: "FAIL",
+        message: err.message,
+      });
+    });
+  }
 };
