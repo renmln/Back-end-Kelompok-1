@@ -27,10 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       no_hp: DataTypes.STRING,
       photo_profile: DataTypes.STRING,
       role: DataTypes.STRING,
-      city: DataTypes.STRING,
-      address: DataTypes.STRING,
-      no_hp: DataTypes.STRING,
-      photo_profile: DataTypes.STRING,
     },
     {
       sequelize,

@@ -3,6 +3,7 @@ const cors = require("cors");
 
 // const controllers = require("../app/controllers");
 const controllers = require("../app/controllers");
+const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
 apiRouter.use(cors());
 
@@ -12,7 +13,9 @@ apiRouter.get("/");
 
 //get user id
 apiRouter.get(
-  "/api/v1/users/:id", controllers.api.v1.userController.findUserById);
+  "/api/v1/users/:id",
+  controllers.api.v1.userController.findUserById
+);
 
 //get product list
 apiRouter.get(
@@ -53,9 +56,6 @@ apiRouter.get("/api/v1/logout");
 //add item
 apiRouter.post("/api/v1/items/add");
 
-//update user profile
-apiRouter.post("/api/v1/profile/update/:id");
-
 //add product
 apiRouter.post(
   "/api/v1/products/add",
@@ -78,6 +78,13 @@ apiRouter.put(
 apiRouter.put(
   "/api/v1/profile/update/:id",
   controllers.api.v1.userController.updateProfile
+);
+
+//upload photo Profile
+apiRouter.put(
+  "/api/v1/profile/cloudinary/:id",
+  uploadOnMemory.single("picture"),
+  controllers.api.v1.userController.uploadPhoto
 );
 
 //route not found
