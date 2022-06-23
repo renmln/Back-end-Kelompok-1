@@ -16,10 +16,10 @@ module.exports = {
   findId(id) {
     return User.findOne({
       where: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  },
 
   //   update(id, updateArgs) {
   //     return User.update(updateArgs, {
