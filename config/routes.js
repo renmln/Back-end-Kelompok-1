@@ -65,6 +65,10 @@ apiRouter.put("/api/v1/profile/update/:id",
  controllers.api.v1.userController.updateProfile
  );
 
+//upload product images
+apiRouter.put("/api/v1/products/cloudinary/:id",
+  );
+
 //route not found
 // apiRouter.use();
 // apiRouter.use();
