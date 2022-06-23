@@ -87,7 +87,7 @@ apiRouter.put(
   controllers.api.v1.userController.uploadPhoto
 );
 
-//upload photo Profile
+//upload product images
 apiRouter.put(
   "/api/v1/products/cloudinary/:id",
   uploadOnMemory.array("picture"), 4,
