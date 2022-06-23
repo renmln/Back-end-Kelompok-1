@@ -66,7 +66,7 @@ module.exports = {
                 console.log(req.files[i]);
                 const fileBase64 = req.files[i].buffer.toString("base64");
                 const file = `data:${req.files[i].mimetype};base64,${fileBase64}`;
-                const result = cloudinary.uploader.upload(file);
+                const result = await cloudinary.uploader.upload(file);
                 imageUrlList.push(result.url);
             }
             res.status(201).json({
