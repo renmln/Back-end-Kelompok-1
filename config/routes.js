@@ -90,7 +90,7 @@ apiRouter.put(
 //upload product images
 apiRouter.put(
   "/api/v1/products/cloudinary/:id",
-  uploadOnMemory.array("picture"), 4,
+  uploadOnMemory.array("picture", 4),
   controllers.api.v1.productController.uploadProductImages
 );
 
