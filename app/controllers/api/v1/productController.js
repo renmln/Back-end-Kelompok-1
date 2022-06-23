@@ -70,9 +70,8 @@ module.exports = {
                 imageUrlList.push(result.url);
             }
             res.status(201).json({
-                data: {
-                    url: imageUrlList
-                }
+                message: "Upload image berhasil",
+                url: imageUrlList
             })
         }catch(err) {
             res.status(422).json({
