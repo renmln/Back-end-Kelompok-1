@@ -56,5 +56,28 @@ module.exports = {
                 message: err.message,
             });
         });
-    }
+    },
+
+    async uploadProductImages(req, res) {
+        const imageUrlList = []
+        for(let i = 0; i < req.files.length; i++){
+            console.log(req.files);
+            const fileBase64 = req.files.buffer.toString("base64");
+            const file = `data:${req.files.mimetype};base64,${fileBase64}`;
+            cloudinary.uploader.upload(file);
+            imageUrlList.push(result.url);
+        }
+        imageUrlListJson = JSON.stringify(imageUrlList);
+        res.status(201).json({
+            data: {
+                url: imageUrlListJson
+            }
+        })
+        .catch((err) => {
+            res.status(422).json({
+              status: "FAIL",
+              message: err.message,
+            });
+          });
+      },
 };
