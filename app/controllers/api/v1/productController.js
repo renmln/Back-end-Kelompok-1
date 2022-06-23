@@ -69,10 +69,9 @@ module.exports = {
                 const result = cloudinary.uploader.upload(file);
                 imageUrlList.push(result.url);
             }
-            imageUrlListJson = JSON.stringify(imageUrlList);
             res.status(201).json({
                 data: {
-                    url: imageUrlListJson
+                    url: imageUrlList
                 }
             })
         }catch(err) {
