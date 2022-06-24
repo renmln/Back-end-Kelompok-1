@@ -21,6 +21,10 @@ module.exports = {
     });
   },
 
+  findAll() {
+    return User.findAll();
+  },
+
   //   update(id, updateArgs) {
   //     return User.update(updateArgs, {
   //       where: {
@@ -37,7 +41,5 @@ module.exports = {
   //     return User.findByPk({ where: { id } });
   //   },
 
-  //   findAll() {
-  //     return User.findAll();
-  //   },
+  //
 };

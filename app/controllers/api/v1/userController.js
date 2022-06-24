@@ -48,4 +48,21 @@ module.exports = {
         });
       });
   },
+
+  // async listUser(req, res) {
+  //   userService
+  //     .list()
+  //     .then(({ data }) => {
+  //       res.status(200).json({
+  //         status: "OK",
+  //         data: data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       res.status(422).json({
+  //         status: "FAIL",
+  //         message: err.message,
+  //       });
+  //     });
+  // },
 };

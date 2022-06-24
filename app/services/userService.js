@@ -11,7 +11,11 @@ module.exports = {
 
   findId(id) {
     return userRepository.findId(id);
-  }
+  },
+
+  list() {
+    return userRepository.findAll();
+  },
 
   //   async update(id, requestBody) {
   //     return userRepository.update(id, requestBody);

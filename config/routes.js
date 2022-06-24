@@ -94,6 +94,13 @@ apiRouter.put(
   controllers.api.v1.productController.uploadProductImages
 );
 
+apiRouter.get(
+  "/api/v1/category",
+  controllers.api.v1.categoryController.listCategory
+);
+
+// apiRouter.get("/api/v1/listuser", controllers.api.v1.userController.listUser);
+
 //route not found
 apiRouter.use(controllers.api.main.onLost);
 apiRouter.use(controllers.api.main.onError);
