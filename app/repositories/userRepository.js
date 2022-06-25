@@ -16,7 +16,7 @@ module.exports = {
   findId(id) {
     return User.findOne({
       where: {
-        id,
+        email: id,
       },
     });
   },
