@@ -15,5 +15,8 @@ module.exports = {
     },
     findByCategory(id) {
         return productRepository.findByCategory(id);
+    },
+    getProduct(id) {
+        return productRepository.findProductId(id);
     }
 };

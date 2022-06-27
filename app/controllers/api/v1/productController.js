@@ -58,6 +58,20 @@ module.exports = {
         });
     },
 
+    async getProduct(req, res) {
+        const product = await productService
+        .getProduct(req.params.id)
+        .then((product) => {
+            res.status(200).json(product)
+        })
+        .catch((err) => {
+            res.status(422).json({
+                status: "FAIL",
+                message: err.message,
+            });
+        });
+    },
+
     async findProductsByCategory(req, res) {
         const products = await productService
         .findByCategory(req.params.id)

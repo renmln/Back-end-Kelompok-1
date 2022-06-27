@@ -41,5 +41,8 @@ module.exports = {
                 id_category : id
             }
         })
+    },
+    findProductId(id){
+        return Product.findOne(id);
     }
 };
