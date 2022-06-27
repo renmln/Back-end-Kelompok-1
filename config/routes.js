@@ -4,6 +4,11 @@ const apiRouter = express.Router();
 
 //API
 
+//get product by id
+apiRouter.get("/api/v1/product/:id",
+ controllers.api.v1.productController.getProduct
+ );
+
 //get product list
 apiRouter.get("/api/v1/products",
  controllers.api.v1.productController.findAllProduct
