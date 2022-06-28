@@ -27,7 +27,8 @@ module.exports = {
     findOne(id) {
         return Product.findOne({
             where: {
-                id_seller : id
+                id_seller : id,
+                status: null
             }
         })
     },
@@ -38,7 +39,8 @@ module.exports = {
             }]
         },{
             where: {
-                id_category : id
+                id_category : id,
+                status: null
             }
         })
     },
