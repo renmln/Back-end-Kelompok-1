@@ -31,7 +31,9 @@ function checkPassword(encryptedPassword, password) {
 }
 
 function createToken(data) {
-  return jwt.sign(data, process.env.JWT_SECRET || "Rahasia");
+  return jwt.sign(data, process.env.JWT_SECRET || "Rahasia", {
+    expiresIn: 10 * 60,
+  });
 }
 
 function verifyToken(token) {
@@ -40,8 +42,9 @@ function verifyToken(token) {
 
 module.exports = {
   async register(req, res) {
+    const name = req.body.name;
     const email = req.body.email;
-    console.log(req.body);
+    const role = "buyer";
     const password = await encryptPassword(req.body.password);
     if (req.body.password === "") {
       res.status(422).json({
@@ -51,9 +54,8 @@ module.exports = {
       return;
     }
     userService
-      .create({ email, password })
+      .create({ name, email, password, role })
       .then((post) => {
-        // res.redirect("/");
         res.status(201).json({
           status: "OK",
           data: post,
@@ -96,6 +98,7 @@ module.exports = {
     }
     res.cookie("jwt", token, { httpOnly: true });
     if (token) {
+<<<<<<< HEAD
       jwt.verify(token, process.env.JWT_SIGNATURE_KEY || "Rahasia", (err, decodedToken) => {
         if (err) {
           console.log(err, message);
@@ -118,6 +121,21 @@ module.exports = {
             });
           } else {
             // res.redirect("/");
+=======
+      jwt.verify(
+        token,
+        process.env.JWT_SIGNATURE_KEY || "Rahasia",
+        (err, decodedToken) => {
+          if (err) {
+            console.log(err, message);
+            res.status(422).json({
+              status: "FAIL",
+              message: err.message,
+            });
+          } else {
+            console.log(decodedToken);
+            // const role = decodedToken.role;
+>>>>>>> origin/master
             res.status(201).json({
               id: user.id,
               email: user.email,
@@ -134,10 +152,5 @@ module.exports = {
         message: err.message,
       });
     }
-  },
-
-  async logout(req, res) {
-    res.cookie("jwt", "", { maxAge: 1 });
-    res.redirect("/");
   },
 };

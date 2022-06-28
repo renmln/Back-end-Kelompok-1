@@ -5,6 +5,26 @@ module.exports = {
     return User.create(createArgs);
   },
 
+  update(id, updateArgs) {
+    return User.update(updateArgs, {
+      where: {
+        id,
+      },
+    });
+  },
+
+  findId(id) {
+    return User.findOne({
+      where: {
+        email: id,
+      },
+    });
+  },
+
+  findAll() {
+    return User.findAll();
+  },
+
   //   update(id, updateArgs) {
   //     return User.update(updateArgs, {
   //       where: {
@@ -21,7 +41,5 @@ module.exports = {
   //     return User.findByPk({ where: { id } });
   //   },
 
-  //   findAll() {
-  //     return User.findAll();
-  //   },
+  //
 };

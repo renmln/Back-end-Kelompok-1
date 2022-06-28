@@ -17,4 +17,8 @@ module.exports = {
       throw err;
     }
   },
+
+  delete(id) {
+    return penawaranRepository.delete(id);
+  },
 };

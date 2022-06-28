@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       models.Product.belongsTo(models.User, {
         foreignKey: "id_seller",
       });
+      models.Product.hasMany(models.Offering, {
+        foreignKey: "id_product",
+      });
+      models.Product.hasMany(models.Notification, {
+        foreignKey: "productId",
+      });
     }
   }
   Product.init({
@@ -25,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     image_1: DataTypes.STRING,
     image_2: DataTypes.STRING,
     image_3: DataTypes.STRING,
-    image_4: DataTypes.STRING
+    image_4: DataTypes.STRING,
+    status : DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Product',

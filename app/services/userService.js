@@ -5,6 +5,18 @@ module.exports = {
     return userRepository.create(requestBody);
   },
 
+  update(id, updateArgs) {
+    return userRepository.update(id, updateArgs);
+  },
+
+  findId(id) {
+    return userRepository.findId(id);
+  },
+
+  list() {
+    return userRepository.findAll();
+  },
+
   //   async update(id, requestBody) {
   //     return userRepository.update(id, requestBody);
   //   },

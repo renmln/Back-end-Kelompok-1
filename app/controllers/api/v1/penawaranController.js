@@ -35,4 +35,21 @@ module.exports = {
         });
       });
   },
+
+  async destroyPenawaran(req, res) {
+    penawaranService
+      .delete(req.params.id)
+      .then((penawaran) => {
+        res.status(200).json({
+          status: "OK",
+          message: "Penawaran deleted",
+        });
+      })
+      .catch((err) => {
+        res.status(422).json({
+          status: "FAIL",
+          message: err.message,
+        });
+      });
+  },
 };
