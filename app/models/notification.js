@@ -15,11 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
       });
       models.Notification.belongsTo(models.Product, {
-        foreignKey: "ProductId",
+        foreignKey: "productId",
       });
     }
   }
-  notification.init({
+  Notification.init({
     userId: DataTypes.INTEGER,
     title: DataTypes.STRING,
     productId: DataTypes.INTEGER,

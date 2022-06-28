@@ -48,7 +48,7 @@ module.exports = {
   },
 
   findByCategory(id) {
-    return Product.findOne(
+    return Product.findAll(
       {
         include: [
           {

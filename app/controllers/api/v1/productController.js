@@ -1,19 +1,27 @@
 const productService = require("../../../services/productService");
+const notificationService = require("../../../services/notificationService");
 const cloudinary = require("../../../cloudinary");
 
 module.exports = {
   async addProduct(req, res) {
-    const products = await productService
+    try {
+      const products = await productService
       .create(req.body)
       .then((products) => {
         res.status(201).json(products);
+        const title = "Berhasil di terbitkan";
+        const userId = products.id_seller
+        const productId = products.id
+        const message = null
+        const notif = notificationService
+        .create(title, userId, productId, message)
       })
-      .catch((err) => {
+    }catch(err) {
         res.status(422).json({
           status: "FAIL",
           message: err.message,
         });
-      });
+      };
   },
 
   async updateProduct(req, res) {
