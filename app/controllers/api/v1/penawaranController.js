@@ -19,6 +19,7 @@ module.exports = {
     penawaranService
       .create({
         id_product: req.body.id_product,
+        id_seller: req.body.id_seller,
         id_buyer: req.body.id_buyer,
         offering_price: req.body.offering_price,
       })
@@ -27,11 +28,17 @@ module.exports = {
           status: "OK",
           data: post,
         });
-        const title = "Penawaran produk";
-        const userId = post.id // ???
-        const productId = post.id_product
-        const message = "Ditawar Rp " + post.offering_price
-        const notif = notificationService
+        let title = "Penawaran produk";
+        let userId = post.id_seller // ???
+        let productId = post.id_product
+        let message = "Ditawar Rp " + post.offering_price
+        let notif = notificationService
+        .create(title, userId, productId, message)
+        title = "Berhasil ditawar";
+        userId = post.id_buyer // ???
+        productId = post.id_product
+        message = "Ditawar Rp " + post.offering_price
+        notif = notificationService
         .create(title, userId, productId, message)
       })
       .catch((err) => {
