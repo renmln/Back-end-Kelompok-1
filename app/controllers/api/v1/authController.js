@@ -41,6 +41,7 @@ function verifyToken(token) {
 module.exports = {
   async register(req, res) {
     const email = req.body.email;
+    console.log(req.body);
     const password = await encryptPassword(req.body.password);
     if (req.body.password === "") {
       res.status(422).json({
@@ -95,42 +96,38 @@ module.exports = {
     }
     res.cookie("jwt", token, { httpOnly: true });
     if (token) {
-      jwt.verify(
-        token,
-        process.env.JWT_SIGNATURE_KEY || "Rahasia",
-        (err, decodedToken) => {
-          if (err) {
-            console.log(err, message);
+      jwt.verify(token, process.env.JWT_SIGNATURE_KEY || "Rahasia", (err, decodedToken) => {
+        if (err) {
+          console.log(err, message);
+          // res.redirect("/");
+          res.status(422).json({
+            status: "FAIL",
+            message: err.message,
+          });
+        } else {
+          console.log(decodedToken);
+          const role = decodedToken.role;
+          if (role == "seller") {
             // res.redirect("/");
-            res.status(422).json({
-              status: "FAIL",
-              message: err.message,
+            res.status(201).json({
+              id: user.id,
+              email: user.email,
+              token,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt,
             });
           } else {
-            console.log(decodedToken);
-            const role = decodedToken.role;
-            if (role == "seller") {
-              // res.redirect("/");
-              res.status(201).json({
-                id: user.id,
-                email: user.email,
-                token,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
-              });
-            } else {
-              // res.redirect("/");
-              res.status(201).json({
-                id: user.id,
-                email: user.email,
-                token,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
-              });
-            }
+            // res.redirect("/");
+            res.status(201).json({
+              id: user.id,
+              email: user.email,
+              token,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt,
+            });
           }
         }
-      );
+      });
     } else {
       res.status(422).json({
         status: "FAIL",
