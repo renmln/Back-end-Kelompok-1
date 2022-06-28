@@ -27,6 +27,12 @@ module.exports = {
           status: "OK",
           data: post,
         });
+        const title = "Penawaran produk";
+        const userId = post.id // ???
+        const productId = post.id_product
+        const message = "Ditawar Rp " + post.offering_price
+        const notif = notificationService
+        .create(title, userId, productId, message)
       })
       .catch((err) => {
         res.status(422).json({
