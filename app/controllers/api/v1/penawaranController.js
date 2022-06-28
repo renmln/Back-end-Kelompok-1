@@ -1,6 +1,25 @@
 const penawaranService = require("../../../services/penawaranService");
 const notificationService = require("../../../services/notificationService");
 
+async function notifDibeli(x, y, z) {
+  const title = "Penawaran produk";
+  const userId = x
+  const productId = y
+  const message = "Ditawar Rp " + z
+  const notif = await notificationService
+  .create(title, userId, productId, message)
+}
+
+async function notifBeli(x, y, z) {
+  const title = "Berhasil ditawar";
+  const userId = x
+  const productId = y
+  const message = "Ditawar Rp " + z
+  const notif = await notificationService
+  .create(title, userId, productId, message)
+}
+
+
 module.exports = {
   async listPenawaran(req, res) {
     penawaranService
@@ -29,18 +48,8 @@ module.exports = {
           status: "OK",
           data: post,
         });
-        let title = "Penawaran produk";
-        let userId = post.id_seller
-        let productId = post.id_product
-        let message = "Ditawar Rp " + post.offering_price
-        let notif = notificationService
-        .create(title, userId, productId, message)
-        title = "Berhasil ditawar";
-        userId = post.id_buyer
-        productId = post.id_product
-        message = "Ditawar Rp " + post.offering_price
-        notif = notificationService
-        .create(title, userId, productId, message)
+        let notif = notifDibeli(post.id_seller,post.id_product,post.offering_price)
+        notif = notifBeli(post.id_buyer,post.id_product,post.offering_price)
       })
       .catch((err) => {
         res.status(422).json({
