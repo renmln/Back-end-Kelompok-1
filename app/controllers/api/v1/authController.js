@@ -98,52 +98,23 @@ module.exports = {
     }
     res.cookie("jwt", token, { httpOnly: true });
     if (token) {
-<<<<<<< HEAD
       jwt.verify(token, process.env.JWT_SIGNATURE_KEY || "Rahasia", (err, decodedToken) => {
         if (err) {
           console.log(err, message);
-          // res.redirect("/");
           res.status(422).json({
             status: "FAIL",
             message: err.message,
           });
         } else {
           console.log(decodedToken);
-          const role = decodedToken.role;
-          if (role == "seller") {
-            // res.redirect("/");
-            res.status(201).json({
-              id: user.id,
-              email: user.email,
-              token,
-              createdAt: user.createdAt,
-              updatedAt: user.updatedAt,
-            });
-          } else {
-            // res.redirect("/");
-=======
-      jwt.verify(
-        token,
-        process.env.JWT_SIGNATURE_KEY || "Rahasia",
-        (err, decodedToken) => {
-          if (err) {
-            console.log(err, message);
-            res.status(422).json({
-              status: "FAIL",
-              message: err.message,
-            });
-          } else {
-            console.log(decodedToken);
-            // const role = decodedToken.role;
->>>>>>> origin/master
-            res.status(201).json({
-              id: user.id,
-              email: user.email,
-              token,
-              createdAt: user.createdAt,
-              updatedAt: user.updatedAt,
-            });
-          }
+          // const role = decodedToken.role;
+          res.status(201).json({
+            id: user.id,
+            email: user.email,
+            token,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          });
         }
       });
     } else {
