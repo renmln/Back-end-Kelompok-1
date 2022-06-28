@@ -1,4 +1,5 @@
 const penawaranService = require("../../../services/penawaranService");
+const notificationService = require("../../../services/notificationService");
 
 module.exports = {
   async listPenawaran(req, res) {
@@ -29,13 +30,13 @@ module.exports = {
           data: post,
         });
         let title = "Penawaran produk";
-        let userId = post.id_seller // ???
+        let userId = post.id_seller
         let productId = post.id_product
         let message = "Ditawar Rp " + post.offering_price
         let notif = notificationService
         .create(title, userId, productId, message)
         title = "Berhasil ditawar";
-        userId = post.id_buyer // ???
+        userId = post.id_buyer
         productId = post.id_product
         message = "Ditawar Rp " + post.offering_price
         notif = notificationService
