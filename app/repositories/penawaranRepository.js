@@ -12,4 +12,10 @@ module.exports = {
   findAll() {
     return Offering.findAll({ include: [{ model: Product, model: User }] });
   },
+
+  delete(id) {
+    return Offering.destroy({
+      where: { id },
+    });
+  },
 };

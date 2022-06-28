@@ -5,6 +5,7 @@ module.exports = {
   create(createArgs) {
     return Product.create(createArgs);
   },
+
   update(id, updateArgs) {
     return Product.update(updateArgs, {
       where: {
@@ -12,6 +13,7 @@ module.exports = {
       },
     });
   },
+
   findAll() {
     return Product.findAll(
       {
@@ -28,6 +30,7 @@ module.exports = {
       }
     );
   },
+
   findOne(id) {
     return Product.findOne({
       where: {
@@ -35,6 +38,15 @@ module.exports = {
       },
     });
   },
+
+  findAllByIdSeller(id) {
+    return Product.findAll({
+      where: {
+        id_seller: id,
+      },
+    });
+  },
+
   findByCategory(id) {
     return Product.findOne(
       {
