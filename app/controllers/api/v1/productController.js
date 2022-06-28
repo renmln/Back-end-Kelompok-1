@@ -29,6 +29,12 @@ module.exports = {
       .update(req.params.id, req.body)
       .then((products) => {
         res.status(200).json(products);
+        const title = "Berhasil di perbarui";
+        const userId = products.id_seller
+        const productId = products.id
+        const message = null
+        const notif = notificationService
+        .create(title, userId, productId, message)
       })
       .catch((err) => {
         res.status(422).json({
