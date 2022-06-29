@@ -15,20 +15,13 @@ module.exports = {
   },
 
   findAll() {
-    return Product.findAll(
-      {
-        include: [
-          {
-            model: Category,
-          },
-        ],
-      },
-      {
-        where: {
+    return Product.findAll({
+      where: [
+        {
           status: null,
         },
-      }
-    );
+      ],
+    });
   },
 
   findOne(id) {

@@ -32,19 +32,32 @@ function checkPassword(encryptedPassword, password) {
 
 function createToken(data) {
   return jwt.sign(data, process.env.JWT_SECRET || "Rahasia", {
-    expiresIn: 10 * 60,
+    expiresIn: 60 * 60,
   });
 }
 
 function verifyToken(token) {
-  return jwt.verify(token, process.env.JWT_SECRET || "Rahasia");
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET || "Rahasia");
+  } catch (error) {
+    return null;
+  }
 }
 
 module.exports = {
   async register(req, res) {
     const name = req.body.name;
     const email = req.body.email;
-    const role = "buyer";
+
+    // Check if user already exists
+    const existedUser = await userService.findId(email);
+    if (existedUser) {
+      return res.status(400).send({
+        status: "FAIL",
+        message: "Email telah digunakan",
+      });
+    }
+
     const password = await encryptPassword(req.body.password);
     if (req.body.password === "") {
       res.status(422).json({
@@ -53,12 +66,13 @@ module.exports = {
       });
       return;
     }
+
     userService
-      .create({ name, email, password, role })
-      .then((post) => {
+      .create({ name, email, password })
+      .then((user) => {
         res.status(201).json({
-          status: "OK",
-          data: post,
+          status: "REGISTER_SUCCESS",
+          data: user,
         });
       })
       .catch((err) => {
@@ -73,58 +87,48 @@ module.exports = {
     const email = req.body.email.toLowerCase(); // Biar case insensitive
     const password = req.body.password;
 
-    const user = await User.findOne({
+    let user = await User.findOne({
       where: { email },
     });
-
     if (!user) {
       res.status(404).json({ message: "Email tidak ditemukan" });
       return;
     }
 
     const isPasswordCorrect = await checkPassword(user.password, password);
-
-    //create token
-    const token = createToken({
-      id: user.id,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    });
-
     if (!isPasswordCorrect) {
       res.status(401).json({ message: "Password salah!" });
       return;
     }
-    res.cookie("jwt", token, { httpOnly: true });
-    if (token) {
-      jwt.verify(
-        token,
-        process.env.JWT_SIGNATURE_KEY || "Rahasia",
-        (err, decodedToken) => {
-          if (err) {
-            console.log(err, message);
-            res.status(422).json({
-              status: "FAIL",
-              message: err.message,
-            });
-          } else {
-            console.log(decodedToken);
-            // const role = decodedToken.role;
-            res.status(201).json({
-              id: user.id,
-              email: user.email,
-              token,
-              createdAt: user.createdAt,
-              updatedAt: user.updatedAt,
-            });
-          }
-        }
+
+    user = JSON.parse(JSON.stringify(user));
+    delete user.password;
+
+    const token = createToken(user);
+
+    res.status(200).json({
+      status: "LOGIN_SUCCESS",
+      token,
+      user,
+    });
+  },
+
+  async whoAmI(req, res) {
+    try {
+      const bearerToken = req.headers.authorization;
+      const token = bearerToken.split("Bearer ")[1];
+      const tokenPayload = verifyToken(token);
+
+      const user = JSON.parse(
+        JSON.stringify(await userService.findId(tokenPayload.email))
       );
-    } else {
-      res.status(422).json({
-        status: "FAIL",
-        message: err.message,
+      delete user.password;
+
+      res.status(200).json({ user });
+    } catch (error) {
+      res.status(401).json({
+        status: "FAILED",
+        message: "Token expired",
       });
     }
   },

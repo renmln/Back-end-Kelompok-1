@@ -17,9 +17,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      role: {
-        type: Sequelize.STRING,
-      },
       city: {
         type: Sequelize.STRING,
         allowNull: true,
