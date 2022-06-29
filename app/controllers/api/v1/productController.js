@@ -1,6 +1,6 @@
 const productService = require("../../../services/productService");
-const cloudinary = require("../../../cloudinary");
 const notificationService = require("../../../services/notificationService");
+const cloudinary = require("../../../cloudinary");
 const jwt = require("jsonwebtoken");
 const { image } = require("../../../cloudinary");
 

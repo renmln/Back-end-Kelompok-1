@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
       });
       models.Notification.belongsTo(models.Product, {
-        foreignKey: "ProductId",
+        foreignKey: "productId",
       });
     }
   }

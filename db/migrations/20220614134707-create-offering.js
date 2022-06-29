@@ -22,13 +22,6 @@ module.exports = {
           key: "id",
         },
       },
-      id_seller: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-      },
       offering_price: {
         type: Sequelize.INTEGER,
       },
