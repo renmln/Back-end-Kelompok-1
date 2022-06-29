@@ -39,7 +39,6 @@ module.exports = {
     penawaranService
       .create({
         id_product: req.body.id_product,
-        id_seller: req.body.id_seller,
         id_buyer: req.body.id_buyer,
         offering_price: req.body.offering_price,
       })

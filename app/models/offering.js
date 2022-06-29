@@ -12,9 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Offering.belongsTo(models.User, {
-        foreignKey: "id_seller",
-      }),
-      models.Offering.belongsTo(models.User, {
         foreignKey: "id_buyer",
       }),
       models.Offering.belongsTo(models.Product, {
@@ -24,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Offering.init({
     id_product: DataTypes.INTEGER,
-    id_seller: DataTypes.INTEGER,
     id_buyer: DataTypes.INTEGER,
     offering_price: DataTypes.INTEGER
   }, {
