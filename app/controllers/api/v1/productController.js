@@ -66,7 +66,7 @@ module.exports = {
           status: "PRODUCT_ADDED",
           products,
         });
-        const title = "Berhasil di perbarui";
+        let title = "Berhasil di perbarui";
         const userId = products.id_seller;
         const productId = products.id;
         const productName = products.product_name;
@@ -99,7 +99,7 @@ module.exports = {
       .update(req.params.id, req.body)
       .then((products) => {
         res.status(200).json(products);
-        const title = "Berhasil di perbarui";
+        let title = "Berhasil di perbarui";
         const userId = products.id_seller;
         const productId = products.id;
         const productName = products.product_name;
