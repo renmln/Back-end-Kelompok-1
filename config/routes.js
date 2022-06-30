@@ -68,10 +68,13 @@ apiRouter.get(
 apiRouter.get("/api/v1/products/filter/:category");
 
 //Offered product
-apiRouter.post("/api/v1/products/offer");
 apiRouter.get("/api/v1/products/offered/:id");
+apiRouter.post(
+  "/api/v1/products/offer",
+  controllers.api.v1.penawaranController.createPenawaran
+);
 
-//transaction
+//create a transaction
 apiRouter.post("/api/v1/products/transaction");
 apiRouter.get("/api/v1/products/transaction/:id");
 

@@ -13,11 +13,15 @@ module.exports = {
     return productRepository.findAll();
   },
 
-  findOne(id) {
-    return productRepository.findOne(id);
+  findMyProduct(id) {
+    return productRepository.findMyProduct(id);
   },
 
   findAllByIdSeller(id) {
     return productRepository.findAllByIdSeller(id);
   },
+
+  findProduct(id) {
+    return productRepository.findProduct(id);
+  }
 };
