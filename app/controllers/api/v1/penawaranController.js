@@ -1,24 +1,11 @@
 const penawaranService = require("../../../services/penawaranService");
-const notificationService = require("../../../services/notificationService");
+const productService = require("../../../services/productService");
+const userService = require("../../../repositories/userRepository");
+const mail = require('./notificationController')
 
-async function notifDibeli(x, y, z) {
-  const title = "Penawaran produk";
-  const userId = x
-  const productId = y
-  const message = "Ditawar Rp " + z
-  const notif = await notificationService
-  .create(title, userId, productId, message)
+function rupiah(number) {
+  return new Intl.NumberFormat("id-ID", {style: "currency",currency: "IDR"}).format(number);
 }
-
-async function notifBeli(x, y, z) {
-  const title = "Berhasil ditawar";
-  const userId = x
-  const productId = y
-  const message = "Ditawar Rp " + z
-  const notif = await notificationService
-  .create(title, userId, productId, message)
-}
-
 
 module.exports = {
   async listPenawaran(req, res) {
@@ -47,8 +34,30 @@ module.exports = {
           status: "OK",
           data: post,
         });
-        let notif = notifDibeli(post.id_seller,post.id_product,post.offering_price)
-        notif = notifBeli(post.id_buyer,post.id_product,post.offering_price)
+        const price = post.offering_price
+        const buyer = userService.findUserEmail(post.id_buyer)
+        .then((buyer) => {
+          const bname = buyer.name
+          const bemail = buyer.email
+          const product = productService.findProduct(post.id_product)
+          .then((product) => {
+            const productName = product.product_name
+            const title = "Penawaran produk"
+            const message = "Ditawar " + rupiah(price)
+            const seller = userService.findUserEmail(product.id_seller)
+            .then((seller) => {
+              const sname = seller.name
+              const semail = seller.email
+              const btemp = "offeringproduct"
+              const stemp = "getoffering"
+              let notif = mail.notifApp(title, bname, productName, message)
+              notif = mail.notifApp(title, sname, productName, message)
+              let email = mail.sendMail(bemail, title, btemp, bname, productName, price)
+              email = mail.sendMail(semail, title, stemp, sname, productName, price)
+            })
+
+          })
+        })
       })
       .catch((err) => {
         res.status(422).json({

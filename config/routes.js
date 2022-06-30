@@ -63,7 +63,7 @@ apiRouter.post(
 );
 
 //offering a product
-apiRouter.post("/api/v1/products/offer");
+apiRouter.post("/api/v1/products/offer", controllers.api.v1.penawaranController.createPenawaran);
 
 //create a transaction
 apiRouter.post("/api/v1/products/transaction");

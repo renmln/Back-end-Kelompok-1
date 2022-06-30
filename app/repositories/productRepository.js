@@ -31,8 +31,8 @@ module.exports = {
     );
   },
 
-  findOne(id) {
-    return Product.findOne({
+  findMyProduct(id) {
+    return Product.findAll({
       where: {
         id_seller: id,
       },
@@ -63,4 +63,12 @@ module.exports = {
       }
     );
   },
+
+  findProduct(id) {
+    return Product.findOne({
+      where: {
+        id
+      }
+    })
+  }
 };

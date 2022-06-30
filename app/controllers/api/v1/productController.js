@@ -1,5 +1,6 @@
 const productService = require("../../../services/productService");
-const notificationService = require("../../../services/notificationService");
+const userService = require("../../../services/userService");
+const mail = require('./notificationController')
 const cloudinary = require("../../../cloudinary");
 
 module.exports = {
@@ -12,9 +13,19 @@ module.exports = {
         const title = "Berhasil di terbitkan";
         const userId = products.id_seller
         const productId = products.id
+        const productName = products.product_name
+        const productPrice = products.price
         const message = null
-        const notif = notificationService
-        .create(title, userId, productId, message)
+        const notif = mail.notifApp(title, userId, productId,message)
+        const user = userService
+        .findEmail(userId)
+        .then((user) => {
+          const email = user.email
+          const subject = "Menambahkan produk"
+          const template = "addproduct"
+          const name = user.name
+          const send = mail.sendMail(email, subject, template, name, productName, productPrice)
+        })
       })
     }catch(err) {
         res.status(422).json({
@@ -32,9 +43,18 @@ module.exports = {
         const title = "Berhasil di perbarui";
         const userId = products.id_seller
         const productId = products.id
+        const productName = products.product_name
         const message = null
-        const notif = notificationService
-        .create(title, userId, productId, message)
+        const notif = mail.notifApp(title, userId, productId,message)
+        const user = userService
+        .findEmail(userId)
+        .then((user) => {
+          const email = user.email
+          const subject = "Menambahkan produk"
+          const template = "updateproduct"
+          const name = user.name
+          const send = mail.sendMail(email, subject, template, name, productName)
+        })
       })
       .catch((err) => {
         res.status(422).json({
