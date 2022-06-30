@@ -43,6 +43,10 @@ apiRouter.post(
   uploadOnMemory.array("picture", 4),
   controllers.api.v1.productController.addProduct
 ); // Add Product
+apiRouter.get(
+  "api/v1/product/:id",
+  controllers.api.v1.productController.findOneProduct
+);
 
 apiRouter.put(
   "/api/v1/product/update/:id",

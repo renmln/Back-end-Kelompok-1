@@ -142,6 +142,27 @@ module.exports = {
     }
   },
 
+  async findOneProduct(req, res) {
+    try {
+      const products = await productService
+        .findOne(req.params.id)
+        .then((products) => {
+          res.status(200).json(products);
+        })
+        .catch((err) => {
+          res.status(422).json({
+            status: "FAIL",
+            message: err.message,
+          });
+        });
+    } catch (error) {
+      res.status(422).json({
+        status: "FAIL",
+        message: error.message,
+      });
+    }
+  },
+
   async uploadProductImages(req, res) {
     try {
       const imageUrlList = [];
