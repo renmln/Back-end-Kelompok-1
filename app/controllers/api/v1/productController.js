@@ -66,7 +66,7 @@ module.exports = {
           status: "PRODUCT_ADDED",
           products,
         });
-        const title = "Berhasil di perbarui";
+        const title = "Berhasil di ditambahkan";
         const userId = products.id_seller;
         const productId = products.id;
         const productName = products.product_name;
@@ -75,7 +75,7 @@ module.exports = {
         const user = userService.findEmail(userId).then((user) => {
           const email = user.email;
           const subject = "Menambahkan produk";
-          const template = "updateproduct";
+          const template = "addproduct";
           const name = user.name;
           const send = mail.sendMail(
             email,
@@ -107,7 +107,7 @@ module.exports = {
         const notif = mail.notifApp(title, userId, productId, message);
         const user = userService.findEmail(userId).then((user) => {
           const email = user.email;
-          const subject = "Menambahkan produk";
+          const subject = "Mengubah detail produk";
           const template = "updateproduct";
           const name = user.name;
           const send = mail.sendMail(
