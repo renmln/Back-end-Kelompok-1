@@ -70,6 +70,7 @@ module.exports = {
         const userId = products.id_seller;
         const productId = products.id;
         const productName = products.product_name;
+        const price = product.price
         const message = null;
         const notif = mail.notifApp(title, userId, productId, message);
         const user = userService.findEmail(userId).then((user) => {
@@ -82,7 +83,8 @@ module.exports = {
             subject,
             template,
             name,
-            productName
+            productName,
+            price
           );
         });
       });
@@ -103,6 +105,7 @@ module.exports = {
         const userId = products.id_seller;
         const productId = products.id;
         const productName = products.product_name;
+        const price = product.price
         const message = null;
         const notif = mail.notifApp(title, userId, productId, message);
         const user = userService.findEmail(userId).then((user) => {
@@ -115,7 +118,8 @@ module.exports = {
             subject,
             template,
             name,
-            productName
+            productName,
+            price
           );
         });
       })
