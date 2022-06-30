@@ -44,10 +44,10 @@ module.exports = {
           const handlebarOptions = {
             viewEngine: {
               extName: ".handlebars",
-              partialsDir: path.resolve('./app/controllers/api/v1/mail'),
+              partialsDir: path.resolve('./app/mail'),
               defaultLayout: false,
             },
-            viewPath: path.resolve('./app/controllers/api/v1/mail'),
+            viewPath: path.resolve('./app/mail'),
             extName: ".handlebars",
           }
           
