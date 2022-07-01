@@ -54,8 +54,13 @@ module.exports = {
                   const semail = seller.email;
                   const btemp = "offeringproduct";
                   const stemp = "getoffering";
-                  let notif = mail.notifApp(title, buyer.id, product.id, message);
-                  notif = mail.notifApp(title, seller.id , product.id, message);
+                  let notif = mail.notifApp(
+                    title,
+                    buyer.id,
+                    product.id,
+                    message
+                  );
+                  notif = mail.notifApp(title, seller.id, product.id, message);
                   let email = mail.sendMail(
                     bemail,
                     title,
