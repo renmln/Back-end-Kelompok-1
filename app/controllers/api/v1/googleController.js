@@ -1,4 +1,3 @@
-const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const userService = require('../../../services/userService')
 const { OAuth2Client } = require("google-auth-library");
