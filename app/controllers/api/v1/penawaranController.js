@@ -1,7 +1,17 @@
 const penawaranService = require("../../../services/penawaranService");
 const productService = require("../../../services/productService");
+const productController = require("../v1/productController");
 const userService = require("../../../repositories/userRepository");
 const mail = require("./notificationController");
+const jwt = require("jsonwebtoken");
+
+function verifyToken(token) {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET || "Rahasia");
+  } catch (error) {
+    return null;
+  }
+}
 
 function rupiah(number) {
   return new Intl.NumberFormat("id-ID", {
@@ -25,17 +35,22 @@ module.exports = {
       });
   },
 
-  createPenawaran(req, res) {
-    penawaranService
-      .create({
+  async createPenawaran(req, res) {
+    try {
+      const bearerToken = req.headers.authorization;
+      const token = bearerToken.split("Bearer ")[1];
+      const tokenPayload = verifyToken(token);
+
+      const createArgs = {
+        id_buyer: tokenPayload.id,
         id_product: req.body.id_product,
-        id_buyer: req.body.id_buyer,
         offering_price: req.body.offering_price,
-      })
-      .then((post) => {
+      };
+
+      penawaranService.create(createArgs).then((post) => {
         res.status(200).json({
           status: "OK",
-          data: post,
+          post,
         });
         const price = post.offering_price;
         const buyer = userService.findUserEmail(post.id_buyer).then((buyer) => {
@@ -80,13 +95,13 @@ module.exports = {
                 });
             });
         });
-      })
-      .catch((err) => {
-        res.status(422).json({
-          status: "FAIL",
-          message: err.message,
-        });
       });
+    } catch (err) {
+      res.status(422).json({
+        status: "FAIL",
+        message: err.message,
+      });
+    }
   },
 
   async destroyPenawaran(req, res) {

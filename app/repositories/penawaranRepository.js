@@ -5,7 +5,7 @@ const { Product } = require("../models");
 module.exports = {
   create(createArgs) {
     return Offering.create(createArgs, {
-      include: [{model: Product},{model: User}]
+      include: [{ model: Product }, { model: User }],
     });
   },
 
