@@ -15,6 +15,22 @@ module.exports = {
       });
   },
 
+  async destroyTransaksi(req, res) {
+    transaksiService
+      .delete(req.params.id)
+      .then((transaksi) => {
+        res.status(200).json({
+          status: "OK",
+          message: "Transaction deleted",
+        });
+      })
+      .catch((err) => {
+        res.status(422).json({
+          status: "FAIL",
+          message: err.message,
+        });
+      });
+  },
   //   createPenawaran(req, res) {
   //     transaksiService
   //       .create({

@@ -17,4 +17,8 @@ module.exports = {
       throw err;
     }
   },
+
+  async delete(id) {
+    return transaksiRepository.delete(id);
+  },
 };

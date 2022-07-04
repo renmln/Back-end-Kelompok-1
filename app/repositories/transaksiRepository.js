@@ -12,4 +12,8 @@ module.exports = {
   findAll() {
     return Transaction.findAll({ include: [{ model: Offering, model: User }] });
   },
+
+  delete(id) {
+    return Transaction.destroy({ where: { id } });
+  },
 };
