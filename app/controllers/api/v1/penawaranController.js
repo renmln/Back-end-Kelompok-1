@@ -45,6 +45,7 @@ module.exports = {
         id_buyer: tokenPayload.id,
         id_product: req.body.id_product,
         offering_price: req.body.offering_price,
+        no_hp: req.body.no_hp,
       };
 
       penawaranService.create(createArgs).then((post) => {
@@ -56,44 +57,21 @@ module.exports = {
         const buyer = userService.findUserEmail(post.id_buyer).then((buyer) => {
           const bname = buyer.name;
           const bemail = buyer.email;
-          const product = productService
-            .findProduct(post.id_product)
-            .then((product) => {
-              const productName = product.product_name;
-              const title = "Penawaran produk";
-              const message = "Ditawar " + rupiah(price);
-              const seller = userService
-                .findUserEmail(product.id_seller)
-                .then((seller) => {
-                  const sname = seller.name;
-                  const semail = seller.email;
-                  const btemp = "offeringproduct";
-                  const stemp = "getoffering";
-                  let notif = mail.notifApp(
-                    title,
-                    buyer.id,
-                    product.id,
-                    message
-                  );
-                  notif = mail.notifApp(title, seller.id, product.id, message);
-                  let email = mail.sendMail(
-                    bemail,
-                    title,
-                    btemp,
-                    bname,
-                    productName,
-                    price
-                  );
-                  email = mail.sendMail(
-                    semail,
-                    title,
-                    stemp,
-                    sname,
-                    productName,
-                    price
-                  );
-                });
+          const product = productService.findProduct(post.id_product).then((product) => {
+            const productName = product.product_name;
+            const title = "Penawaran produk";
+            const message = "Ditawar " + rupiah(price);
+            const seller = userService.findUserEmail(product.id_seller).then((seller) => {
+              const sname = seller.name;
+              const semail = seller.email;
+              const btemp = "offeringproduct";
+              const stemp = "getoffering";
+              let notif = mail.notifApp(title, buyer.id, product.id, message);
+              notif = mail.notifApp(title, seller.id, product.id, message);
+              let email = mail.sendMail(bemail, title, btemp, bname, productName, price);
+              email = mail.sendMail(semail, title, stemp, sname, productName, price);
             });
+          });
         });
       });
     } catch (err) {

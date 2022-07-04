@@ -25,6 +25,10 @@ module.exports = {
       offering_price: {
         type: Sequelize.INTEGER,
       },
+      no_hp: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
