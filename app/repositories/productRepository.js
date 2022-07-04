@@ -15,24 +15,17 @@ module.exports = {
   },
 
   findAll() {
-    return Product.findAll(
-      {
-        include: [
-          {
-            model: Category,
-          },
-        ],
-      },
-      {
-        where: {
+    return Product.findAll({
+      where: [
+        {
           status: null,
         },
-      }
-    );
+      ],
+    });
   },
 
-  findOne(id) {
-    return Product.findOne({
+  findMyProduct(id) {
+    return Product.findAll({
       where: {
         id_seller: id,
       },
@@ -48,7 +41,7 @@ module.exports = {
   },
 
   findByCategory(id) {
-    return Product.findOne(
+    return Product.findAll(
       {
         include: [
           {
@@ -63,4 +56,12 @@ module.exports = {
       }
     );
   },
+
+  findProduct(id) {
+    return Product.findOne({
+      where: {
+        id
+      }
+    })
+  }
 };

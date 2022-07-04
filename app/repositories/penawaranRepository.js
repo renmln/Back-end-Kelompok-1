@@ -1,8 +1,12 @@
 const { Offering } = require("../models");
+const { User } = require("../models");
+const { Product } = require("../models");
 
 module.exports = {
   create(createArgs) {
-    return Offering.create(createArgs);
+    return Offering.create(createArgs, {
+      include: [{ model: Product }, { model: User }],
+    });
   },
 
   findPk(id) {

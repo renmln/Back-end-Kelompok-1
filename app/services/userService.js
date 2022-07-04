@@ -1,7 +1,7 @@
 const userRepository = require("../repositories/userRepository");
 
 module.exports = {
-  async create(requestBody) {
+  create(requestBody) {
     return userRepository.create(requestBody);
   },
 
@@ -11,6 +11,10 @@ module.exports = {
 
   findId(id) {
     return userRepository.findId(id);
+  },
+
+  findEmail(id) {
+    return userRepository.findUserEmail(id);
   },
 
   list() {

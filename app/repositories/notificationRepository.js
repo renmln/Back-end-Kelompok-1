@@ -9,8 +9,12 @@ module.exports = {
             message
         })
     },
-    findAll() {
+    findAll(id) {
         return Notification.findAll({
+            where: {
+                userId: id
+            }
+        },{
             limit: 10,
             order: 'createdAt DESC'
         })
