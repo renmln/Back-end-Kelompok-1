@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
+const axios = require("axios");
 
 function encryptPassword(password) {
   return new Promise((resolve, reject) => {
@@ -132,4 +133,40 @@ module.exports = {
       });
     }
   },
+
+  async google(req, res) {
+    const { access_token } = req.body;
+
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
+      );
+      const { sub, email, name } = response.data;
+
+      let user = await userService.findIdByEmail(email);
+      if (!user)
+        user = await userService.create({
+          email,
+          name,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+
+      const user_data = JSON.parse(JSON.stringify(user));
+      delete user_data.encryptedPassword;
+
+      const token = createToken({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      });
+
+      res.status(201).json({ token, user: user_data });
+    } catch (err) {
+      console.log(err.message);
+      res.status(401).json({ error: { name: err.name, message: err.message } });
+    }
+  }
 };
