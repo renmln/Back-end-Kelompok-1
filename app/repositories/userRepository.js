@@ -16,17 +16,25 @@ module.exports = {
   findIdByEmail(email) {
     return User.findOne({
       where: {
-        email
+        email,
       },
     });
   },
-  
+
   findUserEmail(id) {
     return User.findOne({
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
+  },
+
+  findUserID(id) {
+    return User.findOne({
+      where: {
+        id,
+      },
+    });
   },
 
   findAll() {
