@@ -18,4 +18,10 @@ module.exports = {
       where: { id },
     });
   },
+
+  findBuyer(id_buyer) {
+    return Offering.findOne({
+      where: { id: id_buyer },
+    });
+  },
 };

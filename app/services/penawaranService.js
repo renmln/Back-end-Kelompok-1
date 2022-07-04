@@ -21,4 +21,8 @@ module.exports = {
   delete(id) {
     return penawaranRepository.delete(id);
   },
+
+  findBuyer(id_buyer) {
+    return penawaranRepository.findBuyer(id_buyer);
+  },
 };

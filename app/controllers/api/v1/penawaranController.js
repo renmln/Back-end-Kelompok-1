@@ -1,4 +1,5 @@
 const penawaranService = require("../../../services/penawaranService");
+const { User } = require("../../../models/")
 
 module.exports = {
   async listPenawaran(req, res) {
@@ -52,4 +53,13 @@ module.exports = {
         });
       });
   },
+
+  async redirectWhatsapp(req, res) {
+    // fetch id_buyer from Offering
+    penawaranService.findBuyer(req.params.id_buyer).then((data) => {
+      const user = await user.findOne({ where: { id: data }})
+      return `https://api.whatsapp.com/send/?phone=${user.no_hp}&text&app_absent=0`
+    });
+  },
 };
+

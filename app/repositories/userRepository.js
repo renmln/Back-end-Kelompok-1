@@ -25,6 +25,10 @@ module.exports = {
     return User.findAll();
   },
 
+  // findBuyer(id_buyer) {
+
+  // }
+
   //   update(id, updateArgs) {
   //     return User.update(updateArgs, {
   //       where: {
