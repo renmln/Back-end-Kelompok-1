@@ -13,6 +13,14 @@ module.exports = {
     });
   },
 
+  findId(id) {
+    return User.findOne({
+      where: {
+        email: id,
+      },
+    });
+  },
+
   findIdByEmail(email) {
     return User.findOne({
       where: {
