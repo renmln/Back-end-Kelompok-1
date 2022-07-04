@@ -91,7 +91,7 @@ module.exports = {
 
   async findUserById(req, res) {
     const user = await userService
-      .findId(req.params.id)
+      .findUserID(req.params.id)
       .then((user) => {
         res.status(200).json(user);
       })
