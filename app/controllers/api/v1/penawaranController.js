@@ -57,27 +57,96 @@ module.exports = {
         const buyer = userService.findUserEmail(post.id_buyer).then((buyer) => {
           const bname = buyer.name;
           const bemail = buyer.email;
-          const product = productService.findProduct(post.id_product).then((product) => {
-            const productName = product.product_name;
-            const title = "Penawaran produk";
-            const message = "Ditawar " + rupiah(price);
-            const seller = userService.findUserEmail(product.id_seller).then((seller) => {
-              const sname = seller.name;
-              const semail = seller.email;
-              const btemp = "offeringproduct";
-              const stemp = "getoffering";
-              let notif = mail.notifApp(title, buyer.id, product.id, message);
-              notif = mail.notifApp(title, seller.id, product.id, message);
-              let email = mail.sendMail(bemail, title, btemp, bname, productName, price);
-              email = mail.sendMail(semail, title, stemp, sname, productName, price);
+          const product = productService
+            .findProduct(post.id_product)
+            .then((product) => {
+              const productName = product.product_name;
+              const title = "Penawaran produk";
+              const message = "Ditawar " + rupiah(price);
+              const seller = userService
+                .findUserEmail(product.id_seller)
+                .then((seller) => {
+                  const sname = seller.name;
+                  const semail = seller.email;
+                  const btemp = "offeringproduct";
+                  const stemp = "getoffering";
+                  let notif = mail.notifApp(
+                    title,
+                    buyer.id,
+                    product.id,
+                    message
+                  );
+                  notif = mail.notifApp(title, seller.id, product.id, message);
+                  let email = mail.sendMail(
+                    bemail,
+                    title,
+                    btemp,
+                    bname,
+                    productName,
+                    price
+                  );
+                  email = mail.sendMail(
+                    semail,
+                    title,
+                    stemp,
+                    sname,
+                    productName,
+                    price
+                  );
+                });
             });
-          });
         });
       });
     } catch (err) {
       res.status(422).json({
         status: "FAIL",
         message: err.message,
+      });
+    }
+  },
+
+  async findAllByIdBuyer(req, res) {
+    try {
+      const bearerToken = req.headers.authorization;
+      const token = bearerToken.split("Bearer ")[1];
+      const tokenPayload = verifyToken(token);
+
+      await penawaranService
+        .findByIdBuyer(tokenPayload.id)
+        .then((offerings) => {
+          res.status(200).json(offerings);
+        })
+        .catch((err) => {
+          res.status(422).json({
+            status: "FAIL",
+            message: err.message,
+          });
+        });
+    } catch (err) {
+      res.status(422).json({
+        status: "FAIL",
+        message: err.message,
+      });
+    }
+  },
+
+  async findOneOffering(req, res) {
+    try {
+      const offerings = await offeringService
+        .findOffering(req.params.id)
+        .then((offerings) => {
+          res.status(200).json(offerings);
+        })
+        .catch((err) => {
+          res.status(422).json({
+            status: "FAIL",
+            message: err.message,
+          });
+        });
+    } catch (error) {
+      res.status(422).json({
+        status: "FAIL",
+        message: error.message,
       });
     }
   },

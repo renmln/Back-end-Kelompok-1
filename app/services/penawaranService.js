@@ -18,6 +18,14 @@ module.exports = {
     }
   },
 
+  findByIdBuyer() {
+    return penawaranRepository.findByIdBuyer(id);
+  },
+
+  findOffering(id) {
+    return penawaranRepository.findOffering(id);
+  },
+
   delete(id) {
     return penawaranRepository.delete(id);
   },
