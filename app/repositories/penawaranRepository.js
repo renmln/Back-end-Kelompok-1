@@ -13,27 +13,27 @@ module.exports = {
     return Offering.findByPk(id);
   },
 
-  findByIdBuyer(id) {
-    return Offering.findAll({
-      where: { id_buyer: id },
-    });
-  },
-
   findAll() {
     return Offering.findAll({ include: [{ model: Product, model: User }] });
-  },
-
-  findOffering(id) {
-    return Offering.findOne({
-      where: {
-        id,
-      },
-    });
   },
 
   delete(id) {
     return Offering.destroy({
       where: { id },
+    });
+  },
+  findOffer(id) {
+    return Offering.findOne({
+      where: {
+        id_product: id
+      }
+    })
+  },
+  findAllByIdProduct(id) {
+    return Offering.findAll({
+      where: {
+        id_product: id,
+      },
     });
   },
 };

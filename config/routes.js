@@ -50,6 +50,7 @@ apiRouter.get(
 
 apiRouter.put(
   "/api/v1/product/update/:id",
+  uploadOnMemory.array("picture", 4),
   controllers.api.v1.productController.updateProduct
 ); // Edit Product
 apiRouter.put(
@@ -69,16 +70,8 @@ apiRouter.get("/api/v1/products/filter/:category");
 
 //Offered product
 apiRouter.get(
-  "/api/v1/products/offers",
-  controllers.api.v1.penawaranController.listPenawaran
-);
-apiRouter.get(
-  "/api/v1/products/offer",
-  controllers.api.v1.penawaranController.findAllByIdBuyer
-);
-apiRouter.get(
-  "/api/v1/products/offer/:id",
-  controllers.api.v1.penawaranController.findOneOffering
+  "/api/v1/products/offered/:id",
+  controllers.api.v1.penawaranController.findThisOffer
 );
 apiRouter.post(
   "/api/v1/products/offer",

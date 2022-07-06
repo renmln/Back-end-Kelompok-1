@@ -98,38 +98,108 @@ module.exports = {
   },
 
   async updateProduct(req, res) {
-    const products = await productService
-      .update(req.params.id, req.body)
-      .then((products) => {
-        res.status(200).json(products);
-        let title = "Berhasil di perbarui";
-        const userId = products.id_seller;
-        const productId = products.id;
-        const productName = products.product_name;
-        const price = products.price;
-        const message = null;
-        const notif = mail.notifApp(title, userId, productId, message);
-        const user = userService.findEmail(userId).then((user) => {
-          const email = user.email;
-          const subject = "Mengubah detail produk";
-          const template = "updateproduct";
-          const name = user.name;
-          const send = mail.sendMail(
-            email,
-            subject,
-            template,
-            name,
-            productName,
-            price
-          );
+    try {
+      const bearerToken = req.headers.authorization;
+      const token = bearerToken.split("Bearer ")[1];
+      const tokenpayload = verifyToken(token);
+
+      // Delete Foto Produk Lama
+      if (req.files.length !== 0) {
+        const product = await productService.findProduct(req.params.id);
+        const oldImageList = [
+          product.image_1,
+          product.image_2,
+          product.image_3,
+          product.image_4,
+        ];
+        for (let i = 0; i < oldImageList.length; i++) {
+          if (oldImageList[i] !== null) {
+            cloudinary.uploader.destroy(oldImageList[i].substring(65, 85));
+          }
+        }
+      }
+
+      // Upload Foto Produk Baru
+      const imageUrlList = [];
+      if (req.files.length !== 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          const fileBase64 = req.files[i].buffer.toString("base64");
+          const file = `data:${req.files[i].mimetype};base64,${fileBase64}`;
+          const result = await cloudinary.uploader.upload(file);
+          imageUrlList.push(result.url);
+        }
+      }
+      if (imageUrlList.length === 0)
+        (image_1 = null), (image_2 = null), (image_3 = null), (image_4 = null);
+      if (imageUrlList.length === 1)
+        (image_1 = imageUrlList[0]),
+          (image_2 = null),
+          (image_3 = null),
+          (image_4 = null);
+      if (imageUrlList.length === 2)
+        (image_1 = imageUrlList[0]),
+          (image_2 = imageUrlList[1]),
+          (image_3 = null),
+          (image_4 = null);
+      if (imageUrlList.length === 3)
+        (image_1 = imageUrlList[0]),
+          (image_2 = imageUrlList[1]),
+          (image_3 = imageUrlList[2]),
+          (image_4 = null);
+      if (imageUrlList.length === 4)
+        (image_1 = imageUrlList[0]),
+          (image_2 = imageUrlList[1]),
+          (image_3 = imageUrlList[2]),
+          (image_4 = imageUrlList[3]);
+
+      const id_seller = tokenpayload.id;
+      // Argumen untuk update produk
+      const updateArgs = {
+        id_seller: id_seller,
+        product_name: req.body.product_name,
+        price: req.body.price,
+        category: req.body.category,
+        description: req.body.description,
+        image_1,
+        image_2,
+        image_3,
+        image_4,
+      };
+
+      await productService
+        .update(req.params.id, updateArgs)
+        .then((products) => {
+          res.status(200).json({
+            status: "UPDATE_PRODUCT_SUCCESS",
+            products,
+          });
+          // let title = "Berhasil di perbarui";
+          // const userId = products.id_seller;
+          // const productId = products.id;
+          // const productName = products.product_name;
+          // const price = products.price;
+          // const message = null;
+          // const notif = mail.notifApp(title, userId, productId, message);
+          // const user = userService.findEmail(userId).then((user) => {
+          //     const email = user.email;
+          //     const subject = "Mengubah detail produk";
+          //     const template = "updateproduct";
+          //     const name = user.name;
+          //     const send = mail.sendMail(email, subject, template, name, productName, price);
+          // });
+        })
+        .catch((err) => {
+          res.status(422).json({
+            status: "FAIL",
+            message: err.message,
+          });
         });
-      })
-      .catch((err) => {
-        res.status(422).json({
-          status: "FAIL",
-          message: err.message,
-        });
+    } catch (error) {
+      res.status(422).json({
+        status: "FAIL",
+        message: error.message,
       });
+    }
   },
 
   async findAllProduct(req, res) {
