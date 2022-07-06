@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
-const axios = require("axios");
+const axios = require("axios")
 
 function encryptPassword(password) {
   return new Promise((resolve, reject) => {
@@ -145,7 +145,7 @@ module.exports = {
 
       let user = await userService.findIdByEmail(email);
       if (!user)
-        user = await userService.create({
+        user = await User.create({
           email,
           name,
           createdAt: new Date(),
@@ -159,6 +159,7 @@ module.exports = {
         id: user.id,
         name: user.name,
         email: user.email,
+        registeredVia: "google",
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       });

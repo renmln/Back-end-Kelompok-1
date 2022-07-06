@@ -1,4 +1,4 @@
-const userService = require("../../../repositories/userRepository");
+const userService = require("../../../services/userService");
 const cloudinary = require("../../../cloudinary");
 const { promisify } = require("util");
 const cloudinaryUpload = promisify(cloudinary.uploader.upload);
