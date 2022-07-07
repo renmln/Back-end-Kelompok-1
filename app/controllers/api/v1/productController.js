@@ -4,6 +4,7 @@ const mail = require("./notificationController");
 const cloudinary = require("../../../cloudinary");
 const jwt = require("jsonwebtoken");
 const { image } = require("../../../cloudinary");
+const { json } = require("body-parser");
 
 function verifyToken(token) {
   try {
@@ -282,4 +283,17 @@ module.exports = {
       });
     }
   },
+
+  async findProductsByCategory(req, res) {
+    const products = await productService.findByCategory(req.params.category)
+    .then((products) => {
+      res.status(200).json(products)
+    })
+    .catch((err) => {
+      res.status(422).json({
+        status: "FAIL",
+        message: err.message,
+      });
+    })
+  }
 };

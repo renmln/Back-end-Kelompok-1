@@ -66,7 +66,9 @@ apiRouter.get(
 );
 
 //get filtered product list
-apiRouter.get("/api/v1/products/filter/:category");
+apiRouter.get("/api/v1/products/filter/:category",
+ controllers.api.v1.productController.findProductsByCategory
+);
 
 //Offered product
 apiRouter.get(

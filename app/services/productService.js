@@ -17,6 +17,10 @@ module.exports = {
     return productRepository.findMyProduct(id);
   },
 
+  findByCategory(type) {
+    return productRepository.findByCategory(type);
+  },
+
   findAllByIdSeller(id) {
     return productRepository.findAllByIdSeller(id);
   },

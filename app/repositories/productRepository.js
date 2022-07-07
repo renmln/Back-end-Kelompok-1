@@ -40,21 +40,13 @@ module.exports = {
     });
   },
 
-  findByCategory(id) {
-    return Product.findAll(
-      {
-        include: [
-          {
-            model: Category,
-          },
-        ],
-      },
-      {
+  findByCategory(type) {
+    return Product.findAll({
         where: {
-          id_category: id,
-        },
-      }
-    );
+            category : type,
+            status: null
+        }
+    })
   },
 
   findProduct(id) {
