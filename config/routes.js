@@ -77,6 +77,10 @@ apiRouter.post(
   "/api/v1/products/offer",
   controllers.api.v1.penawaranController.createPenawaran
 );
+apiRouter.get(
+  "/api/v1/products/offer",
+  controllers.api.v1.penawaranController.findAllByIdBuyer
+);
 
 //create a transaction
 apiRouter.post("/api/v1/products/transaction");

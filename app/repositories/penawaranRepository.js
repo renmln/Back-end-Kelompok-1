@@ -22,18 +22,26 @@ module.exports = {
       where: { id },
     });
   },
+
   findOffer(id) {
     return Offering.findOne({
       where: {
-        id_product: id
-      }
-    })
+        id_product: id,
+      },
+    });
   },
+
   findAllByIdProduct(id) {
     return Offering.findAll({
       where: {
         id_product: id,
       },
+    });
+  },
+
+  findByIdBuyer(id) {
+    return Offering.findAll({
+      where: { id_buyer: id },
     });
   },
 };

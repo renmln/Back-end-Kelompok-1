@@ -21,10 +21,16 @@ module.exports = {
   delete(id) {
     return penawaranRepository.delete(id);
   },
+
   findOffer(id) {
     return penawaranRepository.findOffer(id);
   },
+
   findAllByIdProduct(id) {
     return penawaranRepository.findAllByIdProduct(id);
+  },
+
+  findByIdBuyer() {
+    return penawaranRepository.findByIdBuyer(id);
   },
 };
