@@ -155,17 +155,29 @@ module.exports = {
 
       const id_seller = tokenpayload.id;
       // Argumen untuk update produk
-      const updateArgs = {
-        id_seller: id_seller,
+      let updateArgs = {
+        // id_seller: id_seller,
         product_name: req.body.product_name,
         price: req.body.price,
         category: req.body.category,
         description: req.body.description,
-        image_1,
-        image_2,
-        image_3,
-        image_4,
       };
+
+      if (imageUrlList.length > 0) {
+        updateArgs = {
+          ...updateArgs,
+          image_1,
+          image_2,
+          image_3,
+          image_4,
+        };
+      }
+
+      if (req.body.status) {
+        updateArgs = {
+          status: req.body.status
+        };
+      }
 
       await productService
         .update(req.params.id, updateArgs)
@@ -286,14 +298,14 @@ module.exports = {
 
   async findProductsByCategory(req, res) {
     const products = await productService.findByCategory(req.params.category)
-    .then((products) => {
-      res.status(200).json(products)
-    })
-    .catch((err) => {
-      res.status(422).json({
-        status: "FAIL",
-        message: err.message,
-      });
-    })
+      .then((products) => {
+        res.status(200).json(products)
+      })
+      .catch((err) => {
+        res.status(422).json({
+          status: "FAIL",
+          message: err.message,
+        });
+      })
   }
 };

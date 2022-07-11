@@ -16,11 +16,7 @@ module.exports = {
 
   findAll() {
     return Product.findAll({
-      where: [
-        {
-          status: null,
-        },
-      ],
+
     });
   },
 
@@ -42,10 +38,10 @@ module.exports = {
 
   findByCategory(type) {
     return Product.findAll({
-        where: {
-            category : type,
-            status: null
-        }
+      where: {
+        category: type,
+        status: null
+      }
     })
   },
 

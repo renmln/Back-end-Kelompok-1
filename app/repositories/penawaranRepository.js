@@ -14,7 +14,7 @@ module.exports = {
   },
 
   findAll() {
-    return Offering.findAll({ include: [{ model: Product, model: User }] });
+    return Offering.findAll({ include: [{ model: Product }, { model: User }] });
   },
 
   delete(id) {
@@ -42,6 +42,7 @@ module.exports = {
   findByIdBuyer(id) {
     return Offering.findAll({
       where: { id_buyer: id },
+      include: [{ model: Product }]
     });
   },
 };

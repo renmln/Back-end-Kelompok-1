@@ -9,13 +9,8 @@ module.exports = {
     return penawaranRepository.findPk(id);
   },
 
-  async list() {
-    try {
-      const offerings = await penawaranRepository.findAll();
-      return { offerings };
-    } catch (err) {
-      throw err;
-    }
+  list() {
+    return penawaranRepository.findAll();
   },
 
   delete(id) {
@@ -30,7 +25,7 @@ module.exports = {
     return penawaranRepository.findAllByIdProduct(id);
   },
 
-  findByIdBuyer() {
+  findByIdBuyer(id) {
     return penawaranRepository.findByIdBuyer(id);
   },
 };

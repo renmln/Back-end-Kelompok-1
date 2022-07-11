@@ -24,8 +24,8 @@ module.exports = {
   async listPenawaran(req, res) {
     penawaranService
       .list()
-      .then(({ offerings }) => {
-        res.status(201).json({ offerings });
+      .then(( offerings ) => {
+        res.status(201).json(offerings);
       })
       .catch((err) => {
         res.status(400).json({
