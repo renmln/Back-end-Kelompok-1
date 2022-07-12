@@ -10,12 +10,7 @@ module.exports = {
   },
 
   async list() {
-    try {
-      const transactions = await transaksiRepository.findAll();
-      return { transactions };
-    } catch (err) {
-      throw err;
-    }
+    return transaksiRepository.findAll();
   },
 
   async delete(id) {

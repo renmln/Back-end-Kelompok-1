@@ -7,6 +7,7 @@ module.exports = {
         id_seller: req.body.id_seller,
         id_offering: req.body.id_offering,
         id_buyer: req.body.id_buyer,
+        id_product: req.body.id_product,
         status: req.body.status,
       })
       .then((post) => {
@@ -26,8 +27,8 @@ module.exports = {
   async listTransaksi(req, res) {
     transaksiService
       .list()
-      .then(({ transactions }) => {
-        res.status(201).json({ transactions });
+      .then((transactions) => {
+        res.status(201).json(transactions);
       })
       .catch((err) => {
         res.status(400).json({

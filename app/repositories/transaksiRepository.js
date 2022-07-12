@@ -10,7 +10,7 @@ module.exports = {
   },
 
   findAll() {
-    return Transaction.findAll({ include: [{ model: Product }, { model: User }] });
+    return Transaction.findAll({ include: [{ model: Offering }, { model: User }] });
   },
 
   delete(id) {
