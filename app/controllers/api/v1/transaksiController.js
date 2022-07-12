@@ -25,13 +25,27 @@ module.exports = {
   },
 
   async listTransaksi(req, res) {
-    transaksiService
-      .list()
-      .then((transactions) => {
-        res.status(201).json(transactions);
+    const transactions = transaksiService
+      .findAll()
+      .then(({ transactions }) => {
+        res.status(201).json({ transactions });
       })
       .catch((err) => {
         res.status(400).json({
+          status: "FAIL",
+          message: err.message,
+        });
+      });
+  },
+
+  async findAllProduct(req, res) {
+    const transactions = await transaksiService
+      .findAll()
+      .then((transactions) => {
+        res.status(200).json(transactions);
+      })
+      .catch((err) => {
+        res.status(422).json({
           status: "FAIL",
           message: err.message,
         });

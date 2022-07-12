@@ -9,7 +9,16 @@ module.exports = {
     return transaksiRepository.findPk(id);
   },
 
-  async list() {
+  // async list() {
+  //   try {
+  //     const transactions = await transaksiRepository.findAll();
+  //     return { transactions };
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // },
+
+  findAll() {
     return transaksiRepository.findAll();
   },
 
