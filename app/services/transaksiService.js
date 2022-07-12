@@ -17,6 +17,9 @@ module.exports = {
   //     throw err;
   //   }
   // },
+  list() {
+    return transaksiRepository.findAll();
+  },
 
   findAll() {
     return transaksiRepository.findAll();

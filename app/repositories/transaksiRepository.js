@@ -1,4 +1,6 @@
 const { Transaction } = require("../models");
+const { Offering } = require("../models");
+const { User } = require("../models");
 
 module.exports = {
   create(createArgs) {

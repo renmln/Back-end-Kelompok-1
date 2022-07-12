@@ -25,10 +25,10 @@ module.exports = {
   },
 
   async listTransaksi(req, res) {
-    const transactions = transaksiService
-      .findAll()
-      .then(({ transactions }) => {
-        res.status(201).json({ transactions });
+    transaksiService
+      .list()
+      .then((transaction) => {
+        res.status(201).json(transaction);
       })
       .catch((err) => {
         res.status(400).json({
