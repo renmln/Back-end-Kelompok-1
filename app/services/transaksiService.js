@@ -9,6 +9,10 @@ module.exports = {
     return transaksiRepository.findPk(id);
   },
 
+  update(id, updateArgs) {
+    return transaksiRepository.update(id, updateArgs);
+  },
+
   // async list() {
   //   try {
   //     const transactions = await transaksiRepository.findAll();

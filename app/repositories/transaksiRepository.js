@@ -7,6 +7,14 @@ module.exports = {
     return Transaction.create(createArgs);
   },
 
+  update(id, updateArgs) {
+    return User.update(updateArgs, {
+      where: {
+        id,
+      },
+    });
+  },
+
   findPk(id) {
     return Transaction.findByPk(id);
   },

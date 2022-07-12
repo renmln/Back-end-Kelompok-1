@@ -1,3 +1,5 @@
+const { cast } = require("sequelize/types");
+const { update } = require("../../../repositories/transaksiRepository");
 const transaksiService = require("../../../services/transaksiService");
 
 module.exports = {
@@ -38,20 +40,6 @@ module.exports = {
       });
   },
 
-  async findAllProduct(req, res) {
-    const transactions = await transaksiService
-      .findAll()
-      .then((transactions) => {
-        res.status(200).json(transactions);
-      })
-      .catch((err) => {
-        res.status(422).json({
-          status: "FAIL",
-          message: err.message,
-        });
-      });
-  },
-
   async destroyTransaksi(req, res) {
     transaksiService
       .delete(req.params.id)
@@ -67,6 +55,25 @@ module.exports = {
           message: err.message,
         });
       });
+  },
+
+  async updateTransaction(req, res) {
+    try {
+      let updateArgs = {
+        status: req.body.status,
+      };
+      await transaksiService.update(id, updateArgs).then((transactions) => {
+        res.status(200).json({
+          status: "UPDATE_TRANSACTION_SUCCESS",
+          transactions,
+        });
+      });
+    } catch (error) {
+      res.status(422).json({
+        status: "FAIL",
+        message: error.message,
+      });
+    }
   },
 
   async findOneTransaction(req, res) {
