@@ -56,6 +56,9 @@ apiRouter.get("/api/v1/transactions", controllers.api.v1.transaksiController.lis
 //destroy transaction
 apiRouter.get("/api/v1/transactions/delete/:id", controllers.api.v1.transaksiController.destroyTransaksi);
 
+// update transaction
+apiRouter.put("/api/v1/transactions/update/:id", controllers.api.v1.transaksiController.updateTransaction);
+
 //route not found
 apiRouter.use(controllers.api.main.onLost);
 apiRouter.use(controllers.api.main.onError);

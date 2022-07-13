@@ -28,4 +28,7 @@ module.exports = {
   async delete(id) {
     return transaksiRepository.delete(id);
   },
+  update(id, updateArgs) {
+    return transaksiRepository.update(id, updateArgs);
+  },
 };

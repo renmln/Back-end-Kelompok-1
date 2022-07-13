@@ -18,4 +18,11 @@ module.exports = {
   delete(id) {
     return Transaction.destroy({ where: { id } });
   },
+  update(id, updateArgs) {
+    return Transaction.update(updateArgs, {
+      where: {
+        id,
+      },
+    });
+  },
 };

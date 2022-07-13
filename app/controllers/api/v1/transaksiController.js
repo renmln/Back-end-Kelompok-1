@@ -89,4 +89,25 @@ module.exports = {
       });
     }
   },
+
+  async updateTransaction(req, res) {
+    try {
+      let updateArgs = {
+        status: req.body.status,
+      };
+      await transaksiService
+      .update(req.params.id, updateArgs)
+      .then((transactions) => {
+        res.status(200).json({
+          status: "UPDATE_TRANSACTION_SUCCESS",
+          transactions,
+        });
+      });
+    } catch (error) {
+      res.status(422).json({
+        status: "FAIL",
+        message: error.message,
+      });
+    }
+  },
 };
