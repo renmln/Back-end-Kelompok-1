@@ -1,4 +1,15 @@
 const transaksiService = require("../../../services/transaksiService");
+const userService = require("../../../services/userService");
+const productService = require("../../../services/productService");
+const penawaranService = require("../../../services/penawaranService");
+const mail = require("./notificationController");
+
+function rupiah(number) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(number);
+}
 
 module.exports = {
   async createTransaksi(req, res) {
@@ -15,6 +26,32 @@ module.exports = {
           status: "OK",
           data: post,
         });
+        userService.findEmail(post.id_seller).then((seller) => {
+          const sid = seller.id;
+          const semail = seller.email;
+          const sname = seller.name;
+          userService.findEmail(post.id_buyer).then((buyer) => {
+            const bid = buyer.id
+            const bmail = buyer.email;
+            const bname = buyer.name;
+            productService.findProduct(post.id_product).then((product) => {
+              const pid = product.id;
+              const pname = product.name;
+              penawaranService.findOffer(post.id_offering).then((offer) => {
+                const price = offer.offering_price
+                const btitle = "Penawaran diterima";
+                const stitle = "Menerima penawaran"
+                const stemp = "acceptoffer";
+                const btemp = "offeraccepted";
+                const message = "Penawaran sebesar " + rupiah(price) + " diterima";
+                mail.notifApp(btitle, bid, pid, message)
+                mail.notifApp(stitle, sid, pid, message)
+                mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                mail.sendMail(semail, stitle, stemp, sname, pname, price);
+              })
+            })
+          })
+        })
       })
       .catch((err) => {
         res.status(422).json({
@@ -53,6 +90,36 @@ module.exports = {
   },
 
   async destroyTransaksi(req, res) {
+    transaksiService
+      .find(req.params.id)
+      .then((post) => {
+        userService.findEmail(post.id_seller).then((seller) => {
+          const sid = seller.id;
+          const semail = seller.email;
+          const sname = seller.name;
+          userService.findEmail(post.id_buyer).then((buyer) => {
+            const bid = buyer.id
+            const bmail = buyer.email;
+            const bname = buyer.name;
+            productService.findProduct(post.id_product).then((product) => {
+              const pid = product.id;
+              const pname = product.name;
+              penawaranService.findOffer(post.id_offering).then((offer) => {
+                const price = offer.offering_price
+                const btitle = "Penawaran ditolak";
+                const stitle = "Menolak penawaran"
+                const stemp = "refuseoffer";
+                const btemp = "offerrejected";
+                const message = "Penawaran sebesar " + rupiah(price) + " ditolak";
+                mail.notifApp(btitle, bid, pid, message)
+                mail.notifApp(stitle, sid, pid, message)
+                mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                mail.sendMail(semail, stitle, stemp, sname, pname, price);
+              })
+            })
+          })
+        })
+      })
     transaksiService
       .delete(req.params.id)
       .then((transaksi) => {
