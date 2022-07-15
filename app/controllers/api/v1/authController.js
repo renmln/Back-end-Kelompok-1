@@ -1,9 +1,11 @@
 const bcrypt = require("bcryptjs");
 const { resolveMx } = require("dns/promises");
 const jwt = require("jsonwebtoken");
+const { restart } = require("nodemon");
 const { User } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
+const mail = require("./notificationController");
 
 function encryptPassword(password) {
   return new Promise((resolve, reject) => {
@@ -119,9 +121,7 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      const user = JSON.parse(
-        JSON.stringify(await userService.findId(tokenPayload.email))
-      );
+      const user = JSON.parse(JSON.stringify(await userService.findId(tokenPayload.email)));
       delete user.password;
 
       res.status(200).json({ user });
@@ -131,5 +131,49 @@ module.exports = {
         message: "Token expired",
       });
     }
+  },
+
+  // halaman kirim email
+  async forgotPassword(req, res) {
+    const email = req.body.email.toLowerCase();
+
+    let user = await User.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      res.status(404).json({ message: "Email tidak ditemukan" });
+      return;
+    }
+
+    const token = createToken(user);
+
+    await User.updateOne({ resetPasswordLink: token });
+
+    const title = "Reset Passoword Link";
+
+    // mail.sendMailForgotPassword(email, title, token, fullname, resetPasswordLink);
+    mail.sendMailForgotPassword(email, title, token);
+
+    return res.status(200).json({
+      message: "berhasil",
+    });
+  },
+
+  // halaman reset password
+  async verifyForgotPasswordLink(req, res) {
+    const token = req.params.token;
+
+    var tokendb = await User.findToken(token).then((tokendb) => {
+      res.status(200).json({ data: tokendb.id });
+      return;
+    });
+  },
+
+  // put resetpassword/:id
+  async resetpassword(req, res) {
+    const id = req.params.id;
+
+    //
   },
 };

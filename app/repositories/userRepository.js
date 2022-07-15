@@ -13,6 +13,14 @@ module.exports = {
     });
   },
 
+  findToken(token) {
+    return User.findOne({
+      where: {
+        resetPasswordLink: token,
+      },
+    });
+  },
+
   findId(id) {
     return User.findOne({
       where: {
@@ -20,13 +28,13 @@ module.exports = {
       },
     });
   },
-  
+
   findUserEmail(id) {
     return User.findOne({
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
   },
 
   findAll() {

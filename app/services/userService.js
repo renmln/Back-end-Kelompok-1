@@ -13,6 +13,10 @@ module.exports = {
     return userRepository.findId(id);
   },
 
+  findToken(token) {
+    return userRepository.findToken(token);
+  },
+
   findEmail(id) {
     return userRepository.findUserEmail(id);
   },
