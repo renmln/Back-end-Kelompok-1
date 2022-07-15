@@ -1,6 +1,7 @@
 const { Transaction } = require("../models");
 const { Offering } = require("../models");
 const { User } = require("../models");
+const { Product } = require("../models");
 
 module.exports = {
   create(createArgs) {
@@ -12,7 +13,7 @@ module.exports = {
   },
 
   findAll() {
-    return Transaction.findAll({ include: [{ model: Offering }, { model: User }] });
+    return Transaction.findAll({ include: [{ model: Offering }, { model: User }, { model: Product }] });
   },
 
   delete(id) {
