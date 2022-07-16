@@ -4,7 +4,10 @@ var hbs = require("nodemailer-express-handlebars");
 const notificationService = require("../../../services/notificationService");
 
 function rupiah(number) {
-  return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(number);
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(number);
 }
 
 module.exports = {
@@ -27,7 +30,12 @@ module.exports = {
     const userId = user;
     const productId = product;
     const message = messages;
-    const notif = await notificationService.create(title, userId, productId, message);
+    const notif = await notificationService.create(
+      title,
+      userId,
+      productId,
+      message
+    );
   },
 
   async sendMail(address, subject, template, name, product, price) {
