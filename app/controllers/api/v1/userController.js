@@ -73,6 +73,12 @@ module.exports = {
         user.updatedAt = new Date();
       }
 
+      if (req.body.resetPassordLink) {
+        user = {
+          resetPasswordLink: req.body.resetPassordLink,
+        };
+      }
+
       await userService.update(user.id, user);
       delete user.password;
 

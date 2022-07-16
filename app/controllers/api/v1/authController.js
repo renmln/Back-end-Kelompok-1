@@ -5,6 +5,7 @@ const { restart } = require("nodemon");
 const { User } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
+const user = require("./userController");
 const mail = require("./notificationController");
 
 function encryptPassword(password) {
@@ -148,13 +149,14 @@ module.exports = {
       return;
     }
 
-    const token = createToken(user);
-    // const token = jwt.sign(
-    //   { id: user.id },
-    //   process.env.JWT_SECRET || "Rahasia"
-    // );
+    // const token = createToken(user);
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET || "Rahasia"
+    );
 
-    await User.updateOne({ resetPasswordLink: token });
+    const updateOne = await user.updateInfoAkun({ resetPasswordLink: token });
+    // await User.updateOne({ resetPasswordLink: token });
 
     const title = "Reset Passoword Link";
 
