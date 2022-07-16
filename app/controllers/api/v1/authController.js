@@ -121,7 +121,9 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      const user = JSON.parse(JSON.stringify(await userService.findId(tokenPayload.email)));
+      const user = JSON.parse(
+        JSON.stringify(await userService.findId(tokenPayload.email))
+      );
       delete user.password;
 
       res.status(200).json({ user });
@@ -138,7 +140,7 @@ module.exports = {
     const email = req.body.email.toLowerCase();
 
     let user = await User.findOne({
-      where: { email },
+      where: { email: email },
     });
 
     if (!user) {
@@ -147,6 +149,10 @@ module.exports = {
     }
 
     const token = createToken(user);
+    // const token = jwt.sign(
+    //   { id: user.id },
+    //   process.env.JWT_SECRET || "Rahasia"
+    // );
 
     await User.updateOne({ resetPasswordLink: token });
 

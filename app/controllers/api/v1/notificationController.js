@@ -42,8 +42,8 @@ module.exports = {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "seconhands.app@gmail.com",
-        pass: "ustdrziozxlatwox",
+        user: "notifications.secondhand@gmail.com",
+        pass: "innerptyxiwkvuns",
       },
     });
 
@@ -84,8 +84,8 @@ module.exports = {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "seconhands.app@gmail.com",
-        pass: "ustdrziozxlatwox",
+        user: "notifications.secondhand@gmail.com",
+        pass: "innerptyxiwkvuns",
       },
     });
 
