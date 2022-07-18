@@ -1,8 +1,10 @@
 const bcrypt = require("bcryptjs");
 const { resolveMx } = require("dns/promises");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const { restart } = require("nodemon");
 const { User } = require("../../../models");
+const { Token } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
 const user = require("./userController");
@@ -141,7 +143,7 @@ module.exports = {
     const email = req.body.email.toLowerCase();
 
     let user = await User.findOne({
-      where: { email: email },
+      where: { email },
     });
 
     if (!user) {
@@ -149,19 +151,30 @@ module.exports = {
       return;
     }
 
+    let token = await Token.findOne({ where: { id_user: user.id } });
+    if (!token) {
+      token = await new Token({
+        id_user: user.id,
+        token: jwt.sign({ id: user.id }, process.env.JWT_SECRET || "Rahasia"),
+      }).save();
+    }
+
     // const token = createToken(user);
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET || "Rahasia"
-    );
+    // const token = jwt.sign(
+    //   { id: user.id },
+    //   process.env.JWT_SECRET || "Rahasia"
+    // );
 
-    const updateOne = await user.updateInfoAkun({ resetPasswordLink: token });
-    // await User.updateOne({ resetPasswordLink: token });
-
-    const title = "Reset Passoword Link";
-
+    // const updateOne = await user.updateInfoAkun({ resetPasswordLink: token });
+    // await User.updateOne({ where: { resetPasswordLink: token } });
+    const title = "Link berhasil dikirim";
+    const userId = user.id;
+    const notif = mail.notifApp(title, userId);
+    const url = `http://localhost:8000/api/v1/password-reset/${user.id}/${token.token}`;
+    const subject = "Link Reset Password";
+    const template = "resetPassword";
+    const send = mail.sendMailForgotPassword(email, subject, template, url);
     // mail.sendMailForgotPassword(email, title, token, fullname, resetPasswordLink);
-    mail.sendMailForgotPassword(email, title, token);
 
     return res.status(200).json({
       message: "berhasil",

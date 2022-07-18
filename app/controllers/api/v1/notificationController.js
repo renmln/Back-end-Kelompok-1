@@ -80,7 +80,7 @@ module.exports = {
     });
   },
 
-  sendMailForgotPassword(address, subject, token) {
+  async sendMailForgotPassword(address, subject, template, url, email) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -89,30 +89,31 @@ module.exports = {
       },
     });
 
-    // const handlebarOptions = {
-    //   viewEngine: {
-    //     extName: ".handlebars",
-    //     partialsDir: path.resolve("./app/mail"),
-    //     defaultLayout: false,
-    //   },
-    //   viewPath: path.resolve("./app/mail"),
-    //   extName: ".handlebars",
-    // };
+    const handlebarOptions = {
+      viewEngine: {
+        extName: ".handlebars",
+        partialsDir: path.resolve("./app/mail"),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve("./app/mail"),
+      extName: ".handlebars",
+    };
 
-    // transporter.use("compile", hbs(handlebarOptions));
+    transporter.use("compile", hbs(handlebarOptions));
 
     var mailOptions = {
       from: "SecondHand",
       to: address,
       subject: subject,
-      html: `<p>Berikut link yang diberikan untuk reset password Anda. ${process.env.CLIENT_URL}resetpassword/${token}</p>`,
-      // context: {
-      //   fullname: fullname,
-      //   resetPasswordLink: resetPasswordLink,
-      // },
+      template: template,
+      // html: `<p>Berikut link yang diberikan untuk reset password Anda</p>`,
+      context: {
+        email: email,
+        url: url,
+      },
     };
 
-    transporter.sendMailForgotPassword(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
       } else {

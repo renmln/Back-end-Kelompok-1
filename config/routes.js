@@ -16,8 +16,8 @@ apiRouter.post("/api/v1/register", controllers.api.v1.authController.register);
 apiRouter.post("/api/v1/login", controllers.api.v1.authController.login);
 apiRouter.get("/api/v1/whoami", controllers.api.v1.authController.whoAmI);
 apiRouter.post("/api/v1/auth/google");
-apiRouter.put(
-  "/api/v1/forgotpassword",
+apiRouter.post(
+  "/api/v1/password-reset",
   controllers.api.v1.authController.forgotPassword
 );
 
