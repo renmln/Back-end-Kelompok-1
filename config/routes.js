@@ -41,7 +41,7 @@ apiRouter.get("/api/v1/products/filter/:category", controllers.api.v1.productCon
 apiRouter.get("/api/v1/products/offered/:id", controllers.api.v1.penawaranController.findThisOffer);
 apiRouter.post("/api/v1/products/offer", controllers.api.v1.penawaranController.createPenawaran);
 apiRouter.get("/api/v1/products/offer", controllers.api.v1.penawaranController.findAllByIdBuyer); //find by id buyer
-apiRouter.get("/api/v1/products/offer/:id", controllers.api.v1.penawaranController.findOneOffer);
+apiRouter.get("/api/v1/product/offered/:id", controllers.api.v1.penawaranController.findOneOffer);
 
 apiRouter.get("/api/v1/products/alloffer", controllers.api.v1.penawaranController.listPenawaran);
 
