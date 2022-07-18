@@ -93,6 +93,7 @@ module.exports = {
     transaksiService
       .find(req.params.id)
       .then((post) => {
+        const oid = post.id_offering;
         userService.findEmail(post.id_seller).then((seller) => {
           const sid = seller.id;
           const semail = seller.email;
@@ -106,13 +107,13 @@ module.exports = {
               const pname = product.name;
               penawaranService.findOffer(post.id_offering).then((offer) => {
                 const price = offer.offering_price
-                const btitle = "Penawaran ditolak";
-                const stitle = "Menolak penawaran"
-                const stemp = "refuseoffer";
-                const btemp = "offerrejected";
-                const message = "Penawaran sebesar " + rupiah(price) + " ditolak";
-                mail.notifApp(btitle, bid, pid, post.id_offering, message)
-                mail.notifApp(stitle, sid, pid, post.id_offering, message)
+                const btitle = "Transaksi dibatalkan";
+                const stitle = "Membatalkan transaksi"
+                const stemp = "cancletransaction";
+                const btemp = "transactioncanceled";
+                const message = "Transaksi sebesar " + rupiah(price) + " dibatalkan";
+                mail.notifApp(btitle, bid, pid, oid, message)
+                mail.notifApp(stitle, sid, pid, oid, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
               })
