@@ -4,7 +4,10 @@ var hbs = require("nodemailer-express-handlebars");
 const notificationService = require("../../../services/notificationService");
 
 function rupiah(number) {
-  return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(number);
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(number);
 }
 
 module.exports = {
@@ -27,15 +30,20 @@ module.exports = {
     const userId = user;
     const productId = product;
     const message = messages;
-    const notif = await notificationService.create(title, userId, productId, message);
+    const notif = await notificationService.create(
+      title,
+      userId,
+      productId,
+      message
+    );
   },
 
   async sendMail(address, subject, template, name, product, price) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "seconhands.app@gmail.com",
-        pass: "ustdrziozxlatwox",
+        user: "notifications.secondhand@gmail.com",
+        pass: "innerptyxiwkvuns",
       },
     });
 
@@ -72,39 +80,40 @@ module.exports = {
     });
   },
 
-  sendMailForgotPassword(address, subject, token) {
+  async sendMailForgotPassword(address, subject, template, url, email) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "seconhands.app@gmail.com",
-        pass: "ustdrziozxlatwox",
+        user: "notifications.secondhand@gmail.com",
+        pass: "innerptyxiwkvuns",
       },
     });
 
-    // const handlebarOptions = {
-    //   viewEngine: {
-    //     extName: ".handlebars",
-    //     partialsDir: path.resolve("./app/mail"),
-    //     defaultLayout: false,
-    //   },
-    //   viewPath: path.resolve("./app/mail"),
-    //   extName: ".handlebars",
-    // };
+    const handlebarOptions = {
+      viewEngine: {
+        extName: ".handlebars",
+        partialsDir: path.resolve("./app/mail"),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve("./app/mail"),
+      extName: ".handlebars",
+    };
 
-    // transporter.use("compile", hbs(handlebarOptions));
+    transporter.use("compile", hbs(handlebarOptions));
 
     var mailOptions = {
       from: "SecondHand",
       to: address,
       subject: subject,
-      html: `<p>Berikut link yang diberikan untuk reset password Anda. ${process.env.CLIENT_URL}resetpassword/${token}</p>`,
-      // context: {
-      //   fullname: fullname,
-      //   resetPasswordLink: resetPasswordLink,
-      // },
+      template: template,
+      // html: `<p>Berikut link yang diberikan untuk reset password Anda</p>`,
+      context: {
+        email: email,
+        url: url,
+      },
     };
 
-    transporter.sendMailForgotPassword(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
       } else {
