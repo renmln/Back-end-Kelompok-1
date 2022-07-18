@@ -124,9 +124,7 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      const user = JSON.parse(
-        JSON.stringify(await userService.findId(tokenPayload.email))
-      );
+      const user = JSON.parse(JSON.stringify(await userService.findId(tokenPayload.email)));
       delete user.password;
 
       res.status(200).json({ user });
@@ -181,27 +179,60 @@ module.exports = {
     });
   },
 
-  // halaman reset password
+  // halaman reset password /:id/:token
   async verifyForgotPasswordLink(req, res) {
-    const token = req.params.token;
+    try {
+      const user = await Token.findOne({ id_user: req.params.id });
+      if (!user) return res.status(400).send({ message: "Invalid link" });
 
-    var tokendb = await User.findToken(token).then((tokendb) => {
-      res.status(200).json({ data: tokendb.id });
-      return;
-    });
+      const token = await Token.findOne({
+        id_user: user.id_user,
+        token: req.params.token,
+      });
+
+      if (!token) return res.status(400).send({ message: "Invalid link" });
+
+      res.status(200).send("Valid Url");
+    } catch (e) {
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+
+    // var tokendb = await User.findToken(token).then((tokendb) => {
+    //   res.status(200).json({ data: tokendb.id });
+    //   return;
+    // });
   },
 
   // put resetpassword/:id
   async resetpassword(req, res) {
-    //gimana caranya dapet parameter id dari function verifyforgotpasswordlink
-    const id = req.params.id;
+    // const updateArgs = {
+    //   password: req.params.password,
+    // };
 
-    const updateArgs = {
-      password: req.params.password,
-    };
+    // await userService.update(id, updateArgs).then();
 
-    await userService.update(id, updateArgs).then();
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      if (!user) return res.status(400).send({ message: "Invalid link" });
 
-    //
+      const token = await Token.findOne({
+        id_user: user.id,
+        token: req.params.token,
+      });
+      if (!token) return res.status(400).send({ message: "Invalid link" });
+
+      // if (!user.verified) user.verified = true;
+
+      const salt = await bcrypt.genSalt(Number(process.env.SALT));
+      const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+      user.password = hashPassword;
+      await user.save();
+      await token.remove();
+
+      res.status(200).send({ message: "Password reset successfully" });
+    } catch (e) {
+      res.status(500).send({ message: "Internal Server Error" });
+    }
   },
 };
