@@ -74,9 +74,15 @@ module.exports = {
                     title,
                     buyer.id,
                     product.id,
+                    post.id,
                     message
                   );
-                  notif = mail.notifApp(title, seller.id, product.id, message);
+                  notif = mail.notifApp(
+                    title,
+                    seller.id,
+                    product.id,
+                    post.id,
+                    message);
                   let email = mail.sendMail(
                     bemail,
                     title,
@@ -106,6 +112,36 @@ module.exports = {
   },
 
   async destroyPenawaran(req, res) {
+    await penawaranService
+      .findOffer(req.params.id)
+      .then((post) => {
+        userService.findEmail(post.id_seller).then((seller) => {
+          const sid = seller.id;
+          const semail = seller.email;
+          const sname = seller.name;
+          userService.findEmail(post.id_buyer).then((buyer) => {
+            const bid = buyer.id
+            const bmail = buyer.email;
+            const bname = buyer.name;
+            productService.findProduct(post.id_product).then((product) => {
+              const pid = product.id;
+              const pname = product.name;
+              penawaranService.findOffer(post.id_offering).then((offer) => {
+                const price = offer.offering_price
+                const btitle = "Penawaran ditolak";
+                const stitle = "Menolak penawaran"
+                const stemp = "refuseoffer";
+                const btemp = "offerrejected";
+                const message = "Penawaran sebesar " + rupiah(price) + " ditolak";
+                mail.notifApp(btitle, bid, pid, post.id_offering, message)
+                mail.notifApp(stitle, sid, pid, post.id_offering, message)
+                mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                mail.sendMail(semail, stitle, stemp, sname, pname, price);
+              })
+            })
+          })
+        })
+      })
     penawaranService
       .delete(req.params.id)
       .then((penawaran) => {

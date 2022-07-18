@@ -23,13 +23,14 @@ module.exports = {
           });
     },
 
-    async notifApp(app, user, product, messages) {
+    async notifApp(app, user, product, offer, messages) {
         const title = app
         const userId = user
         const productId = product
+        const offeringId = offer
         const message = messages
         const notif = await notificationService
-        .create(title, userId, productId, message)
+        .create(title, userId, productId, offeringId, message)
     },
 
     async sendMail(address, subject, template, name, product, price){

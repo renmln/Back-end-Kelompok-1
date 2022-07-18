@@ -44,8 +44,8 @@ module.exports = {
                 const stemp = "acceptoffer";
                 const btemp = "offeraccepted";
                 const message = "Penawaran sebesar " + rupiah(price) + " diterima";
-                mail.notifApp(btitle, bid, pid, message)
-                mail.notifApp(stitle, sid, pid, message)
+                mail.notifApp(btitle, bid, pid, post.id_offering, message)
+                mail.notifApp(stitle, sid, pid, post.id_offering, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
               })
@@ -111,8 +111,8 @@ module.exports = {
                 const stemp = "refuseoffer";
                 const btemp = "offerrejected";
                 const message = "Penawaran sebesar " + rupiah(price) + " ditolak";
-                mail.notifApp(btitle, bid, pid, message)
-                mail.notifApp(stitle, sid, pid, message)
+                mail.notifApp(btitle, bid, pid, post.id_offering, message)
+                mail.notifApp(stitle, sid, pid, post.id_offering, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
               })

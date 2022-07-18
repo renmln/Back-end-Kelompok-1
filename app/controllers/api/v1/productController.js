@@ -74,7 +74,8 @@ module.exports = {
         const productName = products.product_name;
         const price = products.price;
         const message = null;
-        const notif = mail.notifApp(title, userId, productId, message);
+        const offeringId = null;
+        const notif = mail.notifApp(title, userId, productId, offeringId, message);
         const user = userService.findEmail(userId).then((user) => {
           const email = user.email;
           const subject = "Menambahkan produk";

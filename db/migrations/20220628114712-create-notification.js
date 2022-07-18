@@ -25,6 +25,14 @@ module.exports = {
           key: "id",
         }
       },
+      offeringId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: "Offerings",
+          key: "id",
+        }
+      },
       message: {
         type: Sequelize.STRING,
         allowNull: true
