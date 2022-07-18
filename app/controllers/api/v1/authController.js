@@ -172,7 +172,14 @@ module.exports = {
 
   // put resetpassword/:id
   async resetpassword(req, res) {
+    //gimana caranya dapet parameter id dari function verifyforgotpasswordlink
     const id = req.params.id;
+
+    const updateArgs = {
+      password: req.params.password,
+    };
+
+    await userService.update(id, updateArgs).then();
 
     //
   },
