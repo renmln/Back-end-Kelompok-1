@@ -56,13 +56,13 @@ module.exports = {
         const price = post.offering_price;
         const bid = post.id_buyer;
         const oid = post.id;
+        const pid = post.id_product;
         const buyer = userService.findUserEmail(bid).then((buyer) => {
           const bname = buyer.name;
           const bemail = buyer.email;
           const product = productService
-            .findProduct(post.id_product)
-            .then((product) => {
-              const productName = product.product_name;
+            .findProduct(pid).then((product) => {
+              const pname = product.product_name;
               const pid = product.id;
               const title = "Penawaran produk";
               const message = "Ditawar " + rupiah(price);
@@ -92,7 +92,7 @@ module.exports = {
                     title,
                     btemp,
                     bname,
-                    productName,
+                    pname,
                     price
                   );
                   email = mail.sendMail(
@@ -100,7 +100,7 @@ module.exports = {
                     title,
                     stemp,
                     sname,
-                    productName,
+                    pname,
                     price
                   );
                 });
@@ -119,19 +119,20 @@ module.exports = {
     await penawaranService
       .findOffer(req.params.id)
       .then((post) => {
+        const pid = post.id_product;
+        const bid = post.id_buyer;
+        const oid = post.id;
         userService.findEmail(post.id_seller).then((seller) => {
           const sid = seller.id;
           const semail = seller.email;
           const sname = seller.name;
-          userService.findEmail(post.id_buyer).then((buyer) => {
-            const bid = buyer.id
+          userService.findEmail(bid).then((buyer) => {
             const bmail = buyer.email;
             const bname = buyer.name;
-            productService.findProduct(post.id_product).then((product) => {
+            productService.findProduct(pid).then((product) => {
               const pid = product.id;
               const pname = product.name;
-              penawaranService.findOffer(post.id_offering).then((offer) => {
-                const oid = post.id_offering;
+              penawaranService.findOffer(oid).then((offer) => {
                 const price = offer.offering_price
                 const btitle = "Penawaran ditolak";
                 const stitle = "Menolak penawaran"
@@ -142,18 +143,18 @@ module.exports = {
                 mail.notifApp(stitle, sid, pid, oid, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                penawaranService
+                  .delete(oid)
+                  .then((penawaran) => {
+                    res.status(200).json({
+                      status: "OK",
+                      message: "Penawaran deleted",
+                    });
+                  })
               })
             })
           })
         })
-      })
-    penawaranService
-      .delete(req.params.id)
-      .then((penawaran) => {
-        res.status(200).json({
-          status: "OK",
-          message: "Penawaran deleted",
-        });
       })
       .catch((err) => {
         res.status(422).json({

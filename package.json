@@ -5,7 +5,7 @@
   "main": "app/index.js",
   "scripts": {
     "start": "nodemon bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "develop": "nodemon -q bin/www",
     "db:create": "sequelize-cli db:create",
     "db:drop": "sequelize-cli db:drop",
@@ -33,6 +33,7 @@
     "nodemailer": "^6.7.5",
     "nodemailer-express-handlebars": "^5.0.0",
     "nodemon": "^2.0.19",
+    "path": "^0.12.7",
     "pg": "^8.7.3",
     "sequelize": "^6.20.1",
     "sequelize-cli": "^6.4.1",

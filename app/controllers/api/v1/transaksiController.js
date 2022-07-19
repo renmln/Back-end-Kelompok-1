@@ -26,26 +26,27 @@ module.exports = {
           status: "OK",
           data: post,
         });
-        userService.findEmail(post.id_seller).then((seller) => {
-          const sid = seller.id;
+        const sid = post.id_seller;
+        const bid = post.id_buyer;
+        const pid = post.id_product;
+        const oid = post.id_offering;
+        userService.findEmail(sid).then((seller) => {
           const semail = seller.email;
           const sname = seller.name;
-          userService.findEmail(post.id_buyer).then((buyer) => {
-            const bid = buyer.id
+          userService.findEmail(bid).then((buyer) => {
             const bmail = buyer.email;
             const bname = buyer.name;
-            productService.findProduct(post.id_product).then((product) => {
-              const pid = product.id;
-              const pname = product.name;
-              penawaranService.findOffer(post.id_offering).then((offer) => {
+            productService.findProduct(pid).then((product) => {
+              const pname = product.product_name;
+              penawaranService.findOffer(oid).then((offer) => {
                 const price = offer.offering_price
                 const btitle = "Penawaran diterima";
                 const stitle = "Menerima penawaran"
                 const stemp = "acceptoffer";
                 const btemp = "offeraccepted";
                 const message = "Penawaran sebesar " + rupiah(price) + " diterima";
-                mail.notifApp(btitle, bid, pid, post.id_offering, message)
-                mail.notifApp(stitle, sid, pid, post.id_offering, message)
+                mail.notifApp(btitle, bid, pid, oid, message)
+                mail.notifApp(stitle, sid, pid, oid, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
               })
@@ -93,19 +94,20 @@ module.exports = {
     transaksiService
       .find(req.params.id)
       .then((post) => {
+        const tid = post.id;
+        const sid = post.id_seller;
+        const bid = post.id_buyer;
+        const pid = post.id_product;
         const oid = post.id_offering;
-        userService.findEmail(post.id_seller).then((seller) => {
-          const sid = seller.id;
+        userService.findEmail(sid).then((seller) => {
           const semail = seller.email;
           const sname = seller.name;
-          userService.findEmail(post.id_buyer).then((buyer) => {
-            const bid = buyer.id
+          userService.findEmail(bid).then((buyer) => {
             const bmail = buyer.email;
             const bname = buyer.name;
-            productService.findProduct(post.id_product).then((product) => {
-              const pid = product.id;
-              const pname = product.name;
-              penawaranService.findOffer(post.id_offering).then((offer) => {
+            productService.findProduct(pid).then((product) => {
+              const pname = product.product_name;
+              penawaranService.findOffer(oid).then((offer) => {
                 const price = offer.offering_price
                 const btitle = "Transaksi dibatalkan";
                 const stitle = "Membatalkan transaksi"
@@ -116,18 +118,18 @@ module.exports = {
                 mail.notifApp(stitle, sid, pid, oid, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                transaksiService
+                  .delete(tid)
+                  .then((transaksi) => {
+                    res.status(200).json({
+                      status: "OK",
+                      message: "Transaction deleted",
+                    });
+                  })
               })
             })
           })
         })
-      })
-    transaksiService
-      .delete(req.params.id)
-      .then((transaksi) => {
-        res.status(200).json({
-          status: "OK",
-          message: "Transaction deleted",
-        });
       })
       .catch((err) => {
         res.status(422).json({
