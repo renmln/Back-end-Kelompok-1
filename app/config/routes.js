@@ -4,6 +4,7 @@ const cors = require("cors");
 // const controllers = require("../app/controllers");
 const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
+const { api } = require("../cloudinary");
 const apiRouter = express.Router();
 apiRouter.use(cors());
 
@@ -46,7 +47,9 @@ apiRouter.post("/api/v1/products/transaction");
 apiRouter.get("/api/v1/products/transaction/:id");
 
 //send email for forgot password
-apiRouter.post("/api/v1/resetpassword/:token");
+apiRouter.get("/api/v1/resetpassword", controllers.api.v1.authController.forgotPassword);
+apiRouter.get("/api/v1/resetpassword/:id/:token", controllers.api.v1.authController.verifyForgotPasswordLink);
+apiRouter.post("/api/v1/resetpassword/:id/:token", controllers.api.v1.authController.resetpassword);
 
 //route not found
 apiRouter.use(controllers.api.main.onLost);
