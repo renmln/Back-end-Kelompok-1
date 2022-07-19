@@ -2,9 +2,13 @@ const bcrypt = require("bcryptjs");
 const { resolveMx } = require("dns/promises");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../../models");
+const { Token } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
-const axios = require("axios")
+const axios = require("axios");
+const mail = require("./notificationController");
+const Joi = require("joi");
+const passwordComplexity = require("joi-password-complexity");
 
 function encryptPassword(password) {
   return new Promise((resolve, reject) => {
@@ -169,5 +173,89 @@ module.exports = {
       console.log(err.message);
       res.status(401).json({ error: { name: err.name, message: err.message } });
     }
-  }
+  },
+
+  async forgotPassword(req, res) {
+    const email = req.body.email.toLowerCase();
+
+    let user = await User.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      res.status(404).json({ message: "Email tidak ditemukan" });
+      return;
+    }
+
+    let token = await Token.findOne({ where: { id_user: user.id } });
+    if (!token) {
+      token = await new Token({
+        id_user: user.id,
+        token: jwt.sign({ id: user.id }, process.env.JWT_SECRET || "Rahasia"),
+      }).save();
+    }
+
+    const title = "Link berhasil dikirim";
+    const userId = user.id;
+    const notif = mail.notifApp(title, userId);
+    const url = `http://localhost:3000/password-reset/${user.id}/${token.token}`;
+    const subject = "Link Reset Password";
+    const template = "resetpassword";
+    const send = mail.sendMailForgotPassword(email, subject, template, url);
+
+    return res.status(200).json({
+      message: "berhasil",
+      token,
+      user,
+    });
+  },
+
+  // halaman reset password
+  async verifyForgotPasswordLink(req, res) {
+    try {
+      const user = await User.findOne({ id: req.params.id });
+      if (!user) return res.status(404).json({ message: "Invalid link" });
+
+      const token = await Token.findOne({
+        id_user: user.id,
+        token: req.params.token,
+      });
+      if (!token) return res.status(404).json({ message: "Invalid link" });
+
+      res.status(200).json({ message: "Valid Url" });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
+  // put resetpassword/:id
+  async resetPassword(req, res) {
+    try {
+      const passwordSchema = Joi.object({
+        password: passwordComplexity().required().label("Password"),
+      });
+      const { error } = passwordSchema.validate(req.body);
+      if (error)
+        return res.status(400).json({ message: error.details[0].message });
+
+      const user = await User.findOne({ id: req.params.id });
+      if (!user) return res.status(404).json({ message: "Invalid link" });
+
+      const token = await Token.findOne({
+        id_user: user.id,
+        token: req.params.token,
+      });
+      if (!token) return res.status(404).json({ message: "Invalid link" });
+
+      const hashPassword = await encryptPassword(req.body.password);
+
+      user.password = hashPassword;
+      await user.save();
+      await token.remove();
+
+      res.status(200).json({ message: "Password reset succesfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
 };
