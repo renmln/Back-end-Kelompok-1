@@ -1,7 +1,7 @@
 const penawaranService = require("../../../services/penawaranService");
 const productService = require("../../../services/productService");
 const productController = require("../v1/productController");
-const userService = require("../../../repositories/userRepository");
+const userService = require("../../../services/userService");
 const mail = require("./notificationController");
 const jwt = require("jsonwebtoken");
 

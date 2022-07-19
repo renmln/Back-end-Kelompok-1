@@ -42,6 +42,7 @@ apiRouter.get("/api/v1/products/offered/:id", controllers.api.v1.penawaranContro
 apiRouter.post("/api/v1/products/offer", controllers.api.v1.penawaranController.createPenawaran);
 apiRouter.get("/api/v1/products/offer", controllers.api.v1.penawaranController.findAllByIdBuyer); //find by id buyer
 apiRouter.get("/api/v1/product/offered/:id", controllers.api.v1.penawaranController.findOneOffer);
+apiRouter.delete("/api/v1/product/offered/delete/:id", controllers.api.v1.penawaranController.destroyPenawaran);
 
 apiRouter.get("/api/v1/products/alloffer", controllers.api.v1.penawaranController.listPenawaran);
 
@@ -55,10 +56,13 @@ apiRouter.get("/api/v1/transaction/:id", controllers.api.v1.transaksiController.
 apiRouter.get("/api/v1/transactions", controllers.api.v1.transaksiController.listTransaksi);
 
 //destroy transaction
-apiRouter.get("/api/v1/transactions/delete/:id", controllers.api.v1.transaksiController.destroyTransaksi);
+apiRouter.delete("/api/v1/transactions/delete/:id", controllers.api.v1.transaksiController.destroyTransaksi);
 
 // update transaction
 apiRouter.put("/api/v1/transactions/update/:id", controllers.api.v1.transaksiController.updateTransaction);
+
+// find Notifikasi by id
+apiRouter.get("/api/v1/notif/findmynotif", controllers.api.v1.notifikasiController.findMyNotif);
 
 //route not found
 apiRouter.use(controllers.api.main.onLost);

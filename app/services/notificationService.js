@@ -1,10 +1,13 @@
 const notificationRepository = require('../repositories/notificationRepository');
 
 module.exports = {
-    create(title, userId, productId, message) {
-        return notificationRepository.create(title, userId, productId, message)
+    create(title, userId, productId, offeringId, message) {
+        return notificationRepository.create(title, userId, productId, offeringId, message)
     },
     findAll() {
         return notificationRepository.findAll()
-    }
+    },
+    findByIdUser(id) {
+        return notificationRepository.findByIdUser(id);
+    },
 }

@@ -19,14 +19,16 @@ module.exports = {
 
   delete(id) {
     return Offering.destroy({
-      where: { id },
+      where: {
+        id: id
+      },
     });
   },
 
   findOffer(id) {
     return Offering.findOne({
       where: {
-        id_product: id,
+        id: id,
       },
     });
   },
