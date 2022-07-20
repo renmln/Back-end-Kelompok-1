@@ -57,7 +57,7 @@ module.exports = {
         const bid = post.id_buyer;
         const oid = post.id;
         const pid = post.id_product;
-        const buyer = userService.findUserEmail(bid).then((buyer) => {
+        const buyer = userService.findIdByEmail(bid).then((buyer) => {
           const bname = buyer.name;
           const bemail = buyer.email;
           const product = productService.findProduct(pid).then((product) => {
