@@ -57,7 +57,7 @@ module.exports = {
         const bid = post.id_buyer;
         const oid = post.id;
         const pid = post.id_product;
-        const buyer = userService.findIdByEmail(bid).then((buyer) => {
+        const buyer = userService.findUserID(bid).then((buyer) => {
           const bname = buyer.name;
           const bemail = buyer.email;
           const product = productService.findProduct(pid).then((product) => {
@@ -66,7 +66,7 @@ module.exports = {
             const title = "Penawaran produk";
             const message = "Ditawar " + rupiah(price);
             const seller = userService
-              .findUserEmail(product.id_seller)
+              .findUserID(product.id_seller)
               .then((seller) => {
                 const sid = seller.id;
                 const sname = seller.name;
@@ -132,12 +132,12 @@ module.exports = {
                 mail.notifApp(stitle, sid, pid, oid, message);
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
-                // penawaranService.delete(oid).then((penawaran) => {
-                //   res.status(200).json({
-                //     status: "OK",
-                //     message: "Penawaran deleted",
-                //   });
-                // });
+                penawaranService.delete(oid).then((penawaran) => {
+                  res.status(200).json({
+                    status: "OK",
+                    message: "Penawaran deleted",
+                  });
+                });
               });
             });
           });
