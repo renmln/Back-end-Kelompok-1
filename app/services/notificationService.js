@@ -10,4 +10,7 @@ module.exports = {
     findByIdUser(id) {
         return notificationRepository.findByIdUser(id);
     },
+    update(id, updateArgs) {
+        return notificationRepository.update(id, updateArgs);
+      },
 }

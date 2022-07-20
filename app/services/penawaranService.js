@@ -28,4 +28,7 @@ module.exports = {
   findByIdBuyer(id) {
     return penawaranRepository.findByIdBuyer(id);
   },
+  update(id, updateArgs) {
+    return penawaranRepository.update(id, updateArgs);
+  },
 };

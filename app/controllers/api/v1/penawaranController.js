@@ -216,4 +216,25 @@ module.exports = {
       });
     }
   },
+
+  async updateOffering(req, res) {
+    try {
+      let updateArgs = {
+        status: req.body.status,
+      };
+      await penawaranService
+      .update(req.params.id, updateArgs)
+      .then((offering) => {
+        res.status(200).json({
+          status: "UPDATE_OFFERING_SUCCESS",
+          offering,
+        });
+      });
+    } catch (error) {
+      res.status(422).json({
+        status: "FAIL",
+        message: error.message,
+      });
+    }
+  },
 };

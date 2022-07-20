@@ -28,7 +28,7 @@ module.exports = {
   findOffer(id) {
     return Offering.findOne({
       where: {
-        id: id,
+        id,
       },
     });
   },
@@ -45,6 +45,13 @@ module.exports = {
     return Offering.findAll({
       where: { id_buyer: id },
       include: [{ model: Product }]
+    });
+  },
+  update(id, updateArgs) {
+    return Offering.update(updateArgs, {
+      where: {
+        id,
+      },
     });
   },
 };

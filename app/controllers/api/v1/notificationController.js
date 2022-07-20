@@ -155,4 +155,24 @@ module.exports = {
       }
     });
   },
+  async updateNotification(req, res) {
+    try {
+      let updateArgs = {
+        status: req.body.status,
+      };
+      await notificationService
+      .update(req.params.id, updateArgs)
+      .then((notifications) => {
+        res.status(200).json({
+          status: "UPDATE_TRANSACTION_SUCCESS",
+          notifications,
+        });
+      });
+    } catch (error) {
+      res.status(422).json({
+        status: "FAIL",
+        message: error.message,
+      });
+    }
+  },
 };

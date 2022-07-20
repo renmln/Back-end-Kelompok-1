@@ -110,6 +110,12 @@ apiRouter.get(
   controllers.api.v1.penawaranController.listPenawaran
 );
 
+// update offering
+apiRouter.put(
+  "/api/v1/product/offered/update/:id",
+  controllers.api.v1.penawaranController.updateOffering
+);
+
 //create a transaction
 apiRouter.post(
   "/api/v1/transaction",
@@ -144,6 +150,12 @@ apiRouter.put(
 apiRouter.get(
   "/api/v1/notif/findmynotif",
   controllers.api.v1.notifikasiController.findMyNotif
+);
+
+// update offering
+apiRouter.put(
+  "/api/v1/notif/update/:id",
+  controllers.api.v1.notifikasiController.updateNotification
 );
 
 //route not found
