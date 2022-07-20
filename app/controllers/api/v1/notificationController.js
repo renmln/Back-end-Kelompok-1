@@ -1,12 +1,14 @@
-const path = require('path')
-var nodemailer = require('nodemailer');
-var hbs = require('nodemailer-express-handlebars');
+const path = require("path");
+var nodemailer = require("nodemailer");
+var hbs = require("nodemailer-express-handlebars");
 const notificationService = require("../../../services/notificationService");
 const jwt = require("jsonwebtoken");
 
-
 function rupiah(number) {
-  return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(number);
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(number);
 }
 
 function verifyToken(token) {
@@ -17,7 +19,6 @@ function verifyToken(token) {
   }
 }
 module.exports = {
-
   async listNotif(req, res) {
     const notif = await notificationService
       .findAll(req.params.id)
@@ -33,54 +34,58 @@ module.exports = {
   },
 
   async notifApp(app, user, product, offer, messages) {
-    const title = app
-    const userId = user
-    const productId = product
-    const offeringId = offer
-    const message = messages
-    const notif = await notificationService
-      .create(title, userId, productId, offeringId, message)
+    const title = app;
+    const userId = user;
+    const productId = product;
+    const offeringId = offer;
+    const message = messages;
+    const notif = await notificationService.create(
+      title,
+      userId,
+      productId,
+      offeringId,
+      message
+    );
   },
 
   async sendMail(address, subject, template, name, product, price) {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: 'notifications.secondhand@gmail.com',
-        pass: 'innerptyxiwkvuns'
-      }
+        user: "notifications.secondhand@gmail.com",
+        pass: "innerptyxiwkvuns",
+      },
     });
 
     const handlebarOptions = {
       viewEngine: {
         extName: ".handlebars",
-        partialsDir: path.resolve('./app/mail'),
+        partialsDir: path.resolve("./app/mail"),
         defaultLayout: false,
       },
-      viewPath: path.resolve('./app/mail'),
+      viewPath: path.resolve("./app/mail"),
       extName: ".handlebars",
-    }
+    };
 
-    transporter.use('compile', hbs(handlebarOptions));
+    transporter.use("compile", hbs(handlebarOptions));
 
     var mailOptions = {
-      from: 'SecondHand',
+      from: "SecondHand",
       to: address,
       subject: subject,
       template: template,
       context: {
         name: name,
         product: product,
-        price: rupiah(price)
-      }
-
+        price: rupiah(price),
+      },
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
       } else {
-        console.log('Email sent: ' + info.response);
+        console.log("Email sent: " + info.response);
       }
     });
   },
@@ -108,4 +113,46 @@ module.exports = {
       });
     }
   },
-}
+
+  async sendMailForgotPassword(address, subject, template, url, email) {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "notifications.secondhand@gmail.com",
+        pass: "innerptyxiwkvuns",
+      },
+    });
+
+    const handlebarOptions = {
+      viewEngine: {
+        extName: ".handlebars",
+        partialsDir: path.resolve("./app/mail"),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve("./app/mail"),
+      extName: ".handlebars",
+    };
+
+    transporter.use("compile", hbs(handlebarOptions));
+
+    var mailOptions = {
+      from: "SecondHand",
+      to: address,
+      subject: subject,
+      template: template,
+      // html: `<p>Berikut link yang diberikan untuk reset password Anda</p>`,
+      context: {
+        email: email,
+        url: url,
+      },
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+  },
+};
