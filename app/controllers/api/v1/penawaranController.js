@@ -132,12 +132,12 @@ module.exports = {
                 mail.notifApp(stitle, sid, pid, oid, message);
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
-                penawaranService.delete(oid).then((penawaran) => {
-                  res.status(200).json({
-                    status: "OK",
-                    message: "Penawaran deleted",
-                  });
-                });
+                // penawaranService.delete(oid).then((penawaran) => {
+                //   res.status(200).json({
+                //     status: "OK",
+                //     message: "Penawaran deleted",
+                //   });
+                // });
               });
             });
           });
