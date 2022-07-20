@@ -39,12 +39,14 @@ module.exports = {
     const productId = product;
     const offeringId = offer;
     const message = messages;
+    const status = null;
     const notif = await notificationService.create(
       title,
       userId,
       productId,
       offeringId,
-      message
+      message,
+      status
     );
   },
 

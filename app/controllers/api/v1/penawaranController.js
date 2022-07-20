@@ -225,6 +225,35 @@ module.exports = {
       await penawaranService
       .update(req.params.id, updateArgs)
       .then((offering) => {
+        const sid = offering.id_seller
+        const pid = offering.id_product;
+        const bid = offering.id_buyer;
+        const oid = offering.id;
+        userService.findEmail(sid).then((seller) => {
+          const semail = seller.email;
+          const sname = seller.name;
+          userService.findEmail(bid).then((buyer) => {
+            const bmail = buyer.email;
+            const bname = buyer.name;
+            productService.findProduct(pid).then((product) => {
+              const pid = product.id;
+              const pname = product.name;
+              penawaranService.findOffer(oid).then((offer) => {
+                const price = offer.offering_price;
+                const btitle = "Penawaran ditolak";
+                const stitle = "Menolak penawaran";
+                const stemp = "refuseoffer";
+                const btemp = "offerrejected";
+                const message =
+                  "Penawaran sebesar " + rupiah(price) + " ditolak";
+                mail.notifApp(btitle, bid, pid, oid, message);
+                mail.notifApp(stitle, sid, pid, oid, message);
+                mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                mail.sendMail(semail, stitle, stemp, sname, pname, price);
+              });
+            });
+          });
+        });
         res.status(200).json({
           status: "UPDATE_OFFERING_SUCCESS",
           offering,
