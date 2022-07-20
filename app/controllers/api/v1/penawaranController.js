@@ -24,7 +24,7 @@ module.exports = {
   async listPenawaran(req, res) {
     penawaranService
       .list()
-      .then((offerings) => {
+      .then(( offerings ) => {
         res.status(201).json(offerings);
       })
       .catch((err) => {
@@ -57,42 +57,54 @@ module.exports = {
         const bid = post.id_buyer;
         const oid = post.id;
         const pid = post.id_product;
-        const buyer = userService.findIdByEmail(bid).then((buyer) => {
+        const buyer = userService.findUserID(bid).then((buyer) => {
           const bname = buyer.name;
           const bemail = buyer.email;
-          const product = productService.findProduct(pid).then((product) => {
-            const pname = product.product_name;
-            const pid = product.id;
-            const title = "Penawaran produk";
-            const message = "Ditawar " + rupiah(price);
-            const seller = userService
-              .findUserEmail(product.id_seller)
-              .then((seller) => {
-                const sid = seller.id;
-                const sname = seller.name;
-                const semail = seller.email;
-                const btemp = "offeringproduct";
-                const stemp = "getoffering";
-                let notif = mail.notifApp(title, bid, pid, oid, message);
-                notif = mail.notifApp(title, sid, pid, oid, message);
-                let email = mail.sendMail(
-                  bemail,
-                  title,
-                  btemp,
-                  bname,
-                  pname,
-                  price
-                );
-                email = mail.sendMail(
-                  semail,
-                  title,
-                  stemp,
-                  sname,
-                  pname,
-                  price
-                );
-              });
-          });
+          const product = productService
+            .findProduct(pid).then((product) => {
+              const pname = product.product_name;
+              const pid = product.id;
+              const title = "Penawaran produk";
+              const message = "Ditawar " + rupiah(price);
+              const seller = userService
+                .findUserID(product.id_seller)
+                .then((seller) => {
+                  const sid = seller.id;
+                  const sname = seller.name;
+                  const semail = seller.email;
+                  const btemp = "offeringproduct";
+                  const stemp = "getoffering";
+                  let notif = mail.notifApp(
+                    title,
+                    bid,
+                    pid,
+                    oid,
+                    message
+                  );
+                  notif = mail.notifApp(
+                    title,
+                    sid,
+                    pid,
+                    oid,
+                    message);
+                  let email = mail.sendMail(
+                    bemail,
+                    title,
+                    btemp,
+                    bname,
+                    pname,
+                    price
+                  );
+                  email = mail.sendMail(
+                    semail,
+                    title,
+                    stemp,
+                    sname,
+                    pname,
+                    price
+                  );
+                });
+            });
         });
       });
     } catch (err) {
@@ -121,27 +133,28 @@ module.exports = {
               const pid = product.id;
               const pname = product.name;
               penawaranService.findOffer(oid).then((offer) => {
-                const price = offer.offering_price;
+                const price = offer.offering_price
                 const btitle = "Penawaran ditolak";
-                const stitle = "Menolak penawaran";
+                const stitle = "Menolak penawaran"
                 const stemp = "refuseoffer";
                 const btemp = "offerrejected";
-                const message =
-                  "Penawaran sebesar " + rupiah(price) + " ditolak";
-                mail.notifApp(btitle, bid, pid, oid, message);
-                mail.notifApp(stitle, sid, pid, oid, message);
+                const message = "Penawaran sebesar " + rupiah(price) + " ditolak";
+                mail.notifApp(btitle, bid, pid, oid, message)
+                mail.notifApp(stitle, sid, pid, oid, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
-                penawaranService.delete(oid).then((penawaran) => {
-                  res.status(200).json({
-                    status: "OK",
-                    message: "Penawaran deleted",
-                  });
-                });
-              });
-            });
-          });
-        });
+                penawaranService
+                  .delete(oid)
+                  .then((penawaran) => {
+                    res.status(200).json({
+                      status: "OK",
+                      message: "Penawaran deleted",
+                    });
+                  })
+              })
+            })
+          })
+        })
       })
       .catch((err) => {
         res.status(422).json({
@@ -157,12 +170,12 @@ module.exports = {
         .findOffer(req.params.id)
         .then((offers) => {
           res.status(200).json(offers);
-        });
+        })
     } catch (error) {
       res.status(422).json({
         status: "FAIL",
         message: err.message,
-      });
+      })
     }
   },
 
