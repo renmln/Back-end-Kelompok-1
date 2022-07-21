@@ -192,7 +192,7 @@ module.exports = {
                 mail.notifApp(stitle, sid, pid, oid, message)
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
-                await transaksiService
+                transaksiService
                 .update(tid, updateArgs)
                 .then((transactions) => {
                   res.status(200).json({
