@@ -221,8 +221,7 @@ module.exports = {
       let updateArgs = {
         status: req.body.status,
       };
-      await penawaranService
-      .update(req.params.id, updateArgs)
+      await penawaranService.find(req.params.id)
       .then((offering) => {
         const pid = offering.id_product;
         const bid = offering.id_buyer;
@@ -249,13 +248,17 @@ module.exports = {
                 mail.notifApp(stitle, sid, pid, oid, message);
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                penawaranService
+                  .update(req.params.id, updateArgs)
+                  .then((offering) => {
+                    res.status(200).json({
+                      status: "UPDATE_OFFERING_SUCCESS",
+                      offering,
+                    });
+                  })
               });
             });
           });
-        });
-        res.status(200).json({
-          status: "UPDATE_OFFERING_SUCCESS",
-          offering,
         });
       });
     } catch (error) {
