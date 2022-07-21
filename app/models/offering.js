@@ -18,9 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       models.Offering.hasMany(models.Transaction, {
         foreignKey: "id_offering",
       });
-      models.Offering.belongsTo(models.Notification, {
-        foreignKey: "offeringId",
-      });
+      // models.Offering.belongsTo(models.Notification, {
+      //   foreignKey: "offeringId",
+      // });
     }
   }
   Offering.init(
