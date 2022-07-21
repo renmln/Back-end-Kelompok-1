@@ -5,6 +5,7 @@ const { User } = require("../../../models");
 const { Token } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
+const tokenService = require('../../../services/tokenService');
 const axios = require("axios");
 const mail = require("./notificationController");
 const Joi = require("joi");
@@ -213,16 +214,11 @@ module.exports = {
   // halaman reset password
   async verifyForgotPasswordLink(req, res) {
     try {
-      const user = await User.findOne({ id: req.params.id });
-      if (!user) return res.status(404).json({ message: "Invalid link" });
-
-      const token = await Token.findOne({
-        id_user: user.id,
-        token: req.params.token,
-      });
-      if (!token) return res.status(404).json({ message: "Invalid link" });
-
-      res.status(200).json({ message: "Valid Url" });
+      tokenService
+        .findToken(req.params.id, req.params.token)
+        .then((response) => {
+          res.status(200).json(response)
+        })
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -231,29 +227,21 @@ module.exports = {
   // put resetpassword/:id
   async resetPassword(req, res) {
     try {
-      const passwordSchema = Joi.object({
-        password: passwordComplexity().required().label("Password"),
-      });
-      const { error } = passwordSchema.validate(req.body);
-      if (error)
-        return res.status(400).json({ message: error.details[0].message });
+      const id = req.params.id
+      const password = await encryptPassword(req.body.password);
 
-      const user = await User.findOne({ id: req.params.id });
-      if (!user) return res.status(404).json({ message: "Invalid link" });
+      const user = JSON.parse(
+        JSON.stringify(await userService.findUserID(id))
+      );
 
-      const token = await Token.findOne({
-        id_user: user.id,
-        token: req.params.token,
-      });
-      if (!token) return res.status(404).json({ message: "Invalid link" });
+      user.password = password
 
-      const hashPassword = await encryptPassword(req.body.password);
-
-      user.password = hashPassword;
-      await user.save();
-      await token.remove();
-
-      res.status(200).json({ message: "Password reset succesfully" });
+      await userService.update(user.id, user).then((response) => {
+        res.status(200).json({
+          message: "Password updated",
+          data: response
+        });
+      })
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
     }

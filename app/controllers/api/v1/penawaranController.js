@@ -63,12 +63,11 @@ module.exports = {
           const product = productService.findProduct(pid).then((product) => {
             const pname = product.product_name;
             const pid = product.id;
+            const sid = product.id_seller;
             const title = "Penawaran produk";
             const message = "Ditawar " + rupiah(price);
-            const seller = userService
-              .findUserID(product.id_seller)
+            const seller = userService.findUserID(sid)
               .then((seller) => {
-                const sid = seller.id;
                 const sname = seller.name;
                 const semail = seller.email;
                 const btemp = "offeringproduct";
@@ -110,16 +109,16 @@ module.exports = {
         const pid = post.id_product;
         const bid = post.id_buyer;
         const oid = post.id;
-        userService.findEmail(post.id_seller).then((seller) => {
-          const sid = seller.id;
-          const semail = seller.email;
-          const sname = seller.name;
-          userService.findEmail(bid).then((buyer) => {
-            const bmail = buyer.email;
-            const bname = buyer.name;
-            productService.findProduct(pid).then((product) => {
-              const pid = product.id;
-              const pname = product.name;
+        userService.findEmail(bid).then((buyer) => {
+          const bmail = buyer.email;
+          const bname = buyer.name;
+          productService.findProduct(pid).then((product) => {
+            const pid = product.id;
+            const sid = product.id_seller;
+            const pname = product.name;
+            userService.findEmail(sid).then((seller) => {
+              const semail = seller.email;
+              const sname = seller.name;
               penawaranService.findOffer(oid).then((offer) => {
                 const price = offer.offering_price;
                 const btitle = "Penawaran ditolak";
@@ -222,8 +221,7 @@ module.exports = {
       let updateArgs = {
         status: req.body.status,
       };
-      await penawaranService
-      .update(req.params.id, updateArgs)
+      await penawaranService.find(req.params.id)
       .then((offering) => {
         const pid = offering.id_product;
         const bid = offering.id_buyer;
@@ -250,13 +248,17 @@ module.exports = {
                 mail.notifApp(stitle, sid, pid, oid, message);
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                penawaranService
+                  .update(req.params.id, updateArgs)
+                  .then((offering) => {
+                    res.status(200).json({
+                      status: "UPDATE_OFFERING_SUCCESS",
+                      offering,
+                    });
+                  })
               });
             });
           });
-        });
-        res.status(200).json({
-          status: "UPDATE_OFFERING_SUCCESS",
-          offering,
         });
       });
     } catch (error) {
