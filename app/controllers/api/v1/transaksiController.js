@@ -165,14 +165,46 @@ module.exports = {
       let updateArgs = {
         status: req.body.status,
       };
-      await transaksiService
-      .update(req.params.id, updateArgs)
-      .then((transactions) => {
-        res.status(200).json({
-          status: "UPDATE_TRANSACTION_SUCCESS",
-          transactions,
-        });
-      });
+      transaksiService
+      .find(req.params.id)
+      .then((post) => {
+        const tid = post.id;
+        const sid = post.id_seller;
+        const bid = post.id_buyer;
+        const pid = post.id_product;
+        const oid = post.id_offering;
+        userService.findEmail(sid).then((seller) => {
+          const semail = seller.email;
+          const sname = seller.name;
+          userService.findEmail(bid).then((buyer) => {
+            const bmail = buyer.email;
+            const bname = buyer.name;
+            productService.findProduct(pid).then((product) => {
+              const pname = product.product_name;
+              penawaranService.findOffer(oid).then((offer) => {
+                const price = offer.offering_price
+                const btitle = "Transaksi dibatalkan";
+                const stitle = "Membatalkan transaksi"
+                const stemp = "cancletransaction";
+                const btemp = "transactioncanceled";
+                const message = "Transaksi sebesar " + rupiah(price) + " dibatalkan";
+                mail.notifApp(btitle, bid, pid, oid, message)
+                mail.notifApp(stitle, sid, pid, oid, message)
+                mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                await transaksiService
+                .update(tid, updateArgs)
+                .then((transactions) => {
+                  res.status(200).json({
+                    status: "UPDATE_TRANSACTION_SUCCESS",
+                    transactions,
+                  });
+                });
+              })
+            })
+          })
+        })
+      })
     } catch (error) {
       res.status(422).json({
         status: "FAIL",
