@@ -39,20 +39,21 @@ module.exports = {
             productService.findProduct(pid).then((product) => {
               const pname = product.product_name;
               penawaranService.findOffer(oid).then((offer) => {
-                const price = offer.offering_price
+                const price = offer.offering_price;
                 const btitle = "Penawaran diterima";
-                const stitle = "Menerima penawaran"
+                const stitle = "Menerima penawaran";
                 const stemp = "acceptoffer";
                 const btemp = "offeraccepted";
-                const message = "Penawaran sebesar " + rupiah(price) + " diterima";
-                mail.notifApp(btitle, bid, pid, oid, message)
-                mail.notifApp(stitle, sid, pid, oid, message)
+                const message =
+                  "Penawaran sebesar " + rupiah(price) + " diterima";
+                mail.notifApp(btitle, bid, pid, oid, message);
+                mail.notifApp(stitle, sid, pid, oid, message);
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
-              })
-            })
-          })
-        })
+              });
+            });
+          });
+        });
       })
       .catch((err) => {
         res.status(422).json({
@@ -108,28 +109,27 @@ module.exports = {
             productService.findProduct(pid).then((product) => {
               const pname = product.product_name;
               penawaranService.findOffer(oid).then((offer) => {
-                const price = offer.offering_price
+                const price = offer.offering_price;
                 const btitle = "Transaksi dibatalkan";
-                const stitle = "Membatalkan transaksi"
+                const stitle = "Membatalkan transaksi";
                 const stemp = "cancletransaction";
                 const btemp = "transactioncanceled";
-                const message = "Transaksi sebesar " + rupiah(price) + " dibatalkan";
-                mail.notifApp(btitle, bid, pid, oid, message)
-                mail.notifApp(stitle, sid, pid, oid, message)
+                const message =
+                  "Transaksi sebesar " + rupiah(price) + " dibatalkan";
+                mail.notifApp(btitle, bid, pid, oid, message);
+                mail.notifApp(stitle, sid, pid, oid, message);
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
-                transaksiService
-                  .delete(tid)
-                  .then((transaksi) => {
-                    res.status(200).json({
-                      status: "OK",
-                      message: "Transaction deleted",
-                    });
-                  })
-              })
-            })
-          })
-        })
+                transaksiService.delete(tid).then((transaksi) => {
+                  res.status(200).json({
+                    status: "OK",
+                    message: "Transaction deleted",
+                  });
+                });
+              });
+            });
+          });
+        });
       })
       .catch((err) => {
         res.status(422).json({
@@ -165,9 +165,7 @@ module.exports = {
       let updateArgs = {
         status: req.body.status,
       };
-      transaksiService
-      .find(req.params.id)
-      .then((post) => {
+      transaksiService.find(req.params.id).then((post) => {
         const tid = post.id;
         const sid = post.id_seller;
         const bid = post.id_buyer;
@@ -182,29 +180,30 @@ module.exports = {
             productService.findProduct(pid).then((product) => {
               const pname = product.product_name;
               penawaranService.findOffer(oid).then((offer) => {
-                const price = offer.offering_price
+                const price = offer.offering_price;
                 const btitle = "Transaksi dibatalkan";
-                const stitle = "Membatalkan transaksi"
+                const stitle = "Membatalkan transaksi";
                 const stemp = "cancletransaction";
                 const btemp = "transactioncanceled";
-                const message = "Transaksi sebesar " + rupiah(price) + " dibatalkan";
-                mail.notifApp(btitle, bid, pid, oid, message)
-                mail.notifApp(stitle, sid, pid, oid, message)
+                const message =
+                  "Transaksi sebesar " + rupiah(price) + " dibatalkan";
+                mail.notifApp(btitle, bid, pid, oid, message);
+                mail.notifApp(stitle, sid, pid, oid, message);
                 mail.sendMail(bmail, btitle, btemp, bname, pname, price);
                 mail.sendMail(semail, stitle, stemp, sname, pname, price);
-                await transaksiService
-                .update(tid, updateArgs)
-                .then((transactions) => {
-                  res.status(200).json({
-                    status: "UPDATE_TRANSACTION_SUCCESS",
-                    transactions,
+                transaksiService
+                  .update(tid, updateArgs)
+                  .then((transactions) => {
+                    res.status(200).json({
+                      status: "UPDATE_TRANSACTION_SUCCESS",
+                      transactions,
+                    });
                   });
-                });
-              })
-            })
-          })
-        })
-      })
+              });
+            });
+          });
+        });
+      });
     } catch (error) {
       res.status(422).json({
         status: "FAIL",
