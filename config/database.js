@@ -5,7 +5,7 @@
 
 /** Destruct environment variable to get database configuration */
 const {
-  DB_USERNAME = "",
+  DB_USER = "",
   DB_PASSWORD = "",
   DB_HOST = "127.0.0.1",
   DB_NAME = "SecondHand_db",
@@ -14,7 +14,7 @@ const {
 
 module.exports = {
   development: {
-    username: DB_USERNAME,
+    username: DB_USER,
     password: DB_PASSWORD,
     database: `${DB_NAME}_development`,
     host: DB_HOST,
@@ -28,7 +28,7 @@ module.exports = {
     },
   },
   test: {
-    username: DB_USERNAME,
+    username: DB_USER,
     password: DB_PASSWORD,
     database: `${DB_NAME}_test`,
     host: DB_HOST,
@@ -42,7 +42,7 @@ module.exports = {
     },
   },
   production: {
-    username: DB_USERNAME,
+    username: DB_USER,
     password: DB_PASSWORD,
     database: `${DB_NAME}_production`,
     host: DB_HOST,
