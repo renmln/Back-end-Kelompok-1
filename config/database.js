@@ -1,9 +1,6 @@
-/**
- * @file Manages database connection configuration.
- * @author Fikri Rahmat Nurhidayat
- */
 const dotenv = require("dotenv");
 require("dotenv").config();
+
 /** Destruct environment variable to get database configuration */
 const {
   DB_USER = "",
