@@ -211,8 +211,6 @@ module.exports = {
   // halaman reset password
   async verifyForgotPasswordLink(req, res) {
     try {
-<<<<<<< HEAD
-      console.log(req.headers.authorization);
       const bearerToken = req.headers.authorization;
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
@@ -223,13 +221,6 @@ module.exports = {
           message: "verified",
         });
       })
-=======
-      tokenService
-        .findToken(req.params.id, req.params.token)
-        .then((response) => {
-          res.status(200).json(response);
-        });
->>>>>>> b6ff8eb0d6784f6bef2407267e2e602f8e8b0299
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -238,7 +229,6 @@ module.exports = {
   // put resetpassword/:id
   async resetPassword(req, res) {
     try {
-<<<<<<< HEAD
       const bearerToken = req.headers.authorization;
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
@@ -257,20 +247,6 @@ module.exports = {
         status: "UPDATE_SUCCESS",
         message: "User Updated",
         user,
-=======
-      const id = req.params.id;
-      const password = await encryptPassword(req.body.password);
-
-      const user = JSON.parse(JSON.stringify(await userService.findUserID(id)));
-
-      user.password = password;
-
-      await userService.update(user.id, user).then((response) => {
-        res.status(200).json({
-          message: "Password updated",
-          data: response,
-        });
->>>>>>> b6ff8eb0d6784f6bef2407267e2e602f8e8b0299
       });
     } catch (error) {
       res.status(500).json({ message: error.message });
