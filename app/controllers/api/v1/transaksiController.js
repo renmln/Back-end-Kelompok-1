@@ -180,17 +180,35 @@ module.exports = {
             productService.findProduct(pid).then((product) => {
               const pname = product.product_name;
               penawaranService.findOffer(oid).then((offer) => {
-                const price = offer.offering_price;
-                const btitle = "Transaksi dibatalkan";
-                const stitle = "Membatalkan transaksi";
-                const stemp = "cancletransaction";
-                const btemp = "transactioncanceled";
-                const message =
-                  "Transaksi sebesar " + rupiah(price) + " dibatalkan";
-                mail.notifApp(btitle, bid, pid, oid, message);
-                mail.notifApp(stitle, sid, pid, oid, message);
-                mail.sendMail(bmail, btitle, btemp, bname, pname, price);
-                mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                if (updateArgs.status === "GAGAL") {
+                  const price = offer.offering_price;
+                  const btitle = "Transaksi dibatalkan";
+                  const stitle = "Membatalkan transaksi";
+                  const stemp = "canceltransaction";
+                  const btemp = "transactioncanceled";
+                  const message =
+                    "Transaksi sebesar " + rupiah(price) + " dibatalkan";
+                  mail.notifApp(btitle, bid, pid, oid, message);
+                  mail.notifApp(stitle, sid, pid, oid, message);
+                  mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                  mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                }
+
+                if (updateArgs.status === "BERHASIL") {
+                  const price = offer.offering_price;
+                  const btitle = "Transaksi berhasil";
+                  const stitle = "Transaksi berhasil";
+                  const stemp = "succsestransaction";
+                  const btemp = "transactionsuccses";
+                  const message =
+                    "Transaksi sebesar " + rupiah(price) + " berhasil";
+                  mail.notifApp(btitle, bid, pid, oid, message);
+                  mail.notifApp(stitle, sid, pid, oid, message);
+                  mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                  mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                }
+
+
                 transaksiService
                   .update(tid, updateArgs)
                   .then((transactions) => {
