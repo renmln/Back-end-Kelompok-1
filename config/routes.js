@@ -9,7 +9,7 @@ apiRouter.use(cors());
 
 //API
 
-apiRouter.get("/");
+apiRouter.get("/", controllers.api.main.index);
 
 //API Authentication & Authorization
 apiRouter.post("/api/v1/register", controllers.api.v1.authController.register);
