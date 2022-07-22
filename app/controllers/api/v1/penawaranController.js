@@ -222,45 +222,49 @@ module.exports = {
         status: req.body.status,
       };
       await penawaranService.find(req.params.id)
-      .then((offering) => {
-        const pid = offering.id_product;
-        const bid = offering.id_buyer;
-        const oid = offering.id;
-        userService.findEmail(bid).then((buyer) => {
-          const bmail = buyer.email;
-          const bname = buyer.name;
-          productService.findProduct(pid).then((product) => {
-            const pid = product.id;
-            const sid = product.id_seller;
-            const pname = product.name;
-            userService.findEmail(sid).then((seller) => {
-              const semail = seller.email;
-              const sname = seller.name;
-              penawaranService.findOffer(oid).then((offer) => {
-                const price = offer.offering_price;
-                const btitle = "Penawaran ditolak";
-                const stitle = "Menolak penawaran";
-                const stemp = "refuseoffer";
-                const btemp = "offerrejected";
-                const message =
-                  "Penawaran sebesar " + rupiah(price) + " ditolak";
-                mail.notifApp(btitle, bid, pid, oid, message);
-                mail.notifApp(stitle, sid, pid, oid, message);
-                mail.sendMail(bmail, btitle, btemp, bname, pname, price);
-                mail.sendMail(semail, stitle, stemp, sname, pname, price);
-                penawaranService
-                  .update(req.params.id, updateArgs)
-                  .then((offering) => {
-                    res.status(200).json({
-                      status: "UPDATE_OFFERING_SUCCESS",
-                      offering,
-                    });
-                  })
+        .then((offering) => {
+          const pid = offering.id_product;
+          const bid = offering.id_buyer;
+          const oid = offering.id;
+          userService.findEmail(bid).then((buyer) => {
+            const bmail = buyer.email;
+            const bname = buyer.name;
+            productService.findProduct(pid).then((product) => {
+              const pid = product.id;
+              const sid = product.id_seller;
+              const pname = product.name;
+              userService.findEmail(sid).then((seller) => {
+                const semail = seller.email;
+                const sname = seller.name;
+                penawaranService.findOffer(oid).then((offer) => {
+
+                  if (updateArgs.status === "Ditolak") {
+                    const price = offer.offering_price;
+                    const btitle = "Penawaran ditolak";
+                    const stitle = "Menolak penawaran";
+                    const stemp = "refuseoffer";
+                    const btemp = "offerrejected";
+                    const message =
+                      "Penawaran sebesar " + rupiah(price) + " ditolak";
+                    mail.notifApp(btitle, bid, pid, oid, message);
+                    mail.notifApp(stitle, sid, pid, oid, message);
+                    mail.sendMail(bmail, btitle, btemp, bname, pname, price);
+                    mail.sendMail(semail, stitle, stemp, sname, pname, price);
+                  };
+                  penawaranService
+                    .update(req.params.id, updateArgs)
+                    .then((offering) => {
+                      res.status(200).json({
+                        status: "UPDATE_OFFERING_SUCCESS",
+                        offering,
+                      });
+                    })
+
+                });
               });
             });
           });
         });
-      });
     } catch (error) {
       res.status(422).json({
         status: "FAIL",
