@@ -1,4 +1,7 @@
 "use strict";
+const {
+  encryptPassword,
+} = require("../../app/controllers/api/v1/authController");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -16,8 +19,8 @@ module.exports = {
       "Users",
       [
         {
-          email: "superadmin@gmail.com",
-          password: await encryptPassword("super123"),
+          email: "renamuliani@gmail.com",
+          password: await encryptPassword("rena123"),
           createdAt: new Date(),
           updatedAt: new Date(),
         },

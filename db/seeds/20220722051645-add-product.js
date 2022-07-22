@@ -24,6 +24,8 @@ module.exports = {
         image_3: "",
         image_4: "",
         status: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ];
     await queryInterface.bulkInsert("Products", data, {});

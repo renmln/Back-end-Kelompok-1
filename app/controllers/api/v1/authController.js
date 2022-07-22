@@ -5,24 +5,11 @@ const { User } = require("../../../models");
 const { Token } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
-const tokenService = require('../../../services/tokenService');
+const tokenService = require("../../../services/tokenService");
 const axios = require("axios");
 const mail = require("./notificationController");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
-
-function encryptPassword(password) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, SALT, (err, encryptedPassword) => {
-      if (!!err) {
-        reject(err);
-        return;
-      }
-
-      resolve(encryptedPassword);
-    });
-  });
-}
 
 function checkPassword(encryptedPassword, password) {
   return new Promise((resolve, reject) => {
@@ -51,6 +38,19 @@ function verifyToken(token) {
 }
 
 module.exports = {
+  encryptPassword(password) {
+    return new Promise((resolve, reject) => {
+      bcrypt.hash(password, SALT, (err, encryptedPassword) => {
+        if (!!err) {
+          reject(err);
+          return;
+        }
+
+        resolve(encryptedPassword);
+      });
+    });
+  },
+
   async register(req, res) {
     const name = req.body.name;
     const email = req.body.email;
@@ -217,8 +217,8 @@ module.exports = {
       tokenService
         .findToken(req.params.id, req.params.token)
         .then((response) => {
-          res.status(200).json(response)
-        })
+          res.status(200).json(response);
+        });
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -227,21 +227,19 @@ module.exports = {
   // put resetpassword/:id
   async resetPassword(req, res) {
     try {
-      const id = req.params.id
+      const id = req.params.id;
       const password = await encryptPassword(req.body.password);
 
-      const user = JSON.parse(
-        JSON.stringify(await userService.findUserID(id))
-      );
+      const user = JSON.parse(JSON.stringify(await userService.findUserID(id)));
 
-      user.password = password
+      user.password = password;
 
       await userService.update(user.id, user).then((response) => {
         res.status(200).json({
           message: "Password updated",
-          data: response
+          data: response,
         });
-      })
+      });
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
     }
