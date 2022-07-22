@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "start": "nodemon bin/www",
+    "start": "node bin/www",
     "test": "jest",
     "develop": "nodemon -q bin/www",
     "db:create": "sequelize-cli db:create",
