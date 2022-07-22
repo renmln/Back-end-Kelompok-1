@@ -27,4 +27,4 @@ jobs:
           HD_CLOUD_NAME: ${{secrets.CLOUD_NAME}}
           HD_API_KEY: ${{secrets.API_KEY}}
           HD_API_SECRET: ${{secrets.API_SECRET}}
-          HD_SSLMODE: ${{secrets.SSLMODE}}
+          # HD_SSLMODE: ${{secrets.SSLMODE}}
