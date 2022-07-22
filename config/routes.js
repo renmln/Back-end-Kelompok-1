@@ -21,11 +21,11 @@ apiRouter.post(
   controllers.api.v1.authController.forgotPassword
 );
 apiRouter.get(
-  "/api/v1/verify-token/:id/:token",
+  "/api/v1/verify-token",
   controllers.api.v1.authController.verifyForgotPasswordLink
 );
 apiRouter.put(
-  "/api/v1/password-reset/:id",
+  "/api/v1/password-reset",
   controllers.api.v1.authController.resetPassword
 );
 

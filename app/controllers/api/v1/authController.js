@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-const { resolveMx } = require("dns/promises");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../../models");
 const { Token } = require("../../../models");
@@ -8,8 +7,6 @@ const userService = require("../../../services/userService");
 const tokenService = require('../../../services/tokenService');
 const axios = require("axios");
 const mail = require("./notificationController");
-const Joi = require("joi");
-const passwordComplexity = require("joi-password-complexity");
 
 function encryptPassword(password) {
   return new Promise((resolve, reject) => {
@@ -188,23 +185,23 @@ module.exports = {
       return;
     }
 
+    user = JSON.parse(JSON.stringify(user));
+    delete user.password;
+
     let token = await Token.findOne({ where: { id_user: user.id } });
     if (!token) {
-      token = await new Token({
-        id_user: user.id,
-        token: jwt.sign({ id: user.id }, process.env.JWT_SECRET || "Rahasia"),
-      }).save();
+      token = createToken(user);
     }
 
     const title = "Link berhasil dikirim";
     const userId = user.id;
-    const notif = mail.notifApp(title, userId);
-    const url = `http://localhost:3000/password-reset/${user.id}/${token.token}`;
+    // const notif = mail.notifApp(title, userId);
+    const url = `http://localhost:3000/password-reset/${token}`;
     const subject = "Link Reset Password";
     const template = "resetpassword";
     const send = mail.sendMailForgotPassword(email, subject, template, url);
 
-    return res.status(200).json({
+    res.status(200).json({
       message: "berhasil",
       token,
       user,
@@ -214,36 +211,46 @@ module.exports = {
   // halaman reset password
   async verifyForgotPasswordLink(req, res) {
     try {
-      tokenService
-        .findToken(req.params.id, req.params.token)
-        .then((response) => {
-          res.status(200).json(response)
-        })
+      console.log(req.headers.authorization);
+      const bearerToken = req.headers.authorization;
+      const token = bearerToken.split("Bearer ")[1];
+      const tokenPayload = verifyToken(token);
+
+      const user = await userService.findId(tokenPayload.email)
+      .then((response) => {
+        res.status(200).json({
+          message: "verified",
+        });
+      })
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: error.message });
     }
   },
 
   // put resetpassword/:id
   async resetPassword(req, res) {
     try {
-      const id = req.params.id
+      const bearerToken = req.headers.authorization;
+      const token = bearerToken.split("Bearer ")[1];
+      const tokenPayload = verifyToken(token);
+
       const password = await encryptPassword(req.body.password);
 
       const user = JSON.parse(
-        JSON.stringify(await userService.findUserID(id))
+        JSON.stringify(await userService.findId(tokenPayload.email))
       );
-
       user.password = password
 
-      await userService.update(user.id, user).then((response) => {
-        res.status(200).json({
-          message: "Password updated",
-          data: response
-        });
-      })
+      await userService.update(user.id, user)
+      delete user.password;
+
+      res.status(200).json({
+        status: "UPDATE_SUCCESS",
+        message: "User Updated",
+        user,
+      });
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: error.message });
     }
   },
 };
