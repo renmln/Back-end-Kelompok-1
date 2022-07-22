@@ -1,0 +1,29 @@
+name: Deploy_be_secondhand
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          dontuseforce: true
+          dontautocreate: true
+        env:
+          HD_JWT_SIGNATURE_KEY: ${{secrets.JWT_SIGNATURE_KEY}}
+          HD_DB_USER: ${{secrets.DB_USER}}
+          HD_DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          HD_DB_NAME: ${{secrets.DB_NAME}}
+          HD_DB_HOST: ${{secrets.DB_HOST}}
+          HD_DB_PORT: ${{secrets.DB_PORT}}
+          HD_CLOUD_NAME: ${{secrets.CLOUD_NAME}}
+          HD_API_KEY: ${{secrets.API_KEY}}
+          HD_API_SECRET: ${{secrets.API_SECRET}}
