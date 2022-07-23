@@ -6,7 +6,7 @@ const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
 
-const whitelist = ["https://secondhand-backend-k1.herokuapp.com"];
+const whitelist = ["https://secondhand-fe-k1.vercel.app/"];
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
