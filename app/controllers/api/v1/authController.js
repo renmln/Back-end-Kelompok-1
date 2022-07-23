@@ -8,6 +8,19 @@ const tokenService = require("../../../services/tokenService");
 const axios = require("axios");
 const mail = require("./notificationController");
 
+function encryptPassword(password) {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, SALT, (err, encryptedPassword) => {
+      if (!!err) {
+        reject(err);
+        return;
+      }
+
+      resolve(encryptedPassword);
+    });
+  });
+},
+
 function checkPassword(encryptedPassword, password) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, encryptedPassword, (err, isPasswordCorrect) => {
