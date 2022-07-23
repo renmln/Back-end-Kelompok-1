@@ -212,7 +212,7 @@ module.exports = {
       mail.sendMailForgotPassword(gmail, subject, template, name, url);
 
       res.status(200).json({
-        message: "berhasil",
+        message: "berhasil terkirim",
         token,
         user,
       });
