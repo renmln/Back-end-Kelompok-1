@@ -20,7 +20,7 @@ apiRouter.use(cors(corsOptions));
 
 //API
 
-apiRouter.get("/", controllers.api.main.index);
+apiRouter.get("/", cors(corsOptions), controllers.api.main.index);
 
 //API Authentication & Authorization
 apiRouter.post("/api/v1/register", controllers.api.v1.authController.register);
