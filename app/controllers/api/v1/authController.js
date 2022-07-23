@@ -205,12 +205,11 @@ module.exports = {
       const token = createToken(user);
 
       const name = user.name;
+      const gmail = user.email;
       const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
       const subject = "Link Reset Password";
       const template = "resetpassword";
-      const price = 150000;
-      mail.sendMail(email, subject, template, name, url, price)
-      // mail.sendMailForgotPassword(email, subject, template, name, url);
+      mail.sendMailForgotPassword(gmail, subject, template, name, url);
 
       res.status(200).json({
         message: "berhasil",
