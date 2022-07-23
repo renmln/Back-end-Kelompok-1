@@ -4,7 +4,6 @@ const { User } = require("../../../models");
 const { Token } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
-const tokenService = require("../../../services/tokenService");
 const axios = require("axios");
 const mail = require("./notificationController");
 
@@ -202,10 +201,10 @@ module.exports = {
       user = JSON.parse(JSON.stringify(user));
       delete user.password;
 
-    
+      
       const token = createToken(user);
 
-      const title = "Link berhasil dikirim";
+      // const title = "Link berhasil dikirim";
       // const userId = user.id;
       // const notif = mail.notifApp(title, userId);
       const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
@@ -230,13 +229,12 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      const user = await userService
-        .findId(tokenPayload.email)
-        .then((response) => {
-          res.status(200).json({
-            message: "verified",
-          });
+      const user = await userService.findId(tokenPayload.email)
+      .then((response) => {
+        res.status(200).json({
+          message: "verified",
         });
+      })
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -254,9 +252,9 @@ module.exports = {
       const user = JSON.parse(
         JSON.stringify(await userService.findId(tokenPayload.email))
       );
-      user.password = password;
+      user.password = password
 
-      await userService.update(user.id, user);
+      await userService.update(user.id, user)
       delete user.password;
 
       res.status(200).json({
