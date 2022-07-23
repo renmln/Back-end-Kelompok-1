@@ -5,7 +5,20 @@ const cors = require("cors");
 const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
-apiRouter.use(cors());
+
+const whitelist = ["https://secondhand-backend-k1.herokuapp.com"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+apiRouter.use(cors(corsOptions));
 
 //API
 

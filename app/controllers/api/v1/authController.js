@@ -215,12 +215,13 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      const user = await userService.findId(tokenPayload.email)
-      .then((response) => {
-        res.status(200).json({
-          message: "verified",
+      const user = await userService
+        .findId(tokenPayload.email)
+        .then((response) => {
+          res.status(200).json({
+            message: "verified",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -238,9 +239,9 @@ module.exports = {
       const user = JSON.parse(
         JSON.stringify(await userService.findId(tokenPayload.email))
       );
-      user.password = password
+      user.password = password;
 
-      await userService.update(user.id, user)
+      await userService.update(user.id, user);
       delete user.password;
 
       res.status(200).json({
