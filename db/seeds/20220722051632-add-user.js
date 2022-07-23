@@ -24,6 +24,12 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          email: "doun.forlyfe@gmail.com",
+          password: await encryptPassword("doun1234"),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
