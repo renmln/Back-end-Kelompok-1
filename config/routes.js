@@ -5,30 +5,26 @@ const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
 
-const whitelist = ["https://secondhand-fe-k1.vercel.app/"];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
+// const whitelist = ["https://secondhand-fe-k1.vercel.app/"];
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
 
-apiRouter.use(cors(corsOptions));
+apiRouter.use(cors());
 
 //API
 
-apiRouter.get("/", cors(corsOptions), controllers.api.main.index);
+apiRouter.get("/", controllers.api.main.index);
 
 //API Authentication & Authorization
 apiRouter.post("/api/v1/register", controllers.api.v1.authController.register);
-apiRouter.post(
-  "/api/v1/login",
-  cors(corsOptions),
-  controllers.api.v1.authController.login
-);
+apiRouter.post("/api/v1/login", controllers.api.v1.authController.login);
 apiRouter.get("/api/v1/whoami", controllers.api.v1.authController.whoAmI);
 apiRouter.post("/api/v1/auth/google", controllers.api.v1.authController.google);
 apiRouter.post(
@@ -59,7 +55,6 @@ apiRouter.get(
 // API CRUD Product
 apiRouter.get(
   "/api/v1/products",
-  cors(corsOptions),
   controllers.api.v1.productController.findAllProduct
 ); // Find All Product in Homepage
 apiRouter.get(
