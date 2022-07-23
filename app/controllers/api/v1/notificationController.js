@@ -177,4 +177,57 @@ module.exports = {
       });
     }
   },
+
+  async sendMailcoba(req, res) {
+    try {
+      const address = req.body.email;
+      const subject  = "Coba kirim email";
+      const template = "resetpassword";
+      const name = "sutarno";
+      const url = "www.google.com";
+      
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "notifications.secondhand@gmail.com",
+          pass: "innerptyxiwkvuns",
+        },
+      });
+  
+      const handlebarOptions = {
+        viewEngine: {
+          extName: ".handlebars",
+          partialsDir: path.resolve("./app/mail"),
+          defaultLayout: false,
+        },
+        viewPath: path.resolve("./app/mail"),
+        extName: ".handlebars",
+      };
+  
+      transporter.use("compile", hbs(handlebarOptions));
+  
+      var mailOptions = {
+        from: "SecondHand",
+        to: address,
+        subject: subject,
+        template: template,
+        // html: `<p>Berikut link yang diberikan untuk reset password Anda</p>`,
+        context: {
+          name: name,
+          url: url,
+        },
+      };
+  
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      res.status(200).json({message: "Terkirim"})
+    } catch(error) {
+      res.status(200).json({message: error.message})
+    }
+  },
 };
