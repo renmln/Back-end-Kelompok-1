@@ -204,16 +204,14 @@ module.exports = {
       
       const token = createToken(user);
 
-      // const title = "Link berhasil dikirim";
-      // const userId = user.id;
-      // const notif = mail.notifApp(title, userId);
+      const name = user.name;
       const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
       const subject = "Link Reset Password";
       const template = "resetpassword";
-      mail.sendMailForgotPassword(email, subject, template, url);
+      mail.sendMailForgotPassword(email, subject, template, name, url);
 
       res.status(200).json({
-        message: "berhasil terkirim",
+        message: "berhasil",
         token,
         user,
       });
