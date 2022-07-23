@@ -184,7 +184,8 @@ module.exports = {
       const subject  = "Coba kirim email";
       const template = "resetpassword";
       const name = "sutarno";
-      const url = "www.google.com";
+      const product = "kecrek";
+      const price = 200000;
       
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -211,10 +212,10 @@ module.exports = {
         to: address,
         subject: subject,
         template: template,
-        // html: `<p>Berikut link yang diberikan untuk reset password Anda</p>`,
         context: {
           name: name,
-          url: url,
+          product: product,
+          price: rupiah(price),
         },
       };
   
