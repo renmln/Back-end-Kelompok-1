@@ -6,19 +6,19 @@ const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
 
-const whitelist = ["https://secondhand-fe-k1.vercel.app/"];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
+// const whitelist = ["https://secondhand-fe-k1.vercel.app/"];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (!origin || whitelist.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true,
+// };
 
-apiRouter.use(cors(corsOptions));
+apiRouter.use(cors());
 
 //API
 
