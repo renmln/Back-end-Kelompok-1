@@ -1,11 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 
-// const controllers = require("../app/controllers");
 const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
-
+apiRouter.use(cors());
 // const whitelist = ["https://secondhand-fe-k1.vercel.app/"];
 // const corsOptions = {
 //   origin: function (origin, callback) {
@@ -17,8 +16,6 @@ const apiRouter = express.Router();
 //   },
 //   credentials: true,
 // };
-
-apiRouter.use(cors());
 
 //API
 
