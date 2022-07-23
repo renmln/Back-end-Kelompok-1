@@ -15,24 +15,21 @@ module.exports = {
      * }], {});
      */
 
-    await queryInterface.bulkInsert(
-      "Users",
-      [
-        {
-          email: "renamuliani@gmail.com",
-          password: await encryptPassword("rena123"),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          email: "doun.forlyfe@gmail.com",
-          password: await encryptPassword("doun1234"),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    );
+    let data = [
+      {
+        email: "renamuliani@gmail.com",
+        password: await encryptPassword("rena123"),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        email: "doun.forlyfe@gmail.com",
+        password: await encryptPassword("doun1234"),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+    await queryInterface.bulkInsert("Users", data, {});
   },
 
   async down(queryInterface, Sequelize) {
@@ -42,6 +39,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete("User", null, {});
+    await queryInterface.bulkDelete("Users", null, {});
   },
 };
