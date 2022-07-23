@@ -208,7 +208,9 @@ module.exports = {
       const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
       const subject = "Link Reset Password";
       const template = "resetpassword";
-      mail.sendMailForgotPassword(email, subject, template, name, url);
+      const price = 150000;
+      mail.sendMail(email, subject, template, name, url, price)
+      // mail.sendMailForgotPassword(email, subject, template, name, url);
 
       res.status(200).json({
         message: "berhasil",
