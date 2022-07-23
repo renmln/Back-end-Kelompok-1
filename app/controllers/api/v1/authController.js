@@ -187,38 +187,40 @@ module.exports = {
   },
 
   async forgotPassword(req, res) {
-    const email = req.body.email.toLowerCase();
+    try{
+      const email = req.body.email.toLowerCase();
 
-    let user = await User.findOne({
-      where: { email },
-    });
+      let user = await User.findOne({
+        where: { email },
+      });
 
-    if (!user) {
-      res.status(404).json({ message: "Email tidak ditemukan" });
-      return;
+      if (!user) {
+        res.status(404).json({ message: "Email tidak ditemukan" });
+        return;
+      }
+
+      user = JSON.parse(JSON.stringify(user));
+      delete user.password;
+
+    
+      const token = createToken(user);
+
+      const title = "Link berhasil dikirim";
+      // const userId = user.id;
+      // const notif = mail.notifApp(title, userId);
+      const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
+      const subject = "Link Reset Password";
+      const template = "resetpassword";
+      const send = mail.sendMailForgotPassword(email, subject, template, url);
+
+      res.status(200).json({
+        message: "berhasil",
+        token,
+        user,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    user = JSON.parse(JSON.stringify(user));
-    delete user.password;
-
-    let token = await Token.findOne({ where: { id_user: user.id } });
-    if (!token) {
-      token = createToken(user);
-    }
-
-    const title = "Link berhasil dikirim";
-    const userId = user.id;
-    // const notif = mail.notifApp(title, userId);
-    const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
-    const subject = "Link Reset Password";
-    const template = "resetpassword";
-    const send = mail.sendMailForgotPassword(email, subject, template, url);
-
-    res.status(200).json({
-      message: "berhasil",
-      token,
-      user,
-    });
   },
 
   // halaman reset password
