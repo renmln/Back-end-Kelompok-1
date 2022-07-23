@@ -19,7 +19,7 @@ function encryptPassword(password) {
       resolve(encryptedPassword);
     });
   });
-},
+}
 
 function checkPassword(encryptedPassword, password) {
   return new Promise((resolve, reject) => {
