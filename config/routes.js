@@ -39,10 +39,6 @@ apiRouter.put(
   "/api/v1/password-reset",
   controllers.api.v1.authController.resetPassword
 );
-apiRouter.get(
-  "/api/v1/sendmail",
-  controllers.api.v1.notifikasiController.sendMailcoba
-);
 
 // API User Info
 apiRouter.put(
