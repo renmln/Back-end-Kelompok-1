@@ -24,7 +24,11 @@ apiRouter.get("/", cors(corsOptions), controllers.api.main.index);
 
 //API Authentication & Authorization
 apiRouter.post("/api/v1/register", controllers.api.v1.authController.register);
-apiRouter.post("/api/v1/login", controllers.api.v1.authController.login);
+apiRouter.post(
+  "/api/v1/login",
+  cors(corsOptions),
+  controllers.api.v1.authController.login
+);
 apiRouter.get("/api/v1/whoami", controllers.api.v1.authController.whoAmI);
 apiRouter.post("/api/v1/auth/google", controllers.api.v1.authController.google);
 apiRouter.post(
@@ -55,6 +59,7 @@ apiRouter.get(
 // API CRUD Product
 apiRouter.get(
   "/api/v1/products",
+  cors(corsOptions),
   controllers.api.v1.productController.findAllProduct
 ); // Find All Product in Homepage
 apiRouter.get(
