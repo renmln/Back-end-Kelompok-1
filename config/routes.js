@@ -83,10 +83,10 @@ apiRouter.put(
 ); // Upload Product Images
 
 //get product list
-apiRouter.get(
-  "/api/v1/products",
-  controllers.api.v1.productController.findAllProduct
-);
+// apiRouter.get(
+//   "/api/v1/products",
+//   controllers.api.v1.productController.findAllProduct
+// );
 
 //get filtered product list
 apiRouter.get(
