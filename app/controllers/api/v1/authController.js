@@ -1,10 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../../models");
-const { Token } = require("../../../models");
 const SALT = 10;
 const userService = require("../../../services/userService");
-const tokenService = require("../../../services/tokenService");
 const axios = require("axios");
 const mail = require("./notificationController");
 
@@ -187,38 +185,39 @@ module.exports = {
   },
 
   async forgotPassword(req, res) {
-    const email = req.body.email.toLowerCase();
+    try{
+      const email = req.body.email.toLowerCase();
 
-    let user = await User.findOne({
-      where: { email },
-    });
+      let user = await User.findOne({
+        where: { email },
+      });
 
-    if (!user) {
-      res.status(404).json({ message: "Email tidak ditemukan" });
-      return;
+      if (!user) {
+        res.status(404).json({ message: "Email tidak ditemukan" });
+        return;
+      }
+
+      user = JSON.parse(JSON.stringify(user));
+      delete user.password;
+
+      
+      const token = createToken(user);
+
+      const name = user.name;
+      const gmail = user.email;
+      const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
+      const subject = "Link Reset Password";
+      const template = "resetpassword";
+      mail.sendMailForgotPassword(gmail, subject, template, name, url);
+
+      res.status(200).json({
+        message: "berhasil terkirim",
+        token,
+        user,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    user = JSON.parse(JSON.stringify(user));
-    delete user.password;
-
-    let token = await Token.findOne({ where: { id_user: user.id } });
-    if (!token) {
-      token = createToken(user);
-    }
-
-    const title = "Link berhasil dikirim";
-    const userId = user.id;
-    // const notif = mail.notifApp(title, userId);
-    const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
-    const subject = "Link Reset Password";
-    const template = "resetpassword";
-    const send = mail.sendMailForgotPassword(email, subject, template, url);
-
-    res.status(200).json({
-      message: "berhasil",
-      token,
-      user,
-    });
   },
 
   // halaman reset password
@@ -228,13 +227,12 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      const user = await userService
-        .findId(tokenPayload.email)
-        .then((response) => {
-          res.status(200).json({
-            message: "verified",
-          });
+      const user = await userService.findId(tokenPayload.email)
+      .then((response) => {
+        res.status(200).json({
+          message: "verified",
         });
+      })
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -252,9 +250,9 @@ module.exports = {
       const user = JSON.parse(
         JSON.stringify(await userService.findId(tokenPayload.email))
       );
-      user.password = password;
+      user.password = password
 
-      await userService.update(user.id, user);
+      await userService.update(user.id, user)
       delete user.password;
 
       res.status(200).json({

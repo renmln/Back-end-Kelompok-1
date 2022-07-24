@@ -116,7 +116,7 @@ module.exports = {
     }
   },
 
-  async sendMailForgotPassword(address, subject, template, url, email) {
+  async sendMailForgotPassword(address, subject, template, name, url) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -144,7 +144,7 @@ module.exports = {
       template: template,
       // html: `<p>Berikut link yang diberikan untuk reset password Anda</p>`,
       context: {
-        email: email,
+        name: name,
         url: url,
       },
     };
