@@ -14,6 +14,10 @@ module.exports = {
     });
   },
 
+  findAll() {
+    return Product.findAll({});
+  },
+
   findMyProduct(id) {
     return Product.findAll({
       where: {
