@@ -14,12 +14,6 @@ module.exports = {
     });
   },
 
-  findAll() {
-    return Product.findAll({
-
-    });
-  },
-
   findMyProduct(id) {
     return Product.findAll({
       where: {
@@ -40,16 +34,16 @@ module.exports = {
     return Product.findAll({
       where: {
         category: type,
-        status: null
-      }
-    })
+        status: null,
+      },
+    });
   },
 
   findProduct(id) {
     return Product.findOne({
       where: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  },
 };
