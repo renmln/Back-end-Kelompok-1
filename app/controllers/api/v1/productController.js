@@ -67,7 +67,6 @@ module.exports = {
           status: "PRODUCT_ADDED",
           products,
         });
-        // ini masih error
         const title = "Berhasil di ditambahkan";
         const userId = products.id_seller;
         const productId = products.id;
@@ -75,7 +74,13 @@ module.exports = {
         const price = products.price;
         const message = null;
         const offeringId = null;
-        const notif = mail.notifApp(title, userId, productId, offeringId, message);
+        const notif = mail.notifApp(
+          title,
+          userId,
+          productId,
+          offeringId,
+          message
+        );
         const user = userService.findEmail(userId).then((user) => {
           const email = user.email;
           const subject = "Menambahkan produk";
@@ -157,7 +162,6 @@ module.exports = {
       const id_seller = tokenpayload.id;
       // Argumen untuk update produk
       let updateArgs = {
-        // id_seller: id_seller,
         product_name: req.body.product_name,
         price: req.body.price,
         category: req.body.category,
@@ -176,7 +180,7 @@ module.exports = {
 
       if (req.body.status) {
         updateArgs = {
-          status: req.body.status
+          status: req.body.status,
         };
       }
 
@@ -187,20 +191,6 @@ module.exports = {
             status: "UPDATE_PRODUCT_SUCCESS",
             products,
           });
-          // let title = "Berhasil di perbarui";
-          // const userId = products.id_seller;
-          // const productId = products.id;
-          // const productName = products.product_name;
-          // const price = products.price;
-          // const message = null;
-          // const notif = mail.notifApp(title, userId, productId, message);
-          // const user = userService.findEmail(userId).then((user) => {
-          //     const email = user.email;
-          //     const subject = "Mengubah detail produk";
-          //     const template = "updateproduct";
-          //     const name = user.name;
-          //     const send = mail.sendMail(email, subject, template, name, productName, price);
-          // });
         })
         .catch((err) => {
           res.status(422).json({
@@ -298,15 +288,16 @@ module.exports = {
   },
 
   async findProductsByCategory(req, res) {
-    const products = await productService.findByCategory(req.params.category)
+    const products = await productService
+      .findByCategory(req.params.category)
       .then((products) => {
-        res.status(200).json(products)
+        res.status(200).json(products);
       })
       .catch((err) => {
         res.status(422).json({
           status: "FAIL",
           message: err.message,
         });
-      })
-  }
+      });
+  },
 };
