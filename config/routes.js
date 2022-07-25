@@ -69,8 +69,8 @@ apiRouter.put(
 );
 // destroy product
 apiRouter.delete(
-  "api/v1/drop/product/:id",
-  controllers.api.v1.productController.deleteProduct
+  "api/v1/product/destroy/:id",
+  controllers.api.v1.productController.destroyProduct
 );
 // Upload Product Images
 apiRouter.put(

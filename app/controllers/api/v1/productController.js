@@ -301,7 +301,7 @@ module.exports = {
       });
   },
 
-  async deleteProduct(req, res) {
+  async destroyProduct(req, res) {
     const bearerToken = req.headers.authorization;
     const token = bearerToken.split("Bearer ")[1];
     const tokenPayload = verifyToken(token);
@@ -309,7 +309,7 @@ module.exports = {
     productService.deleteProduct(req.params.id)
     .then((product) => {
       res.status(200).json({
-        message: "Product successfully deleted"
+        status: "Product successfully deleted"
       })
     })
   },
