@@ -38,4 +38,11 @@ module.exports = {
             },
         });
     },
+    deleteByProduct(productId) {
+        return Notification.destroy({
+            where: {
+                productId,
+            }
+        })
+    }
 }
