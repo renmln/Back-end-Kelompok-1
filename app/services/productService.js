@@ -30,6 +30,6 @@ module.exports = {
   },
   
   dropProduct(id) {
-    return productRepository.dropProduct(id);
+    return productRepository.dropProduct(id, id_seller);
   },
 };
