@@ -29,7 +29,7 @@ module.exports = {
     return productRepository.findProduct(id);
   },
   
-  dropProduct(id) {
+  deleteProduct(id) {
     return productRepository.dropProduct(id, id_seller);
   },
 };
