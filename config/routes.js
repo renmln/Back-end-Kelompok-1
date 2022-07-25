@@ -4,6 +4,8 @@ const cors = require("cors");
 const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('../docs/swagger.json');
 
 apiRouter.use(cors());
 
@@ -148,7 +150,8 @@ apiRouter.put(
   "/api/v1/notif/update/:id",
   controllers.api.v1.notifikasiController.updateNotification
 );
-
+apiRouter.get('/documentation.json', (req, res) => res.send(swaggerDocument));
+apiRouter.use('/documentation', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 //route not found
 apiRouter.use(controllers.api.main.onLost);
 apiRouter.use(controllers.api.main.onError);
