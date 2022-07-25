@@ -451,39 +451,6 @@
           }
         }
       },
-      "coreUserCar": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "carId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "rentStartedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "rentEndedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
       "coreWhoAmIResponse": {
         "type": "object",
         "properties": {
