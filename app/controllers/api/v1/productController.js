@@ -5,6 +5,8 @@ const cloudinary = require("../../../cloudinary");
 const jwt = require("jsonwebtoken");
 const { image } = require("../../../cloudinary");
 const { json } = require("body-parser");
+const notificationController = require("./notificationController");
+const notificationService = require("../../../services/notificationService");
 
 function verifyToken(token) {
   try {
@@ -307,6 +309,7 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
+      await notificationService.deleteByProduct(req.params.id)
       await productService.deleteProduct(req.params.id, tokenPayload.id)
       .then((product) => {
         res.status(200).json({

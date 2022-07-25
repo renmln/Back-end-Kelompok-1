@@ -1,4 +1,5 @@
 const notificationRepository = require('../repositories/notificationRepository');
+const productRepository = require('../repositories/productRepository');
 
 module.exports = {
     create(title, userId, productId, offeringId, message) {
@@ -12,5 +13,8 @@ module.exports = {
     },
     update(id, updateArgs) {
         return notificationRepository.update(id, updateArgs);
-      },
+    },
+    deleteByProduct(productId) {
+        return notificationRepository.deleteByProduct(productId);
+    }
 }
