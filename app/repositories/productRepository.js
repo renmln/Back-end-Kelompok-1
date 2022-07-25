@@ -50,4 +50,13 @@ module.exports = {
       },
     });
   },
+
+  dropProduct(id, id_seller) {
+    return Product.destroy({
+      where: {
+        id,
+        id_seller,
+      }
+    })
+  }
 };

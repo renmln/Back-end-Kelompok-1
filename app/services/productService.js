@@ -27,5 +27,9 @@ module.exports = {
 
   findProduct(id) {
     return productRepository.findProduct(id);
-  }
+  },
+  
+  dropProduct(id) {
+    return productRepository.dropProduct(id, id_seller);
+  },
 };
