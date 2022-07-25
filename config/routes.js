@@ -131,7 +131,7 @@ apiRouter.put(
   "/api/v1/transactions/update/:id",
   controllers.api.v1.transaksiController.updateTransaction
 );
-//destroy transaction
+
 apiRouter.delete(
   "/api/v1/transactions/delete/:id",
   controllers.api.v1.transaksiController.destroyTransaksi
