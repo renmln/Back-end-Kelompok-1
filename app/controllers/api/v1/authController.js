@@ -207,7 +207,7 @@ module.exports = {
       const gmail = user.email;
       const url = `https://secondhand-fe-k1.vercel.app/password-reset/${token}`;
       const subject = "Link Reset Password";
-      const template = "resetpassword";
+      const template = "resetPassword";
       mail.sendMailForgotPassword(gmail, subject, template, name, url);
 
       res.status(200).json({

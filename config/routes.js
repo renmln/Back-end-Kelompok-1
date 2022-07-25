@@ -5,21 +5,9 @@ const controllers = require("../app/controllers");
 const uploadOnMemory = require("../app/uploadOnMemory");
 const apiRouter = express.Router();
 
-// const whitelist = ["https://secondhand-fe-k1.vercel.app/"];
-// var corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-// };
-
 apiRouter.use(cors());
 
 //API
-
 apiRouter.get("/", controllers.api.main.index);
 
 //API Authentication & Authorization
@@ -53,53 +41,49 @@ apiRouter.get(
 );
 
 // API CRUD Product
+// Find All Product in Homepage
 apiRouter.get(
   "/api/v1/products",
   controllers.api.v1.productController.findAllProduct
-); // Find All Product in Homepage
+);
+// Find Product By IdSeller in Daftar Jual
 apiRouter.get(
   "/api/v1/product",
   controllers.api.v1.productController.findMyProduct
-); // Find Product By IdSeller in Daftar Jual
+);
+// Add Product
 apiRouter.post(
   "/api/v1/product",
   uploadOnMemory.array("picture", 4),
   controllers.api.v1.productController.addProduct
-); // Add Product
+);
 apiRouter.get(
   "/api/v1/product/:id",
   controllers.api.v1.productController.findOneProduct
 );
-
+// Edit Product
 apiRouter.put(
   "/api/v1/product/update/:id",
   uploadOnMemory.array("picture", 4),
   controllers.api.v1.productController.updateProduct
-); // Edit Product
-
+);
+// destroy product
 apiRouter.delete(
   "api/v1/drop/product/:id",
   controllers.api.v1.productController.deleteProduct
 );
+// Upload Product Images
 apiRouter.put(
   "/api/v1/products/cloudinary",
   uploadOnMemory.array("picture", 4),
   controllers.api.v1.productController.uploadProductImages
-); // Upload Product Images
-
-//get product list
-// apiRouter.get(
-//   "/api/v1/products",
-//   controllers.api.v1.productController.findAllProduct
-// );
-
-//get filtered product list
-apiRouter.get(
-  "/api/v1/products/filter/:category",
-  controllers.api.v1.productController.findProductsByCategory
 );
 
 //Offered product
+apiRouter.get(
+  "/api/v1/products/alloffer",
+  controllers.api.v1.penawaranController.listPenawaran
+);
 apiRouter.get(
   "/api/v1/products/offered/:id",
   controllers.api.v1.penawaranController.findThisOffer
@@ -120,55 +104,46 @@ apiRouter.delete(
   "/api/v1/product/offered/delete/:id",
   controllers.api.v1.penawaranController.destroyPenawaran
 );
-
-apiRouter.get(
-  "/api/v1/products/alloffer",
-  controllers.api.v1.penawaranController.listPenawaran
-);
-
 // update offering
 apiRouter.put(
   "/api/v1/product/offered/update/:id",
   controllers.api.v1.penawaranController.updateOffering
 );
 
+// Transaction
 //create a transaction
 apiRouter.post(
   "/api/v1/transaction",
   controllers.api.v1.transaksiController.createTransaksi
 );
-
 //find one transaction
 apiRouter.get(
   "/api/v1/transaction/:id",
   controllers.api.v1.transaksiController.findOneTransaction
 );
-
 //find all transactions
 apiRouter.get(
   "/api/v1/transactions",
   controllers.api.v1.transaksiController.listTransaksi
 );
-
+// update transaction
+apiRouter.put(
+  "/api/v1/transactions/update/:id",
+  controllers.api.v1.transaksiController.updateTransaction
+);
 //destroy transaction
 apiRouter.delete(
   "/api/v1/transactions/delete/:id",
   controllers.api.v1.transaksiController.destroyTransaksi
 );
 
-// update transaction
-apiRouter.put(
-  "/api/v1/transactions/update/:id",
-  controllers.api.v1.transaksiController.updateTransaction
-);
-
+// Notification
 // find Notifikasi by id
 apiRouter.get(
   "/api/v1/notif/findmynotif",
   controllers.api.v1.notifikasiController.findMyNotif
 );
-
-// update offering
+// update notif offering
 apiRouter.put(
   "/api/v1/notif/update/:id",
   controllers.api.v1.notifikasiController.updateNotification

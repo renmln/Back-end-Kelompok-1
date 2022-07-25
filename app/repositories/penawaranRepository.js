@@ -20,7 +20,7 @@ module.exports = {
   delete(id) {
     return Offering.destroy({
       where: {
-        id: id
+        id: id,
       },
     });
   },
@@ -44,9 +44,10 @@ module.exports = {
   findByIdBuyer(id) {
     return Offering.findAll({
       where: { id_buyer: id },
-      include: [{ model: Product }]
+      include: [{ model: Product }],
     });
   },
+
   update(id, updateArgs) {
     return Offering.update(updateArgs, {
       where: {

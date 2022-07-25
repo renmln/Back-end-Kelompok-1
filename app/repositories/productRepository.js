@@ -15,11 +15,7 @@ module.exports = {
   },
 
   findAll() {
-    return Product.findAll({
-      // where: {
-      //   status: { [Op.notLike]: "not available" },
-      // }
-    });
+    return Product.findAll({});
   },
 
   findMyProduct(id) {

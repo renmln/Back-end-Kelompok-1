@@ -48,22 +48,4 @@ module.exports = {
   findAll() {
     return User.findAll();
   },
-
-  //   update(id, updateArgs) {
-  //     return User.update(updateArgs, {
-  //       where: {
-  //         id,
-  //       },
-  //     });
-  //   },
-
-  //   delete(id) {
-  //     return User.destroy({ where: { id } });
-  //   },
-
-  //   find(id) {
-  //     return User.findByPk({ where: { id } });
-  //   },
-
-  //
 };
