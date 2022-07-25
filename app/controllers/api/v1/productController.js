@@ -302,21 +302,22 @@ module.exports = {
   },
 
   async destroyProduct(req, res) {
-    try{
+    try {
       const bearerToken = req.headers.authorization;
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      productService.deleteProduct(req.params.id, tokenPayload.id)
-      .then((product) => {
-        res.status(200).json({
-          status: "Product successfully deleted"
-        })
-      })
-    } catch(error) {
+      productService
+        .deleteProduct(req.params.id, tokenPayload.id)
+        .then((product) => {
+          res.status(200).json({
+            status: "Product successfully deleted",
+          });
+        });
+    } catch (error) {
       res.status(422).json({
-        status: error.message
-      })
+        status: error.message,
+      });
     }
   },
 };
