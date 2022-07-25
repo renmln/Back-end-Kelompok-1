@@ -185,7 +185,7 @@ module.exports = {
   },
 
   async forgotPassword(req, res) {
-    try{
+    try {
       const email = req.body.email.toLowerCase();
 
       let user = await User.findOne({
@@ -200,7 +200,6 @@ module.exports = {
       user = JSON.parse(JSON.stringify(user));
       delete user.password;
 
-      
       const token = createToken(user);
 
       const name = user.name;
@@ -227,12 +226,13 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      const user = await userService.findId(tokenPayload.email)
-      .then((response) => {
-        res.status(200).json({
-          message: "verified",
+      const user = await userService
+        .findId(tokenPayload.email)
+        .then((response) => {
+          res.status(200).json({
+            message: "verified",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -250,9 +250,9 @@ module.exports = {
       const user = JSON.parse(
         JSON.stringify(await userService.findId(tokenPayload.email))
       );
-      user.password = password
+      user.password = password;
 
-      await userService.update(user.id, user)
+      await userService.update(user.id, user);
       delete user.password;
 
       res.status(200).json({
