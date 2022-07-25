@@ -307,7 +307,7 @@ module.exports = {
       const token = bearerToken.split("Bearer ")[1];
       const tokenPayload = verifyToken(token);
 
-      productService.delete(req.params.id, tokenPayload.id)
+      productService.deleteProduct(req.params.id, tokenPayload.id)
       .then((product) => {
         res.status(200).json({
           status: "Product successfully deleted"
