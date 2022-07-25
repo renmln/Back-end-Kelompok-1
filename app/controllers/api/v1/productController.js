@@ -308,5 +308,18 @@ module.exports = {
           message: err.message,
         });
       })
+  },
+
+  async deleteProduct(req, res) {
+    const bearerToken = req.headers.authorization;
+    const token = bearerToken.split("Bearer ")[1];
+    const tokenPayload = verifyToken(token);
+
+    productService.deleteProduct(req.params.id)
+    .then((product) => {
+      res.status(200).json({
+        message: "Product successfully deleted"
+      })
+    })
   }
 };

@@ -76,6 +76,11 @@ apiRouter.put(
   uploadOnMemory.array("picture", 4),
   controllers.api.v1.productController.updateProduct
 ); // Edit Product
+
+apiRouter.delete(
+  "api/v1/drop/product/:id",
+  controllers.api.v1.productController.deleteProduct
+);
 apiRouter.put(
   "/api/v1/products/cloudinary",
   uploadOnMemory.array("picture", 4),
